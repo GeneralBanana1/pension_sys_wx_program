@@ -42,13 +42,11 @@
         "text": "老人首页"
       },
       {
-<<<<<<< HEAD
         "pagePath": "pages/main/old/personal/personal",
-        "text": "个人中心"
-=======
+        "text": "个人中心"},
+        {
         "pagePath": "pages/main/health/health",
         "text": "健康管理"
->>>>>>> main
       }
     ]
   },
