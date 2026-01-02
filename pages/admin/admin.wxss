@@ -1,0 +1,10 @@
+/* admin.wxss */
+.scrollarea {
+  height: 100%;
+}
+
+.container {
+  padding: 20rpx;
+  font-size: 32rpx;
+  line-height: 1.6;
+}

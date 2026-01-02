@@ -1,0 +1,40 @@
+<!-- medication.wxml -->
+<view class="container">
+  <!-- 页面标题 -->
+  <view class="page-title">用药提醒</view>
+  
+  <!-- 内容区域 -->
+  <view class="content-area">
+    <view class="medication-info">
+      <text class="info-text">以下是您今日的用药提醒安排，请按时服药</text>
+    </view>
+    
+    <view wx:if="{{medications.length === 0}}" class="no-medications">
+      <text class="no-medications-text">今日暂无用药提醒</text>
+    </view>
+    <view wx:else class="medications-list">
+      <view wx:for="{{medications}}" wx:key="index" class="medication-item">
+        <view class="medication-time">
+          <text class="time-text">{{item.time}}</text>
+        </view>
+        <view class="medication-content">
+          <text class="medication-name">{{item.name}}</text>
+          <view class="medication-details">
+            <text class="detail-item">用量：{{item.dosage}}</text>
+            <text class="detail-item">频次：{{item.frequency}}</text>
+          </view>
+        </view>
+        <view class="medication-action">
+          <view class="action-btn" bindtap="markAsTaken" data-index="{{index}}">
+            <text class="action-text">{{item.taken ? '已服用' : '已服用'}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+  
+  <!-- 底部返回按钮 -->
+  <view class="back-button-container">
+    <button class="back-button" bindtap="navigateBack">返回首页</button>
+  </view>
+</view>

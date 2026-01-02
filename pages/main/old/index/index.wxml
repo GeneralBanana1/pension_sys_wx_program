@@ -1,0 +1,45 @@
+    <!-- 主内容区 -->
+      <!-- 紧急呼叫 - 最醒目的按钮 -->
+      <view class="emergency-section">
+        <view 
+          class="emergency-btn" 
+          bindtap="makeEmergencyCall"
+          bindlongpress="onLongPress"
+        >
+          <view class="emergency-icon">🚨</view>
+          <view class="emergency-text">紧急呼叫</view>
+        </view>
+      </view>
+
+      <!-- 功能网格 -->
+      <view class="function-grid">
+        <!-- 一键求助 -->
+        <view class="function-item help-item" bindtap="sendHelpRequest">
+          <view class="item-icon">🏠</view>
+          <view class="item-title">居家服务</view>
+          <view class="item-desc">发送求助通知</view>
+        </view>
+
+        <!-- 联系人 -->
+        <view class="function-item contact-item" bindtap="showContactModal">
+          <view class="item-icon">👥</view>
+          <view class="item-title">联系人</view>
+          <view class="item-desc">查看常用联系人</view>
+        </view>
+
+        <!-- 用药提醒 -->
+        <view class="function-item medicine-item" bindtap="showMedicationReminder">
+          <view class="item-icon">💊</view>
+          <view class="item-title">用药提醒</view>
+          <view class="item-desc">查看用药计划</view>
+        </view>
+
+        <!-- 天气 -->
+        <view class="function-item weather-item" bindtap="showWeather">
+          <view class="item-icon">☀️</view>
+          <view class="item-title">天气</view>
+          <view class="item-desc">查看今日天气</view>
+        </view>
+        
+     
+      </view>

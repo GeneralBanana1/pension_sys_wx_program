@@ -1,0 +1,174 @@
+
+  
+  <!-- 主功能区 -->
+  <view class="main-area">
+    <!-- 快速发单按钮 -->
+    <view class="quick-order-btn" bindtap="showOrderModal">
+      <text class="btn-text-large">+ 发起服务请求</text>
+    </view>
+    
+  </view>
+  
+
+    <!-- 订单列表 -->
+    <scroll-view  scroll-y>
+      <view wx:for="{{orders}}" wx:key="orderId" class="order-card">
+        <!-- 订单头部 -->
+        <view class="card-header">
+          <view class="header-left">
+            <text class="order-type">{{item.serviceType}}</text>
+            <view class="status-badge status-{{item.state}}">
+              <text>{{item.status}}</text>
+            </view>
+          </view>
+          <text class="order-time">{{item.createTime}}</text>
+        </view>
+        
+        <!-- 订单内容 -->
+        <view class="card-content">
+          <text class="content-label">需求描述：</text>
+          <text class="content-text">{{item.description}}</text>
+          
+          <view class="order-info">
+            <text class="info-label">订单编号：</text>
+            <text class="info-value">{{item.orderNum}}</text>
+          </view>
+          
+          <view wx:if="{{item.serviceTime}}" class="order-info">
+            <text class="info-label">服务时间：</text>
+            <text class="info-value">{{item.serviceTime}}</text>
+          </view>
+          
+          <view wx:if="{{item.remark}}" class="order-info">
+            <text class="info-label">备注：</text>
+            <text class="info-value">{{item.remark}}</text>
+          </view>
+          
+          <view wx:if="{{item.servicePerson}}" class="order-info">
+            <text class="info-label">服务人员：</text>
+            <text class="info-value">{{item.servicePerson}}</text>
+          </view>
+        </view>
+        
+        <!-- 操作按钮 -->
+        <view class="card-actions">
+          <button wx:for="{{item.actions}}" wx:for-item="action" wx:key="type" 
+                  class="action-btn btn-{{action.class}}" 
+                  bindtap="handleOrderAction" 
+                  data-orderid="{{item.orderId}}"
+                  data-actiontype="{{action.type}}">
+            {{action.text}}
+          </button>
+        </view>
+      </view>
+    </scroll-view>
+
+  
+  <!-- 发单弹窗 -->
+  <view wx:if="{{showModal}}" class="modal-container">
+    <!-- 遮罩层 -->
+    <view class="modal-overlay" bindtap="closeOrderModal"></view>
+    <!-- 弹窗内容 -->
+    <view class="order-modal">
+      <!-- 弹窗标题 -->
+      <view class="modal-header">
+        <text class="modal-title">{{isEditMode ? '编辑服务请求' : '发起服务请求'}}</text>
+        <button class="close-btn" bindtap="closeOrderModal">
+          <text class="close-icon">×</text>
+        </button>
+      </view>
+      
+      <!-- 表单内容 -->
+      <view class="modal-content">
+        <!-- 服务类型 -->
+        <view class="form-group">
+          <text class="form-label">服务类型</text>
+          <view class="picker-wrapper">
+            <picker 
+              class="form-picker" 
+              range="{{serviceTypes}}" 
+              value="{{selectedServiceIndex}}"
+              bindchange="onServiceTypeChange"
+            >
+              <view class="picker-content">
+                <text class="picker-text">{{serviceTypes[selectedServiceIndex]}}</text>
+                <text class="picker-arrow">▼</text>
+              </view>
+            </picker>
+          </view>
+        </view>
+        
+        <!-- 服务时间 -->
+        <view class="form-group">
+          <text class="form-label">服务时间</text>
+          
+          <!-- 日期选择器 -->
+          <view class="section custom-section">
+            <view class="section__title">选择日期</view>
+            <picker mode="date" value="{{date}}" start="{{startDate}}" end="2077-01-01" bindchange="bindDateChange" class="custom-picker">
+              <view class="picker-content">
+                <text class="picker-text">{{date || '请选择日期'}}</text>
+                <text class="picker-arrow">▼</text>
+              </view>
+            </picker>
+          </view>
+          
+          <!-- 时间选择器 -->
+          <view class="section custom-section">
+            <view class="section__title">选择时间</view>
+            <picker mode="time" value="{{time}}" start="00:00" end="23:59" bindchange="bindTimeChange" class="custom-picker">
+              <view class="picker-content">
+                <text class="picker-text">{{time || '请选择时间'}}</text>
+                <text class="picker-arrow">▼</text>
+              </view>
+            </picker>
+          </view>
+          
+
+        </view>
+
+        
+        <!-- 需求描述 -->
+        <view class="form-group">
+          <text class="form-label">需求描述</text>
+          <textarea 
+            class="form-textarea" 
+            placeholder="请详细描述您的需求，以便服务人员更好地为您服务..."
+            placeholder-style="color: #999; font-size: 28rpx;" 
+            maxlength="200"
+            bindinput="onDescChange"
+            value="{{orderDescription}}"
+            auto-height
+            style="min-height: 150rpx;"
+          ></textarea>
+          <view class="char-count">
+            <text class="count-text">{{orderDescription.length}}/200</text>
+          </view>
+        </view>
+        
+        <!-- 备注 -->
+        <view class="form-group">
+          <text class="form-label">备注</text>
+          <textarea 
+            class="form-textarea" 
+            placeholder="请输入备注信息（选填）"
+            placeholder-style="color: #999; font-size: 28rpx;" 
+            maxlength="100"
+            bindinput="onRemarkChange"
+            value="{{remark}}"
+            auto-height
+            style="min-height: 100rpx;"
+          ></textarea>
+          <view class="char-count">
+            <text class="count-text">{{remark.length}}/100</text>
+          </view>
+        </view>
+      </view>
+      
+      <!-- 操作按钮 -->
+      <view class="modal-footer">
+        <button class="btn btn-cancel" bindtap="closeOrderModal">取消</button>
+        <button class="btn btn-primary" bindtap="submitOrder">{{isEditMode ? '保存修改' : '提交请求'}}</button>
+      </view>
+    </view>
+  </view>

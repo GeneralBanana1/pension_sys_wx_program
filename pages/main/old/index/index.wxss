@@ -1,0 +1,415 @@
+/* ===== 基础样式 ===== */
+page {
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Helvetica Neue', Arial, sans-serif;
+  height: 100vh;
+  width: 100vw;
+  padding-top: env(safe-area-inset-top); /* 适配系统状态栏 */
+  box-sizing: border-box;
+}
+
+.container {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  box-sizing: border-box;
+}
+
+/* ===== 顶部欢迎栏 ===== */
+.header {
+  padding: 20rpx 40rpx 40rpx;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 0 0 50rpx 50rpx;
+  box-shadow: 0 10rpx 40rpx rgba(102, 126, 234, 0.3);
+}
+
+.welcome-card {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 30rpx;
+  padding: 40rpx;
+  backdrop-filter: blur(20rpx);
+  box-shadow: 0 10rpx 30rpx rgba(0, 0, 0, 0.08);
+}
+
+.user-greeting {
+  display: flex;
+  align-items: baseline;
+  margin-bottom: 15rpx;
+}
+
+.greeting-text {
+  font-size: 44rpx;
+  color: #4a5568;
+  font-weight: 400;
+}
+
+.user-name {
+  font-size: 56rpx;
+  color: #2d3748;
+  font-weight: 700;
+  margin-left: 15rpx;
+}
+
+.date-info {
+  padding-top: 10rpx;
+  border-top: 2rpx solid rgba(0, 0, 0, 0.05);
+}
+
+.current-date {
+  font-size: 36rpx;
+  color: #718096;
+  font-weight: 500;
+}
+
+/* ===== 主内容区 ===== */
+.main-content {
+  flex: 1;
+  padding: 20rpx 40rpx 140rpx;
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+
+/* ===== 紧急呼叫区域 ===== */
+.emergency-section {
+  margin: 0 20rpx 40rpx;
+  padding: 5px 10rpx;
+}
+
+.emergency-btn {
+  background: linear-gradient(135deg, #ff6b6b 0%, #ff4757 100%);
+  border-radius: 30rpx;
+  padding: 60rpx 40rpx;
+  text-align: center;
+  box-shadow: 0 20rpx 50rpx rgba(255, 107, 107, 0.4);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.emergency-btn:active {
+  transform: scale(0.98);
+  box-shadow: 0 10rpx 30rpx rgba(255, 107, 107, 0.3);
+}
+
+.emergency-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.2) 50%, transparent 70%);
+  animation: shine 3s infinite;
+}
+
+@keyframes shine {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+.emergency-icon {
+  font-size: 80rpx;
+  margin-bottom: 20rpx;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+.emergency-text {
+  font-size: 60rpx;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 15rpx;
+  text-shadow: 0 4rpx 8rpx rgba(0, 0, 0, 0.2);
+}
+
+.emergency-hint {
+  font-size: 30rpx;
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 500;
+}
+
+/* ===== 功能网格 ===== */
+.function-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 30rpx;
+  margin: 0 20rpx 50rpx;
+  padding: 0 10rpx;
+}
+
+.function-item {
+  background: white;
+  border-radius: 25rpx;
+  padding: 40rpx 30rpx 50rpx;
+  text-align: center;
+  box-shadow: 0 12rpx 30rpx rgba(0, 0, 0, 0.08);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.function-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 8rpx;
+  background: var(--item-color);
+}
+
+.function-item:active {
+  transform: translateY(-5rpx);
+  box-shadow: 0 20rpx 40rpx rgba(0, 0, 0, 0.12);
+}
+
+/* 功能项颜色定义 */
+.help-item { --item-color: #4a90e2; }
+.contact-item { --item-color: #2ecc71; }
+.medicine-item { --item-color: #f06292; }
+.weather-item { --item-color: #ff9800; }
+
+.function-item .item-icon {
+  font-size: 64rpx;
+  margin-bottom: 25rpx;
+  color: var(--item-color);
+}
+
+.function-item .item-title {
+  font-size: 40rpx;
+  font-weight: 700;
+  color: #2d3748;
+  margin-bottom: 10rpx;
+}
+
+.function-item .item-desc {
+  font-size: 28rpx;
+  color: #718096;
+  font-weight: 500;
+}
+
+/* ===== 今日提醒区域 ===== */
+.reminder-section {
+  background: white;
+  border-radius: 30rpx;
+  padding: 40rpx;
+  box-shadow: 0 12rpx 30rpx rgba(0, 0, 0, 0.08);
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 35rpx;
+  padding-bottom: 25rpx;
+  border-bottom: 2rpx solid #edf2f7;
+}
+
+.section-title {
+  font-size: 44rpx;
+  font-weight: 700;
+  color: #2d3748;
+}
+
+.section-subtitle {
+  font-size: 30rpx;
+  color: #718096;
+  font-weight: 500;
+}
+
+.reminder-list {
+  display: flex;
+  flex-direction: column;
+  gap: 25rpx;
+}
+
+.reminder-item {
+  display: flex;
+  align-items: flex-start;
+  padding: 30rpx;
+  background: linear-gradient(90deg, #f7fafc 0%, #ffffff 100%);
+  border-radius: 20rpx;
+  border-left: 8rpx solid #667eea;
+  transition: all 0.3s ease;
+}
+
+.reminder-item:active {
+  background: linear-gradient(90deg, #edf2f7 0%, #f7fafc 100%);
+}
+
+.reminder-time {
+  font-size: 36rpx;
+  font-weight: 700;
+  color: #667eea;
+  min-width: 130rpx;
+  padding-right: 20rpx;
+}
+
+.reminder-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10rpx;
+}
+
+.reminder-text {
+  font-size: 38rpx;
+  font-weight: 600;
+  color: #2d3748;
+}
+
+.reminder-note {
+  font-size: 30rpx;
+  color: #718096;
+  font-weight: 500;
+}
+
+/* ===== 底部导航栏 ===== */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 120rpx;
+  background: rgba(255, 255, 255, 0.98);
+  backdrop-filter: blur(20rpx);
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  border-top: 2rpx solid rgba(0, 0, 0, 0.05);
+  padding-bottom: env(safe-area-inset-bottom);
+  z-index: 100;
+}
+
+.nav-item {
+  flex: 1;
+  text-align: center;
+  padding: 20rpx 0;
+  transition: all 0.3s ease;
+}
+
+.nav-item:active {
+  transform: scale(0.95);
+}
+
+.nav-item.active {
+  position: relative;
+}
+
+.nav-item.active::before {
+  content: '';
+  position: absolute;
+  top: -10rpx;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60rpx;
+  height: 6rpx;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 3rpx;
+}
+
+.nav-icon {
+  font-size: 48rpx;
+  margin-bottom: 8rpx;
+  opacity: 0.7;
+  transition: all 0.3s ease;
+}
+
+.nav-item.active .nav-icon {
+  opacity: 1;
+  transform: translateY(-5rpx);
+}
+
+.nav-text {
+  font-size: 30rpx;
+  color: #a0aec0;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.nav-item.active .nav-text {
+  color: #667eea;
+}
+
+/* ===== 响应式调整 ===== */
+@media (max-width: 750rpx) {
+  .header {
+    padding: 50rpx 30rpx 30rpx;
+  }
+  
+  .welcome-card {
+    padding: 35rpx;
+  }
+  
+  .greeting-text {
+    font-size: 40rpx;
+  }
+  
+  .user-name {
+    font-size: 52rpx;
+  }
+  
+  .current-date {
+    font-size: 34rpx;
+  }
+  
+  .main-content {
+    padding: 30rpx;
+    padding-bottom: 140rpx;
+  }
+  
+  .emergency-btn {
+    padding: 50rpx 30rpx;
+  }
+  
+  .emergency-text {
+    font-size: 56rpx;
+  }
+  
+  .function-grid {
+    gap: 25rpx;
+  }
+  
+  .function-item {
+    padding: 35rpx 25rpx;
+  }
+  
+  .reminder-section {
+    padding: 35rpx;
+  }
+}
+
+/* 小屏幕特殊优化 */
+@media (max-height: 600px) {
+  .header {
+    padding: 40rpx 30rpx 25rpx;
+  }
+  
+  .welcome-card {
+    padding: 30rpx;
+  }
+  
+  .main-content {
+    padding: 25rpx;
+    padding-bottom: 140rpx;
+  }
+  
+  .emergency-btn {
+    padding: 40rpx 30rpx;
+  }
+  
+  .emergency-text {
+    font-size: 52rpx;
+  }
+  
+  .function-item .item-title {
+    font-size: 36rpx;
+  }
+}

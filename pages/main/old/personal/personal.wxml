@@ -1,0 +1,113 @@
+<!-- 个人信息页面（带底部导航栏） -->
+<view class="profile-container">
+  <!-- 用户身份卡片 -->
+  <view class="identity-card">
+    <view class="avatar-wrapper">
+      <image 
+        src="{{userInfo.avatar || '/images/default-avatar.png'}}" 
+        class="avatar"
+      ></image>
+      <view class="avatar-status"></view>
+    </view>
+    <view class="identity-info">
+      <text class="user-name">{{userInfo.name || '请完善信息'}}</text>
+      <text class="user-id">ID: {{userInfo.id || '---'}}</text>
+      <view class="user-tags">
+        <text class="tag">{{userInfo.age || '--'}}岁</text>
+        <text class="tag">{{genderText}}</text>
+        <text class="tag care-level">{{userInfo.careLevel || '普通'}}护理</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 基本信息 -->
+  <view class="info-section">
+    <view class="section-title">
+      <text class="title-icon">📋</text>
+      <text>基本信息</text>
+    </view>
+    <view class="info-grid">
+      <view class="info-item">
+        <text class="info-label">出生日期</text>
+        <text class="info-value">{{userInfo.birthday || '--'}}</text>
+      </view>
+      <view class="info-item">
+        <text class="info-label">联系电话</text>
+        <text class="info-value">{{userInfo.phone || '--'}}</text>
+      </view>
+      <view class="info-item">
+        <text class="info-label">身份证号</text>
+        <text class="info-value">{{userInfo.idCard || '--'}}</text>
+      </view>
+      <view class="info-item">
+        <text class="info-label">血型</text>
+        <text class="info-value">{{userInfo.bloodType || '--'}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 居住信息 -->
+  <view class="info-section">
+    <view class="section-title">
+      <text class="title-icon">🏠</text>
+      <text>居住信息</text>
+    </view>
+    <view class="address-card">
+      <view class="address-content">
+        <text class="address-text">{{userInfo.address || '暂无地址信息'}}</text>
+        <text class="address-status">{{userInfo.livingStatus || '--'}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 健康信息 -->
+  <view class="info-section">
+    <view class="section-title">
+      <text class="title-icon">❤️</text>
+      <text>健康信息</text>
+    </view>
+    <view class="health-grid">
+      <view class="health-item">
+        <text class="health-value">{{userInfo.medicalRecords || 0}}</text>
+        <text class="health-label">病史记录</text>
+      </view>
+      <view class="health-item">
+        <text class="health-value">{{userInfo.allergyCount || 0}}</text>
+        <text class="health-label">过敏记录</text>
+      </view>
+      <view class="health-item">
+        <text class="health-value">{{userInfo.medicationCount || 0}}</text>
+        <text class="health-label">用药记录</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 紧急联系人 -->
+  <view class="info-section">
+    <view class="section-title">
+      <text class="title-icon">🚨</text>
+      <text>紧急联系人</text>
+    </view>
+    <view class="contact-card">
+      <view class="contact-info">
+        <text class="contact-name">{{userInfo.emergencyName || '未设置'}}</text>
+        <view class="contact-details">
+          <text class="contact-relation">{{userInfo.emergencyRelation || '亲属'}}</text>
+          <text class="contact-phone">{{userInfo.emergencyPhone || '--'}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 底部导航栏 -->
+  <view class="bottom-nav">
+    <view class="nav-item" bindtap="navigateToHome">
+      <view class="nav-icon">🏠</view>
+      <view class="nav-text">首页</view>
+    </view>
+    <view class="nav-item active">
+      <view class="nav-icon">👤</view>
+      <view class="nav-text">我的</view>
+    </view>
+  </view>
+</view>

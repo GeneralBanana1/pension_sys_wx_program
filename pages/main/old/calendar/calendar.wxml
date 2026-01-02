@@ -1,0 +1,71 @@
+<!-- calendar.wxml -->
+<view class="container">
+  <!-- 页面标题 -->
+  <view class="page-title">日历</view>
+  
+  <!-- 内容区域 -->
+  <view class="content-area">
+    <view class="calendar-container">
+      <view class="calendar-header">
+        <view class="calendar-title">{{calendarTitle}}</view>
+      </view>
+      
+      <view class="calendar-body">
+        <view class="calendar-weekday">
+          <view class="weekday-item">日</view>
+          <view class="weekday-item">一</view>
+          <view class="weekday-item">二</view>
+          <view class="weekday-item">三</view>
+          <view class="weekday-item">四</view>
+          <view class="weekday-item">五</view>
+          <view class="weekday-item">六</view>
+        </view>
+        
+        <view class="calendar-days">
+          <!-- 示例日期 -->
+          <view class="day-item">1</view>
+          <view class="day-item">2</view>
+          <view class="day-item">3</view>
+          <view class="day-item">4</view>
+          <view class="day-item">5</view>
+          <view class="day-item">6</view>
+          <view class="day-item">7</view>
+          <view class="day-item">8</view>
+          <view class="day-item">9</view>
+          <view class="day-item">10</view>
+          <view class="day-item">11</view>
+          <view class="day-item">12</view>
+          <view class="day-item">13</view>
+          <view class="day-item">14</view>
+          <view class="day-item">15</view>
+          <view class="day-item">16</view>
+          <view class="day-item">17</view>
+          <view class="day-item">18</view>
+          <view class="day-item">19</view>
+          <view class="day-item">20</view>
+          <view class="day-item">21</view>
+          <view class="day-item">22</view>
+          <view class="day-item">23</view>
+          <view class="day-item">24</view>
+          <view class="day-item">25</view>
+          <view class="day-item">26</view>
+          <view class="day-item current-day">27</view>
+          <view class="day-item">28</view>
+          <view class="day-item">29</view>
+          <view class="day-item">30</view>
+          <view class="day-item">31</view>
+        </view>
+      </view>
+      
+      <view class="calendar-footer">
+        <view class="calendar-btn prev-btn" bindtap="prevMonth">上月</view>
+        <view class="calendar-btn next-btn" bindtap="nextMonth">下月</view>
+      </view>
+    </view>
+  </view>
+  
+  <!-- 底部返回按钮 -->
+  <view class="back-button-container">
+    <button class="back-button" bindtap="navigateBack">返回首页</button>
+  </view>
+</view>

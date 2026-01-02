@@ -1,0 +1,17 @@
+<!--index.wxml-->
+<navigation-bar title="Weixin" back="{{false}}" color="black" background="#FFF"></navigation-bar>
+<scroll-view class="scrollarea" scroll-y type="list">
+  <view class="container">
+    <view class="role-switcher">
+      <text class="title">角色切换</text>
+      <button bindtap="switchToRole" data-role="100" type="primary" size="mini">老人 (100)</button>
+      <button bindtap="switchToRole" data-role="101" type="primary" size="mini">家属 (101)</button>
+      <button bindtap="switchToRole" data-role="102" type="primary" size="mini">护工 (102)</button>
+      <button bindtap="switchToRole" data-role="103" type="primary" size="mini">维修工 (103)</button>
+    </view>
+    <view class="current-role">
+      <text>当前角色：{{getRoleName(currentRole)}}</text>
+      <text class="role-id">角色ID: {{currentRole}}</text>
+    </view>
+  </view>
+</scroll-view>

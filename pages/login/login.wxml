@@ -1,0 +1,15 @@
+<!--login.wxml-->
+<view class="login-container">
+  <view class="login-title">欢迎登录</view>
+  <!-- 微信授权登录按钮 --> 
+  <button 
+    class="wechat-login-btn" 
+    open-type="getUserInfo" 
+    lang="zh_CN" 
+    bindgetuserinfo="onGetUserInfo" 
+    bindtap="handleWechatLogin" 
+    disabled="{{loading}}" 
+  > 
+    微信授权登录 
+  </button> 
+</view>

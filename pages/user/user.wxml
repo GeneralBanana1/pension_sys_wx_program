@@ -1,0 +1,10 @@
+<!--user.wxml-->
+<navigation-bar title="个人中心" back="{{false}}" color="black" background="#FFF"></navigation-bar>
+<scroll-view class="scrollarea" scroll-y type="list">
+  <view class="container">
+    <view class="user-info">
+      <text>个人中心</text>
+    </view>
+    <button class="logout-btn" bindtap="handleLogout">退出登录</button>
+  </view>
+</scroll-view>

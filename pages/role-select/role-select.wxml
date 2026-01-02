@@ -1,0 +1,26 @@
+<!--role-select.wxml-->
+<view class="role-container">
+  <view class="role-title">选择角色</view>
+  <view class="role-list">
+    <view class="role-item" bindtap="selectRole" data-role="100">
+      <view class="role-name">老人</view>
+      <view class="role-desc">居家老人，可访问首页和个人中心</view>
+      <view class="role-id">角色ID: 100</view>
+    </view>
+    <view class="role-item" bindtap="selectRole" data-role="101">
+      <view class="role-name">家属</view>
+      <view class="role-desc">老人家属，可管理老人信息和查看服务记录</view>
+      <view class="role-id">角色ID: 101</view>
+    </view>
+    <view class="role-item" bindtap="selectRole" data-role="102">
+      <view class="role-name">护工</view>
+      <view class="role-desc">护理人员，可管理服务和查看老人信息</view>
+      <view class="role-id">角色ID: 102</view>
+    </view>
+    <view class="role-item" bindtap="selectRole" data-role="103">
+      <view class="role-name">维修工</view>
+      <view class="role-desc">维修人员，可处理维修工单</view>
+      <view class="role-id">角色ID: 103</view>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,376 @@
+/* ===== 个人信息页面样式 ===== */
+page {
+  background: #f8fafc;
+  font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Helvetica Neue', Arial, sans-serif;
+  height: 100vh;
+  width: 100vw;
+}
+
+.profile-container {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: #f8fafc;
+  padding-bottom: 140rpx; /* 为底部导航栏留出空间 */
+  box-sizing: border-box;
+  overflow-y: auto;
+}
+
+/* ===== 用户身份卡片 ===== */
+.identity-card {
+  background: #667eea;
+  padding: 60rpx 40rpx 50rpx;
+  color: white;
+  display: flex;
+  align-items: center;
+  margin-bottom: 30rpx;
+  border-radius: 0 0 50rpx 50rpx;
+  box-shadow: 0 10rpx 40rpx rgba(102, 126, 234, 0.3);
+}
+
+.avatar-wrapper {
+  position: relative;
+  margin-right: 40rpx;
+}
+
+.avatar {
+  width: 160rpx;
+  height: 160rpx;
+  border-radius: 50%;
+  border: 6rpx solid rgba(255, 255, 255, 0.3);
+  background: white;
+  box-shadow: 0 10rpx 30rpx rgba(0, 0, 0, 0.2);
+}
+
+.avatar-status {
+  position: absolute;
+  bottom: 10rpx;
+  right: 10rpx;
+  width: 24rpx;
+  height: 24rpx;
+  background: #2ecc71;
+  border: 3rpx solid white;
+  border-radius: 50%;
+}
+
+.identity-info {
+  flex: 1;
+}
+
+.user-name {
+  font-size: 56rpx;
+  font-weight: 700;
+  display: block;
+  margin-bottom: 15rpx;
+}
+
+.user-id {
+  font-size: 30rpx;
+  opacity: 0.9;
+  display: block;
+  margin-bottom: 25rpx;
+  font-weight: 500;
+}
+
+.user-tags {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0;
+  margin: 0;
+}
+
+.tag {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 10rpx 20rpx;
+  border-radius: 25rpx;
+  font-size: 26rpx;
+  font-weight: 500;
+  margin-right: 15rpx;
+  margin-bottom: 15rpx;
+  box-sizing: border-box;
+}
+
+.tag.care-level {
+  background: rgba(255, 193, 7, 0.3);
+  color: #ffd700;
+}
+
+/* ===== 信息区块 ===== */
+.info-section {
+  background: white;
+  margin: 0 30rpx 30rpx;
+  border-radius: 25rpx;
+  padding: 35rpx;
+  box-shadow: 0 8rpx 25rpx rgba(0, 0, 0, 0.06);
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  font-size: 36rpx;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 30rpx;
+  padding-bottom: 20rpx;
+  border-bottom: 2rpx solid #f0f0f0;
+}
+
+.title-icon {
+  font-size: 40rpx;
+  margin-right: 15rpx;
+}
+
+/* ===== 基本信息网格 ===== */
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 30rpx;
+}
+
+.info-item {
+  display: flex;
+  flex-direction: column;
+  gap: 12rpx;
+}
+
+.info-label {
+  font-size: 28rpx;
+  color: #718096;
+  font-weight: 500;
+}
+
+.info-value {
+  font-size: 32rpx;
+  color: #2d3748;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+/* ===== 地址卡片 ===== */
+.address-card {
+  background: linear-gradient(135deg, #f8f9ff 0%, #eef2ff 100%);
+  border-radius: 20rpx;
+  padding: 35rpx;
+  border-left: 8rpx solid #667eea;
+}
+
+.address-content {
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+}
+
+.address-text {
+  font-size: 32rpx;
+  color: #2d3748;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.address-status {
+  font-size: 28rpx;
+  color: #667eea;
+  background: rgba(102, 126, 234, 0.1);
+  padding: 10rpx 25rpx;
+  border-radius: 20rpx;
+  align-self: flex-start;
+  font-weight: 500;
+}
+
+/* ===== 健康信息网格 ===== */
+.health-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 25rpx;
+  text-align: center;
+}
+
+.health-item {
+  background: linear-gradient(135deg, #f8f9ff 0%, #eef2ff 100%);
+  border-radius: 20rpx;
+  padding: 35rpx 20rpx;
+  transition: all 0.3s ease;
+}
+
+.health-item:active {
+  transform: translateY(-5rpx);
+  background: linear-gradient(135deg, #eef2ff 0%, #e0e7ff 100%);
+}
+
+.health-value {
+  font-size: 48rpx;
+  font-weight: 700;
+  color: #667eea;
+  margin-bottom: 10rpx;
+  display: block;
+}
+
+.health-label {
+  font-size: 28rpx;
+  color: #718096;
+  font-weight: 500;
+}
+
+/* ===== 紧急联系人卡片 ===== */
+.contact-card {
+  background: linear-gradient(135deg, #fff8f8 0%, #ffeaea 100%);
+  border-radius: 20rpx;
+  padding: 35rpx;
+  border-left: 8rpx solid #ff6b6b;
+}
+
+.contact-info {
+  display: flex;
+  flex-direction: column;
+  gap: 15rpx;
+}
+
+.contact-name {
+  font-size: 40rpx;
+  font-weight: 700;
+  color: #2d3748;
+}
+
+.contact-details {
+  display: flex;
+  flex-direction: column;
+  gap: 12rpx;
+}
+
+.contact-relation {
+  font-size: 28rpx;
+  color: #666;
+  background: rgba(255, 107, 107, 0.1);
+  padding: 8rpx 20rpx;
+  border-radius: 15rpx;
+  align-self: flex-start;
+  font-weight: 500;
+}
+
+.contact-phone {
+  font-size: 32rpx;
+  color: #333;
+  font-weight: 600;
+}
+
+/* ===== 底部导航栏 ===== */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 120rpx;
+  background: rgba(255, 255, 255, 0.98);
+  backdrop-filter: blur(20rpx);
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  border-top: 2rpx solid rgba(0, 0, 0, 0.05);
+  padding-bottom: env(safe-area-inset-bottom);
+  z-index: 100;
+}
+
+.nav-item {
+  flex: 1;
+  text-align: center;
+  padding: 20rpx 0;
+  transition: all 0.3s ease;
+}
+
+.nav-item:active {
+  transform: scale(0.95);
+}
+
+.nav-item.active {
+  position: relative;
+}
+
+.nav-item.active::before {
+  content: '';
+  position: absolute;
+  top: -10rpx;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60rpx;
+  height: 6rpx;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 3rpx;
+}
+
+.nav-icon {
+  font-size: 48rpx;
+  margin-bottom: 8rpx;
+  opacity: 0.7;
+  transition: all 0.3s ease;
+}
+
+.nav-item.active .nav-icon {
+  opacity: 1;
+  transform: translateY(-5rpx);
+}
+
+.nav-text {
+  font-size: 30rpx;
+  color: #a0aec0;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.nav-item.active .nav-text {
+  color: #667eea;
+}
+
+/* ===== 响应式调整 ===== */
+@media (max-width: 750rpx) {
+  .identity-card {
+    padding: 50rpx 30rpx 40rpx;
+  }
+  
+  .avatar {
+    width: 140rpx;
+    height: 140rpx;
+  }
+  
+  .user-name {
+    font-size: 52rpx;
+  }
+  
+  .info-section {
+    margin: 0 25rpx 25rpx;
+    padding: 30rpx;
+  }
+  
+  .section-title {
+    font-size: 34rpx;
+  }
+}
+
+/* 小屏幕特殊优化 */
+@media (max-height: 600px) {
+  .profile-container {
+    padding-bottom: 120rpx;
+  }
+  
+  .identity-card {
+    padding: 40rpx 25rpx 30rpx;
+  }
+  
+  .avatar {
+    width: 120rpx;
+    height: 120rpx;
+  }
+  
+  .user-name {
+    font-size: 48rpx;
+  }
+  
+  .info-section {
+    margin: 0 20rpx 20rpx;
+    padding: 25rpx;
+  }
+  
+  .health-value {
+    font-size: 42rpx;
+  }
+}

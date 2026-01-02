@@ -1,0 +1,7 @@
+<!--admin.wxml-->
+<navigation-bar title="管理员中心" back="{{false}}" color="black" background="#FFF"></navigation-bar>
+<scroll-view class="scrollarea" scroll-y type="list">
+  <view class="container">
+    管理员中心
+  </view>
+</scroll-view>
