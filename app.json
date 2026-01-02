@@ -1,6 +1,6 @@
 {
   "pages": [
-    "pages/login/login",  
+    "pages/login/login",
     "pages/main/old/index/index",
     "pages/role-select/role-select",
     "pages/index/index",
@@ -10,7 +10,8 @@
     "pages/main/old/contacts/contacts",
     "pages/main/old/medication/medication",
     "pages/main/old/weather/weather",
-    "pages/main/old/personal/personal"
+    "pages/main/old/personal/personal",
+    "pages/main/health/health"
   ],
   "window": {
     "navigationBarTextStyle": "black",
@@ -41,12 +42,23 @@
         "text": "老人首页"
       },
       {
+<<<<<<< HEAD
         "pagePath": "pages/main/old/personal/personal",
         "text": "个人中心"
+=======
+        "pagePath": "pages/main/health/health",
+        "text": "健康管理"
+>>>>>>> main
       }
     ]
   },
+  "permission": {
+    "scope.userLocation": {
+      "desc": "你的位置信息将用于获取当地天气数据"
+    }
+  },
   "style": "v2",
   "sitemapLocation": "sitemap.json",
-  "lazyCodeLoading": "requiredComponents"
+  "lazyCodeLoading": "requiredComponents",
+  "requiredPrivateInfos": ["getLocation"]
 }

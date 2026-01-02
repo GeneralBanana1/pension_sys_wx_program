@@ -5,7 +5,7 @@ Page({
   data: {
     loading: false,
     // API配置
-    baseUrl: 'http://192.168.248.1:8080',
+    baseUrl: 'http://localhost:8080',
     api: {
       // 用户授权角色接口POST
       authRole: '/user/info/role'

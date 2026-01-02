@@ -1,0 +1,96 @@
+
+<view class="container">
+  <!-- 页面标题 -->
+  <view class="page-title">健康状况监测</view>
+  
+  <!-- 健康指标图表区域 -->
+  <view class="charts-container">
+    
+    <!-- 血压图表 -->
+    <view class="chart-item">
+      <view class="chart-title">血压变化趋势</view>
+      <canvas class="chart-canvas" canvas-id="bloodPressureChart" width="320" height="200"></canvas>
+    </view>
+    
+    <!-- 心率图表 -->
+    <view class="chart-item">
+      <view class="chart-title">心率变化趋势</view>
+      <canvas class="chart-canvas" canvas-id="heartRateChart" width="320" height="200"></canvas>
+    </view>
+    
+    <!-- 血氧图表 -->
+    <view class="chart-item">
+      <view class="chart-title">血氧变化趋势</view>
+      <canvas class="chart-canvas" canvas-id="bloodOxygenChart" width="320" height="200"></canvas>
+    </view>
+    
+    <!-- 体温图表 -->
+    <view class="chart-item">
+      <view class="chart-title">体温变化趋势</view>
+      <canvas class="chart-canvas" canvas-id="bodyTemperatureChart" width="320" height="200"></canvas>
+    </view>
+    
+    <!-- 空腹血糖图表 -->
+    <view class="chart-item">
+      <view class="chart-title">空腹血糖变化趋势</view>
+      <canvas class="chart-canvas" canvas-id="fastingBloodSugarChart" width="320" height="200"></canvas>
+    </view>
+    
+    <!-- 餐后2小时血糖图表 -->
+    <view class="chart-item">
+      <view class="chart-title">餐后2小时血糖变化趋势</view>
+      <canvas class="chart-canvas" canvas-id="bloodSugar2hAfterMealChart" width="320" height="200"></canvas>
+    </view>
+  </view>
+  
+  <!-- 加载状态 -->
+  <view wx:if="{{loading}}" class="loading-container">
+    <text class="loading-text">正在加载健康数据...</text>
+  </view>
+  
+  <!-- 健康数据列表 -->
+  <view wx:if="{{!loading && hasData}}" class="health-data-container">
+    <view class="section-title">最新健康记录</view>
+    <view wx:for="{{healthData}}" wx:key="index" class="health-card">
+      <view class="health-card-header">
+        <text class="record-date">{{item.create_time}}</text>
+        <text class="mobility-level">活动等级：{{item.mobilityLevel}}</text>
+      </view>
+      <view class="health-items">
+        <view class="health-item">
+          <text class="item-label">血压：</text>
+          <text class="item-value">{{item.bloodPressure}} mmHg</text>
+        </view>
+        <view class="health-item">
+          <text class="item-label">心率：</text>
+          <text class="item-value">{{item.heartRate}} 次/分</text>
+        </view>
+        <view class="health-item">
+          <text class="item-label">血氧：</text>
+          <text class="item-value">{{item.bloodOxygen}}</text>
+        </view>
+        <view class="health-item">
+          <text class="item-label">体温：</text>
+          <text class="item-value">{{item.bodyTemperature}}</text>
+        </view>
+        <view class="health-item">
+          <text class="item-label">空腹血糖：</text>
+          <text class="item-value">{{item.fastingBloodSugar}}</text>
+        </view>
+        <view class="health-item">
+          <text class="item-label">餐后2小时血糖：</text>
+          <text class="item-value">{{item.bloodSugar2hAfterMeal || '无数据'}}</text>
+        </view>
+        <view class="health-item">
+          <text class="item-label">备注：</text>
+          <text class="item-value remark-text">{{item.remark}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 无数据状态 -->
+  <view wx:if="{{!loading && !hasData}}" class="no-data-container">
+    <text class="no-data-text">暂无健康数据</text>
+  </view>
+</view>

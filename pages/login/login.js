@@ -6,7 +6,7 @@ Page({
     loading: false,
     userInfo: null,
     // API配置
-    baseUrl: 'http://192.168.248.1:8080',
+    baseUrl: 'http://localhost:8080',
     api: {
       // 登录相关接口
       login: '/wxLogin',

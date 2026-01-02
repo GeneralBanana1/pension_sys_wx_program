@@ -4,7 +4,7 @@ App({
     isLoggedIn: false, // 登录状态
     token: '', // 用户token
     userInfo: null, // 用户信息
-    baseUrl: 'http://192.168.248.1:8080', // API基础地址
+    baseUrl: 'http://localhost:8080', // API基础地址
     currentRole: '100', // 默认角色：老人100, 家属101, 护工102, 维修工103
     roleTabs: {
       '100': [ // 老人
@@ -14,7 +14,8 @@ App({
       '101': [ // 家属
         { pagePath: 'pages/index/index', text: '首页', iconPath: '', selectedIconPath: '' },
         { pagePath: 'pages/user/user', text: '老人管理', iconPath: '', selectedIconPath: '' },
-        { pagePath: 'pages/admin/admin', text: '服务记录', iconPath: '', selectedIconPath: '' }
+        { pagePath: 'pages/admin/admin', text: '服务记录', iconPath: '', selectedIconPath: '' },
+        { pagePath: 'pages/main/health/health', text: '健康管理', iconPath: '', selectedIconPath: '' }
       ],
       '102': [ // 护工
         { pagePath: 'pages/index/index', text: '首页', iconPath: '', selectedIconPath: '' },

@@ -1,0 +1,176 @@
+
+
+/* 页面容器 */
+.container {
+  width: 100%;
+  min-height: 100vh;
+  background-color: #f5f5f5;
+  padding: 20rpx;
+  box-sizing: border-box;
+}
+
+/* 页面标题 */
+.page-title {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #333333;
+  margin-bottom: 30rpx;
+  text-align: center;
+}
+
+/* 图表容器 */
+.charts-container {
+  display: flex;
+  flex-direction: column;
+  gap: 30rpx;
+}
+
+/* 单个图表项 */
+.chart-item {
+  background-color: #ffffff;
+  border-radius: 12rpx;
+  padding: 20rpx;
+  box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.05);
+}
+
+/* 图表标题 */
+.chart-title {
+  font-size: 28rpx;
+  font-weight: bold;
+  color: #666666;
+  margin-bottom: 15rpx;
+  text-align: center;
+}
+
+/* 图表画布 */
+.chart-canvas {
+  width: 320px;
+  height: 200px;
+  margin: 0 auto;
+}
+
+/* 加载状态 */
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 400rpx;
+}
+
+.loading-text {
+  font-size: 28rpx;
+  color: #999999;
+}
+
+/* 无数据状态 */
+.no-data-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 400rpx;
+}
+
+.no-data-text {
+  font-size: 28rpx;
+  color: #999999;
+}
+
+/* 健康数据容器 */
+.health-data-container {
+  margin-top: 30rpx;
+}
+
+/* 章节标题 */
+.section-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333333;
+  margin-bottom: 20rpx;
+  padding-left: 10rpx;
+  border-left: 4rpx solid #1AAD19;
+}
+
+/* 健康卡片 */
+.health-card {
+  background-color: #ffffff;
+  border-radius: 12rpx;
+  padding: 20rpx;
+  margin-bottom: 20rpx;
+  box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.05);
+}
+
+/* 健康卡片头部 */
+.health-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20rpx;
+  padding-bottom: 10rpx;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+
+.record-date {
+  font-size: 28rpx;
+  font-weight: bold;
+  color: #333333;
+}
+
+.mobility-level {
+  font-size: 24rpx;
+  color: #666666;
+  background-color: #f5f5f5;
+  padding: 5rpx 10rpx;
+  border-radius: 10rpx;
+}
+
+/* 健康项目列表 */
+.health-items {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20rpx;
+}
+
+/* 单个健康项目 */
+.health-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.item-label {
+  font-size: 24rpx;
+  color: #666666;
+  margin-bottom: 5rpx;
+}
+
+.item-value {
+  font-size: 28rpx;
+  font-weight: bold;
+  color: #333333;
+}
+
+/* 备注文本 */
+.remark-text {
+  font-size: 24rpx;
+  font-weight: normal;
+  color: #FF6600;
+  grid-column: 1 / -1;
+  margin-top: 10rpx;
+}
+
+/* 响应式布局 */
+@media (min-width: 768px) {
+  .charts-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30rpx;
+  }
+  
+  .chart-canvas {
+    width: 100%;
+    max-width: 320px;
+  }
+  
+  .health-items {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
