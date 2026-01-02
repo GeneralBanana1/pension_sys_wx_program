@@ -9,7 +9,7 @@ App({
     roleTabs: {
       '100': [ // 老人
         { pagePath: 'pages/main/old/index/index', text: '首页', iconPath: '', selectedIconPath: '' },
-        { pagePath: 'pages/user/user', text: '个人中心', iconPath: '', selectedIconPath: '' }
+        { pagePath: 'pages/main/old/personal/personal', text: '个人中心', iconPath: '', selectedIconPath: '' }
       ],
       '101': [ // 家属
         { pagePath: 'pages/index/index', text: '首页', iconPath: '', selectedIconPath: '' },

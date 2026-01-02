@@ -33,21 +33,6 @@
   overflow-x: hidden;
 }
 
-.medication-info {
-  width: 100%;
-  padding: 30rpx;
-  background-color: #fff;
-  border-radius: 20rpx;
-  box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.1);
-  margin-bottom: 30rpx;
-}
-
-.info-text {
-  font-size: 32rpx;
-  color: #666;
-  line-height: 48rpx;
-}
-
 .no-medications {
   width: 100%;
   height: 300rpx;
@@ -64,94 +49,199 @@
   color: #999;
 }
 
-.medications-list {
+/* 用药计划列表 */
+.medication-plans-list {
   width: 100%;
 }
 
-.medication-item {
+/* 用药计划卡片 */
+.medication-plan-card {
   width: 100%;
   background-color: #fff;
   border-radius: 20rpx;
   box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.1);
-  display: flex;
-  align-items: center;
   padding: 30rpx;
   margin-bottom: 25rpx;
   transition: all 0.3s ease;
   box-sizing: border-box;
 }
 
-.medication-item:active {
+.medication-plan-card:active {
   transform: scale(0.99);
   box-shadow: 0 1rpx 5rpx rgba(0, 0, 0, 0.15);
 }
 
-.medication-time {
-  width: 120rpx;
-  background-color: #f06292;
-  color: white;
-  border-radius: 10rpx;
+/* 计划头部 */
+.plan-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20rpx;
+  padding-bottom: 20rpx;
+  border-bottom: 1rpx solid #eee;
+}
+
+.plan-status {
+  font-size: 24rpx;
+  font-weight: bold;
+  padding: 8rpx 16rpx;
+  border-radius: 16rpx;
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.plan-name {
   display: flex;
   align-items: center;
-  justify-content: center;
-  margin-right: 30rpx;
-  flex-shrink: 0;
 }
 
-.time-text {
-  font-size: 28rpx;
-  font-weight: bold;
-}
-
-.medication-content {
-  flex: 1;
-}
-
-.medication-name {
-  font-size: 34rpx;
+.drug-name {
+  font-size: 36rpx;
   color: #333;
   font-weight: bold;
-  margin-bottom: 15rpx;
-  display: block;
+  margin-right: 10rpx;
 }
 
-.medication-details {
+.nick-name {
+  font-size: 28rpx;
+  color: #999;
+}
+
+/* 计划详情 */
+.plan-details {
+  margin-bottom: 25rpx;
+}
+
+.plan-details .detail-item {
   display: flex;
-  flex-wrap: wrap;
-}
-
-.detail-item {
-  font-size: 28rpx;
+  align-items: center;
+  margin-bottom: 15rpx;
+  font-size: 30rpx;
   color: #666;
-  margin-right: 30rpx;
-  margin-bottom: 5rpx;
-  display: block;
 }
 
-.medication-action {
-  flex-shrink: 0;
-}
-
-.action-btn {
-  background-color: #4caf50;
-  color: white;
-  padding: 20rpx 40rpx;
-  border-radius: 30rpx;
-  font-size: 28rpx;
+.detail-label {
   font-weight: bold;
-  box-shadow: 0 2rpx 8rpx rgba(76, 175, 80, 0.3);
-  transition: all 0.3s ease;
+  margin-right: 10rpx;
+  color: #999;
 }
 
-.action-btn:active {
-  transform: scale(0.95);
-  box-shadow: 0 1rpx 4rpx rgba(76, 175, 80, 0.2);
+.detail-value {
+  flex: 1;
+  color: #333;
 }
 
-.action-text.taken {
-  background-color: #9e9e9e;
+/* 用药记录区域 */
+.records-section {
+  margin-top: 20rpx;
 }
 
+.section-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 20rpx;
+  display: block;
+  padding-bottom: 15rpx;
+  border-bottom: 1rpx solid #eee;
+}
+
+/* 无记录提示 */
+.no-records {
+  padding: 40rpx 0;
+  text-align: center;
+  background-color: #fafafa;
+  border-radius: 10rpx;
+  margin-bottom: 15rpx;
+}
+
+.no-records-text {
+  font-size: 28rpx;
+  color: #999;
+}
+
+/* 记录列表 */
+.records-list {
+  background-color: #fafafa;
+  border-radius: 10rpx;
+  padding: 15rpx;
+}
+
+/* 记录项 */
+.record-item {
+  background-color: #fff;
+  border-radius: 10rpx;
+  padding: 20rpx;
+  margin-bottom: 15rpx;
+  box-shadow: 0 1rpx 5rpx rgba(0, 0, 0, 0.05);
+}
+
+.record-item:last-child {
+  margin-bottom: 0;
+}
+
+.record-time {
+  font-size: 28rpx;
+  color: #333;
+  font-weight: bold;
+  margin-bottom: 10rpx;
+}
+
+.record-content {
+  font-size: 28rpx;
+}
+
+.record-remark {
+  display: block;
+  color: #666;
+  margin-bottom: 10rpx;
+  line-height: 40rpx;
+}
+
+.record-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 24rpx;
+  color: #999;
+}
+
+.record-creator {
+  margin-right: 20rpx;
+}
+
+.record-create-time {
+  flex: 1;
+  text-align: right;
+}
+
+/* 加载更多样式 */
+.loading-more {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20rpx 0;
+  margin-top: 10rpx;
+}
+
+.loading-text {
+  font-size: 28rpx;
+  color: #999;
+}
+
+/* 没有更多数据样式 */
+.no-more {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20rpx 0;
+  margin-top: 10rpx;
+}
+
+.no-more-text {
+  font-size: 28rpx;
+  color: #999;
+}
+
+/* 底部返回按钮 */
 .back-button-container {
   position: fixed;
   bottom: 40rpx;

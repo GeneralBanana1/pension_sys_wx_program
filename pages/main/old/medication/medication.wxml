@@ -1,35 +1,80 @@
 <!-- medication.wxml -->
 <view class="container">
   <!-- 页面标题 -->
-  <view class="page-title">用药提醒</view>
+  <view class="page-title">用药记录</view>
   
   <!-- 内容区域 -->
   <view class="content-area">
-    <view class="medication-info">
-      <text class="info-text">以下是您今日的用药提醒安排，请按时服药</text>
+    
+    <!-- 无用药计划提示 -->
+    <view wx:if="{{medicationPlans.length === 0}}" class="no-medications">
+      <text class="no-medications-text">暂无用药计划</text>
     </view>
     
-    <view wx:if="{{medications.length === 0}}" class="no-medications">
-      <text class="no-medications-text">今日暂无用药提醒</text>
-    </view>
-    <view wx:else class="medications-list">
-      <view wx:for="{{medications}}" wx:key="index" class="medication-item">
-        <view class="medication-time">
-          <text class="time-text">{{item.time}}</text>
-        </view>
-        <view class="medication-content">
-          <text class="medication-name">{{item.name}}</text>
-          <view class="medication-details">
-            <text class="detail-item">用量：{{item.dosage}}</text>
-            <text class="detail-item">频次：{{item.frequency}}</text>
+    <!-- 用药计划列表 -->
+    <view wx:else class="medication-plans-list">
+      <!-- 用药计划卡片 -->
+      <view wx:for="{{medicationPlans}}" wx:key="medicationPlansId" class="medication-plan-card">
+        <!-- 计划头部 -->
+        <view class="plan-header">
+          <view class="plan-status" wx:if="{{item.isActive === '1'}}" style="color: #07c160;">🟢 启用中</view>
+          <view class="plan-status" wx:else style="color: #ff4757;">🔴 已停用</view>
+          <view class="plan-name">
+            <text class="drug-name">{{item.drugName}}</text>
+            <text class="nick-name">({{item.nickName}})</text>
           </view>
         </view>
-        <view class="medication-action">
-          <view class="action-btn" bindtap="markAsTaken" data-index="{{index}}">
-            <text class="action-text">{{item.taken ? '已服用' : '已服用'}}</text>
+        
+        <!-- 计划详情 -->
+        <view class="plan-details">
+          <view class="detail-item">
+            <text class="detail-label">剂量：</text>
+            <text class="detail-value">{{item.dosage}}</text>
+          </view>
+          <view class="detail-item">
+            <text class="detail-label">服用频率：</text>
+            <text class="detail-value">{{item.frequency}}</text>
+          </view>
+          <view class="detail-item" wx:if="{{item.remark}}">
+            <text class="detail-label">备注：</text>
+            <text class="detail-value">{{item.remark}}</text>
+          </view>
+        </view>
+        
+        <!-- 用药记录 -->
+        <view class="records-section">
+          <view class="section-title">用药记录</view>
+          
+          <!-- 无记录提示 -->
+          <view wx:if="{{!item.records || item.records.length === 0}}" class="no-records">
+            <text class="no-records-text">暂无用药记录</text>
+          </view>
+          
+          <!-- 记录列表 -->
+          <view wx:else class="records-list">
+            <view wx:for="{{item.records}}" wx:for-item="record" wx:key="medicationRecordId" class="record-item">
+              <view class="record-time">{{record.time}}</view>
+              <view class="record-content">
+                <text class="record-remark">{{record.remark}}</text>
+                <view class="record-meta">
+                  <text class="record-creator">{{record.createBy}}</text>
+                  <text class="record-create-time">{{record.createTime}}</text>
+                </view>
+              </view>
+            </view>
           </view>
         </view>
       </view>
+    </view>
+    
+    <!-- 加载更多提示 -->
+    <view wx:if="{{loading}}" class="loading-more">
+      <text class="loading-text">加载中...</text>
+    </view>
+    
+    <!-- 没有更多数据提示 -->
+    <view wx:elif="{{!hasMore && medicationPlans.length > 0}}" class="no-more">
+      <text class="no-more-text">没有更多数据了</text>
     </view>
   </view>
   

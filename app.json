@@ -39,6 +39,10 @@
       {
         "pagePath": "pages/main/old/index/index",
         "text": "老人首页"
+      },
+      {
+        "pagePath": "pages/main/old/personal/personal",
+        "text": "个人中心"
       }
     ]
   },

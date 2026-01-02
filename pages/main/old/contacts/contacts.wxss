@@ -21,34 +21,65 @@
 
 .add-contact-button-container {
   width: 92%;
-  margin-bottom: 20rpx;
+  margin-bottom: 25rpx;
+  padding: 10rpx 0;
 }
 
 .add-contact-button {
   width: 100%;
-  height: 80rpx;
-  background-color: #2196f3;
+  height: 90rpx;
+  background: linear-gradient(135deg, #07c160 0%, #00b489 100%);
   color: white;
   border: none;
-  border-radius: 40rpx;
-  font-size: 32rpx;
+  border-radius: 20rpx;
+  font-size: 34rpx;
   font-weight: bold;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 2rpx 10rpx rgba(33, 150, 243, 0.3);
-  transition: all 0.3s ease;
+  box-shadow: 0 6rpx 20rpx rgba(7, 193, 96, 0.35);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
 }
 
 .add-contact-button:active {
-  transform: scale(0.98);
-  box-shadow: 0 1rpx 5rpx rgba(33, 150, 243, 0.2);
+  transform: translateY(2rpx);
+  box-shadow: 0 3rpx 10rpx rgba(7, 193, 96, 0.4);
+  background: linear-gradient(135deg, #06ad58 0%, #00a67c 100%);
 }
 
 .add-icon {
-  font-size: 40rpx;
-  margin-right: 10rpx;
-  font-weight: normal;
+  font-size: 44rpx;
+  margin-right: 12rpx;
+  font-weight: 300;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.2);
+  width: 50rpx;
+  height: 50rpx;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+.add-contact-button:active .add-icon {
+  transform: scale(1.1) rotate(90deg);
+}
+
+.add-contact-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.6s ease;
+}
+
+.add-contact-button:active::before {
+  left: 100%;
 }
 
 .content-area {
@@ -105,6 +136,67 @@
   box-sizing: border-box;
 }
 
+/* 紧急联系人特殊样式 */
+.emergency-contact {
+  border: 3rpx solid #ff4757;
+  background-color: #fff8f8;
+  box-shadow: 0 4rpx 12rpx rgba(255, 71, 87, 0.15);
+}
+
+.emergency-contact .contact-header {
+  border-bottom: 1rpx solid rgba(255, 71, 87, 0.2);
+  padding-bottom: 15rpx;
+  margin-bottom: 15rpx;
+}
+
+/* 紧急联系人图标样式 */
+.emergency-icon {
+  font-size: 36rpx;
+  margin-left: 8rpx;
+  vertical-align: middle;
+  animation: pulse 2s infinite;
+}
+
+/* 紧急联系人动画效果 */
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* 紧急联系人电话高亮 */
+.emergency-contact .contact-phone {
+  color: #ff4757;
+  font-weight: bold;
+}
+
+/* 紧急联系人按钮样式调整 */
+.emergency-contact .emergency-btn {
+  background-color: #ff4757;
+  animation: glow 2s infinite;
+}
+
+@keyframes glow {
+  0% {
+    box-shadow: 0 2rpx 8rpx rgba(255, 71, 87, 0.3);
+  }
+  50% {
+    box-shadow: 0 4rpx 16rpx rgba(255, 71, 87, 0.5);
+  }
+  100% {
+    box-shadow: 0 2rpx 8rpx rgba(255, 71, 87, 0.3);
+  }
+}
+
 .contact-item:active {
   transform: scale(0.99);
   box-shadow: 0 1rpx 5rpx rgba(0, 0, 0, 0.15);
@@ -155,22 +247,26 @@
 
 .contact-actions {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   gap: 15rpx;
   margin-top: 10rpx;
+  width: 100%;
 }
 
 .contact-btn {
-  padding: 15rpx 25rpx;
+  padding: 10rpx 20rpx;
   border-radius: 30rpx;
-  font-size: 28rpx;
+  font-size: 26rpx;
   font-weight: bold;
   box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.2);
   transition: all 0.3s ease;
   border: none;
   outline: none;
-  min-width: 120rpx;
+  min-width: 100rpx;
   text-align: center;
+  flex: 1 1 auto;
+  flex-shrink: 1;
+  max-width: 160rpx;
 }
 
 .contact-btn:active {
@@ -197,9 +293,10 @@
 
 .radio-group {
   display: flex;
-  flex-direction: column;
-  gap: 20rpx;
+  flex-direction: row;
+  gap: 50rpx;
   margin-top: 10rpx;
+  flex-wrap: nowrap;
 }
 
 .radio-item {

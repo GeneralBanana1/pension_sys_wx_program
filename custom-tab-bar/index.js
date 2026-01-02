@@ -45,7 +45,8 @@ Component({
       
       for (let i = 0; i < tabList.length; i++) {
         console.log('检查页面路径：', tabList[i].pagePath, '===', currentPath);
-        if (tabList[i].pagePath === currentPath) {
+        // 直接比较路径，或者使用endsWith检查路径的结尾是否匹配
+        if (tabList[i].pagePath === currentPath || currentPath.endsWith(tabList[i].pagePath)) {
           activeIndex = i;
           found = true;
           break;

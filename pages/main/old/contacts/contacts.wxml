@@ -15,20 +15,20 @@
       <text class="no-contacts-hint">请联系子女远程绑定</text>
     </view>
     <view wx:else class="contacts-list">
-      <view wx:for="{{contacts}}" wx:key="id" class="contact-item">
+      <view wx:for="{{contacts}}" wx:key="contactsId" class="contact-item {{item.isDefault === '1' ? 'emergency-contact' : ''}}">
         <view class="contact-info">
           <view class="contact-header">
-            <text class="contact-name">{{item.name}}</text>
-            <text class="contact-emergency" wx:if="{{item.isDefault === 1}}">紧急联系人</text>
+            <text class="contact-name">{{item.name}} <text class="emergency-icon" wx:if="{{item.isDefault === '1'}}">⚠️</text></text>
+            <text class="contact-emergency" wx:if="{{item.isDefault === '1'}}">紧急联系人</text>
           </view>
           <text class="contact-note" wx:if="{{item.remark}}">{{item.remark}}</text>
           <text class="contact-phone">{{item.phone}}</text>
         </view>
         <view class="contact-actions">
           <button class="contact-btn edit-btn" bindtap="showEditContactModal" data-contact="{{item}}">编辑</button>
-          <button class="contact-btn delete-btn" bindtap="deleteContact" data-id="{{item.id}}">删除</button>
-          <button class="contact-btn emergency-btn" bindtap="toggleEmergency" data-id="{{item.id}}" data-isdefault="{{item.isDefault}}">
-            {{item.isDefault === 1 ? '取消紧急' : '设为紧急'}}
+          <button class="contact-btn delete-btn" bindtap="deleteContact" data-contact="{{item}}">删除</button>
+          <button class="contact-btn emergency-btn" bindtap="toggleEmergency" data-contact="{{item}}">
+            {{item.isDefault === '1' ? '取消紧急' : '设为紧急'}}
           </button>
         </view>
       </view>
@@ -68,16 +68,16 @@
         <input class="form-input" placeholder="请输入备注信息" value="{{newContact.remark}}" bindinput="handleInputChange" data-field="remark" />
       </view>
       <view class="form-group">
-        <label class="form-label">类型</label>
-        <view class="radio-group">
-          <label class="radio-item">
-            <radio value="0" checked="{{newContact.isDefault === 0}}" bindchange="handleRadioChange" data-value="0"/> 普通联系人
-          </label>
-          <label class="radio-item">
-            <radio value="1" checked="{{newContact.isDefault === 1}}" bindchange="handleRadioChange" data-value="1"/> 紧急联系人
-          </label>
+          <label class="form-label">类型</label>
+          <radio-group class="radio-group" bindchange="handleRadioChange">
+            <label class="radio-item">
+              <radio value="0" checked="{{newContact.isDefault === '0'}}"/> 普通联系人
+            </label>
+            <label class="radio-item">
+              <radio value="1" checked="{{newContact.isDefault === '1'}}"/> 紧急联系人
+            </label>
+          </radio-group>
         </view>
-      </view>
     </view>
     <view class="modal-footer">
       <button class="modal-button" bindtap="saveContact">{{isEditMode ? '更新' : '保存'}}</button>

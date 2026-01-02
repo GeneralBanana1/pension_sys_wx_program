@@ -12,7 +12,7 @@ page {
   display: flex;
   flex-direction: column;
   background: #f8fafc;
-  padding-bottom: 140rpx; /* 为底部导航栏留出空间 */
+  padding-bottom: 30rpx;
   box-sizing: border-box;
   overflow-y: auto;
 }
@@ -39,8 +39,14 @@ page {
   height: 160rpx;
   border-radius: 50%;
   border: 6rpx solid rgba(255, 255, 255, 0.3);
-  background: white;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   box-shadow: 0 10rpx 30rpx rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 60rpx;
+  font-weight: bold;
 }
 
 .avatar-status {
@@ -121,6 +127,13 @@ page {
   margin-right: 15rpx;
 }
 
+/* ===== 基本信息列表 ===== */
+.info-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+}
+
 /* ===== 基本信息网格 ===== */
 .info-grid {
   display: grid;
@@ -130,14 +143,21 @@ page {
 
 .info-item {
   display: flex;
-  flex-direction: column;
-  gap: 12rpx;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20rpx 0;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+
+.info-item:last-child {
+  border-bottom: none;
 }
 
 .info-label {
-  font-size: 28rpx;
+  font-size: 32rpx;
   color: #718096;
   font-weight: 500;
+  width: 150rpx;
 }
 
 .info-value {
@@ -145,6 +165,8 @@ page {
   color: #2d3748;
   font-weight: 600;
   line-height: 1.4;
+  flex: 1;
+  text-align: right;
 }
 
 /* ===== 地址卡片 ===== */
@@ -254,71 +276,41 @@ page {
   font-weight: 600;
 }
 
-/* ===== 底部导航栏 ===== */
-.bottom-nav {
+/* ===== 加载状态 ===== */
+.loading-container {
   position: fixed;
-  bottom: 0;
+  top: 0;
   left: 0;
   right: 0;
-  height: 120rpx;
-  background: rgba(255, 255, 255, 0.98);
-  backdrop-filter: blur(20rpx);
+  bottom: 0;
+  background-color: rgba(255, 255, 255, 0.7);
   display: flex;
-  justify-content: space-around;
+  flex-direction: column;
   align-items: center;
-  border-top: 2rpx solid rgba(0, 0, 0, 0.05);
-  padding-bottom: env(safe-area-inset-bottom);
-  z-index: 100;
+  justify-content: center;
+  z-index: 999;
 }
 
-.nav-item {
-  flex: 1;
-  text-align: center;
-  padding: 20rpx 0;
-  transition: all 0.3s ease;
-}
-
-.nav-item:active {
-  transform: scale(0.95);
-}
-
-.nav-item.active {
-  position: relative;
-}
-
-.nav-item.active::before {
-  content: '';
-  position: absolute;
-  top: -10rpx;
-  left: 50%;
-  transform: translateX(-50%);
+.loading-spinner {
   width: 60rpx;
-  height: 6rpx;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  border-radius: 3rpx;
+  height: 60rpx;
+  border: 6rpx solid rgba(7, 193, 96, 0.2);
+  border-top-color: #07c160;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 20rpx;
 }
 
-.nav-icon {
-  font-size: 48rpx;
-  margin-bottom: 8rpx;
-  opacity: 0.7;
-  transition: all 0.3s ease;
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
-.nav-item.active .nav-icon {
-  opacity: 1;
-  transform: translateY(-5rpx);
-}
-
-.nav-text {
-  font-size: 30rpx;
-  color: #a0aec0;
-  font-weight: 600;
-  transition: all 0.3s ease;
-}
-
-.nav-item.active .nav-text {
-  color: #667eea;
+.loading-text {
+  font-size: 28rpx;
+  color: #666;
+  font-weight: 500;
 }
 
 /* ===== 响应式调整 ===== */
@@ -346,10 +338,80 @@ page {
   }
 }
 
+/* 紧急联系人列表 */
+.emergency-contacts-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+}
+
+.emergency-contact-item {
+  background-color: #fff8f8;
+  border-left: 8rpx solid #ff4757;
+  border-radius: 15rpx;
+  padding: 25rpx;
+  box-shadow: 0 2rpx 8rpx rgba(255, 71, 87, 0.1);
+}
+
+.contact-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20rpx;
+}
+
+.contact-name {
+  font-size: 34rpx;
+  font-weight: bold;
+  color: #333;
+}
+
+.contact-type {
+  font-size: 24rpx;
+  color: white;
+  background-color: #ff4757;
+  padding: 6rpx 16rpx;
+  border-radius: 12rpx;
+  font-weight: bold;
+}
+
+.contact-details {
+  display: flex;
+  flex-direction: column;
+  gap: 15rpx;
+}
+
+/* 退出登录按钮 */
+.logout-section {
+  margin: 30rpx;
+  padding-bottom: 40rpx;
+}
+
+.logout-button {
+  width: 100%;
+  height: 100rpx;
+  background-color: #ff4757;
+  color: white;
+  border: none;
+  border-radius: 50rpx;
+  font-size: 36rpx;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4rpx 15rpx rgba(255, 71, 87, 0.4);
+  transition: all 0.3s ease;
+}
+
+.logout-button:active {
+  transform: scale(0.98);
+  box-shadow: 0 2rpx 10rpx rgba(255, 71, 87, 0.3);
+}
+
 /* 小屏幕特殊优化 */
 @media (max-height: 600px) {
   .profile-container {
-    padding-bottom: 120rpx;
+    padding-bottom: 20rpx;
   }
   
   .identity-card {
@@ -370,7 +432,8 @@ page {
     padding: 25rpx;
   }
   
-  .health-value {
-    font-size: 42rpx;
+  .logout-section {
+    margin: 20rpx;
+    padding-bottom: 30rpx;
   }
 }

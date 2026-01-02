@@ -24,7 +24,7 @@ Page({
       name: '',
       phone: '',
       remark: '',
-      isDefault: 0
+      isDefault: '0'
     }
   },
   
@@ -33,7 +33,15 @@ Page({
    */
   onLoad(options) {
     // 加载联系人数据
-    this.customerId = wx.getStorageSync('token')
+    const token = wx.getStorageSync('token');
+    const userInfo = app.globalData.userInfo || wx.getStorageSync('userInfo') || {};
+    const userId = userInfo.userId || userInfo.id || userInfo.customerId || 0;
+    
+    this.setData({
+      customerId: userId // 使用正确的用户ID作为customerId
+    });
+    
+    console.log('页面加载 - 用户ID:', userId);
     this.loadContacts();
   },
 
@@ -71,11 +79,16 @@ Page({
         
         if (res.data && res.data.code === 200) {
           const { rows, total } = res.data;
-          // 合并数据
+          // 处理数据，将isdefault转换为isDefault（如果存在），并确保是字符串类型
+          const processedRows = rows.map(row => ({
+            ...row,
+            isDefault: String(row.isDefault !== undefined ? row.isDefault : row.isdefault || '0')
+          }));
+          // 合并数据 - 直接使用原始数据，包含contactsId
           this.setData({
-            contacts: [...this.data.contacts, ...rows],
+            contacts: [...this.data.contacts, ...processedRows],
             total,
-            hasMore: rows.length === pageSize,
+            hasMore: processedRows.length === pageSize,
             pageNum: pageNum + 1
           });
         } else {
@@ -111,7 +124,7 @@ Page({
         name: '',
         phone: '',
         remark: '',
-        isDefault: 0
+        isDefault: '0'
       }
     });
   },
@@ -119,15 +132,18 @@ Page({
   // 显示编辑联系人弹窗
   showEditContactModal(e) {
     const contact = e.currentTarget.dataset.contact;
+    console.log('显示编辑弹窗 - 联系人数据:', contact);
+    
     this.setData({
       showContactModal: true,
       isEditMode: true,
       newContact: {
-        id: contact.id,
+        id: contact.contactsId, // 直接使用contactsId
+        contactsId: contact.contactsId, // 同时保留contactsId
         name: contact.name,
         phone: contact.phone,
         remark: contact.remark || '',
-        isDefault: contact.isDefault || 0
+        isDefault: contact.isDefault !== undefined ? String(contact.isDefault) : '0'
       }
     });
   },
@@ -150,7 +166,7 @@ Page({
   
   // 处理单选按钮变化
   handleRadioChange(e) {
-    const value = parseInt(e.currentTarget.dataset.value);
+    const value = e.detail.value; // 保持字符串类型
     this.setData({
       'newContact.isDefault': value
     });
@@ -158,7 +174,7 @@ Page({
   
   // 保存联系人（新增/编辑）
   saveContact() {
-    const { newContact, contacts, isEditMode } = this.data;
+    const { newContact, isEditMode } = this.data;
     
     // 表单验证
     if (!newContact.name) {
@@ -177,43 +193,170 @@ Page({
       return;
     }
     
-    // 构建联系人对象
-    const contactToSave = {
-      ...newContact,
-      customerId: this.customerId
-    };
-    
-    // 调用后端API保存联系人（这里先模拟前端操作，实际需要调用API）
-    let updatedContacts;
-    if (isEditMode) {
-      // 编辑现有联系人
-      updatedContacts = contacts.map(contact => 
-        contact.id === newContact.id ? contactToSave : contact
-      );
+    // 获取token
+    const token = wx.getStorageSync('token');
+    if (!token) {
       wx.showToast({
-        title: '联系人更新成功',
-        icon: 'success'
+        title: '登录状态已过期',
+        icon: 'none'
       });
-    } else {
-      // 新增联系人
-      contactToSave.id = Math.max(...contacts.map(contact => contact.id || 0), 0) + 1;
-      updatedContacts = [...contacts, contactToSave];
-      wx.showToast({
-        title: '联系人添加成功',
-        icon: 'success'
-      });
+      return;
     }
     
-    // 更新联系人列表
-    this.setData({
-      contacts: updatedContacts,
-      showContactModal: false
-    });
+    // 获取userInfo和userId
+    const userInfo = app.globalData.userInfo || wx.getStorageSync('userInfo') || {};
+    const userId = userInfo.userId || userInfo.id || userInfo.customerId || 0;
+    
+    // 构建请求数据
+    const requestData = {
+      isDefault: newContact.isDefault,
+      name: newContact.name,
+      phone: newContact.phone,
+      remark: newContact.remark || '',
+      userId: userId
+    };
+    
+    // 检查紧急联系人数量限制
+    if (newContact.isDefault === '1') {
+      // 获取当前紧急联系人数量
+      let emergencyCount = this.data.contacts.filter(c => c.isDefault === '1').length;
+      
+      // 如果是编辑模式，且当前联系人不是紧急联系人，则紧急联系人数量+1
+      if (isEditMode && newContact.id) {
+        const currentContact = this.data.contacts.find(c => c.contactsId === newContact.id);
+        if (currentContact && currentContact.isDefault !== '1') {
+          emergencyCount++;
+        }
+      }
+      // 如果是新增模式，则紧急联系人数量+1
+      else if (!isEditMode) {
+        emergencyCount++;
+      }
+      
+      // 如果紧急联系人数量超过2个，显示提示并返回
+      if (emergencyCount > 2) {
+        wx.hideLoading();
+        wx.showToast({
+          title: '最多只能设置两个紧急联系人',
+          icon: 'none'
+        });
+        return;
+      }
+    }
+    
+    // 新增联系人
+    if (!isEditMode) {
+      // 调用后端API新增联系人
+      wx.request({
+        url: app.globalData.baseUrl + '/contacts/add',
+        method: 'POST',
+        header: {
+          'content-type': 'application/json',
+          'Authorization': 'Bearer ' + token // 携带token
+        },
+        data: requestData,
+        success: (res) => {
+          console.log('新增联系人成功:', res.data);
+          
+          if (res.data && res.data.code === 200) {
+            wx.showToast({
+              title: '联系人添加成功',
+              icon: 'success'
+            });
+            
+            // 重新加载联系人列表
+            this.setData({
+              showContactModal: false,
+              pageNum: 1,
+              contacts: [],
+              hasMore: true
+            });
+            this.loadContacts();
+          } else {
+            console.error('新增联系人失败:', res.data.message);
+            wx.showToast({
+              title: res.data.message || '联系人添加失败',
+              icon: 'none'
+            });
+          }
+        },
+        fail: (err) => {
+          console.error('请求新增联系人API失败:', err);
+          wx.showToast({
+            title: '网络请求失败，请重试',
+            icon: 'none'
+          });
+        },
+        complete: () => {
+          wx.hideLoading();
+        }
+      });
+    } else {
+      // 编辑现有联系人 - 使用PUT请求
+      console.log('编辑联系人 - 完整数据:', newContact);
+      
+      const editRequestData = {
+        ...requestData,
+        contactsId: newContact.contactsId || newContact.id // 优先使用contactsId
+      };
+      
+      console.log('编辑请求数据:', editRequestData);
+      
+      wx.request({
+        url: app.globalData.baseUrl + '/contacts/update',
+        method: 'PUT',
+        header: {
+          'content-type': 'application/json',
+          'Authorization': 'Bearer ' + token // 携带token
+        },
+        data: editRequestData,
+        success: (res) => {
+          console.log('更新联系人成功:', res.data);
+          
+          if (res.data && res.data.code === 200) {
+            wx.showToast({
+              title: '联系人更新成功',
+              icon: 'success'
+            });
+            
+            // 重新加载联系人列表
+            this.setData({
+              showContactModal: false,
+              pageNum: 1,
+              contacts: [],
+              hasMore: true
+            });
+            this.loadContacts();
+          } else {
+            console.error('更新联系人失败:', res.data.message);
+            wx.showToast({
+              title: res.data.message || '联系人更新失败',
+              icon: 'none'
+            });
+          }
+        },
+        fail: (err) => {
+          console.error('请求更新联系人API失败:', err);
+          wx.showToast({
+            title: '网络请求失败，请重试',
+            icon: 'none'
+          });
+        },
+        complete: () => {
+          wx.hideLoading();
+        }
+      });
+    }
   },
   
   // 删除联系人
   deleteContact(e) {
-    const contactId = e.currentTarget.dataset.id;
+    const contact = e.currentTarget.dataset.contact;
+    const contactId = contact.contactsId;
+    
+    console.log('删除联系人 - 完整数据:', contact);
+    console.log('删除联系人 - contactsId:', contactId);
+    
     wx.showModal({
       title: '确认删除',
       content: '确定要删除这个联系人吗？',
@@ -221,14 +364,66 @@ Page({
       cancelText: '取消',
       success: (res) => {
         if (res.confirm) {
-          // 调用后端API删除联系人（这里先模拟前端操作，实际需要调用API）
-          const updatedContacts = this.data.contacts.filter(contact => contact.id !== contactId);
-          this.setData({
-            contacts: updatedContacts
+          // 获取token
+          const token = wx.getStorageSync('token');
+          if (!token) {
+            wx.showToast({
+              title: '登录状态已过期',
+              icon: 'none'
+            });
+            return;
+          }
+          
+          // 显示加载提示
+          wx.showLoading({
+            title: '删除中...',
+            mask: true
           });
-          wx.showToast({
-            title: '联系人删除成功',
-            icon: 'success'
+          
+          console.log('删除联系人 - ID:', contactId);
+          
+          // 调用后端API删除联系人
+          wx.request({
+            url: app.globalData.baseUrl + '/contacts/delete/' + contactId,
+            method: 'DELETE',
+            header: {
+              'content-type': 'application/json',
+              'Authorization': 'Bearer ' + token // 携带token
+            },
+            success: (res) => {
+              console.log('删除联系人成功:', res.data);
+              
+              if (res.data && res.data.code === 200) {
+                wx.showToast({
+                  title: '联系人删除成功',
+                  icon: 'success'
+                });
+                
+                // 重新加载联系人列表
+                this.setData({
+                  pageNum: 1,
+                  contacts: [],
+                  hasMore: true
+                });
+                this.loadContacts();
+              } else {
+                console.error('删除联系人失败:', res.data.message);
+                wx.showToast({
+                  title: res.data.message || '联系人删除失败',
+                  icon: 'none'
+                });
+              }
+            },
+            fail: (err) => {
+              console.error('请求删除联系人API失败:', err);
+              wx.showToast({
+                title: '网络请求失败，请重试',
+                icon: 'none'
+              });
+            },
+            complete: () => {
+              wx.hideLoading();
+            }
           });
         }
       }
@@ -237,27 +432,101 @@ Page({
   
   // 切换紧急联系人状态
   toggleEmergency(e) {
-    const contactId = e.currentTarget.dataset.id;
-    const currentIsDefault = parseInt(e.currentTarget.dataset.isdefault);
-    const newIsDefault = currentIsDefault === 1 ? 0 : 1;
+    const contact = e.currentTarget.dataset.contact;
+    const contactsId = contact.contactsId;
+    const currentIsDefault = contact.isDefault;
+    const newIsDefault = currentIsDefault === '1' ? '0' : '1';
     
-    // 调用后端API更新紧急联系人状态（这里先模拟前端操作，实际需要调用API）
-    const updatedContacts = this.data.contacts.map(contact => {
-      if (contact.id === contactId) {
-        return { ...contact, isDefault: newIsDefault };
+    console.log('切换紧急联系人状态 - 联系人数据:', contact);
+    console.log('联系人contactsId:', contactsId);
+    console.log('当前isDefault:', currentIsDefault, '新isDefault:', newIsDefault);
+    
+    // 获取当前紧急联系人数量
+    const emergencyCount = this.data.contacts.filter(c => c.isDefault === '1').length;
+    console.log('当前紧急联系人数量:', emergencyCount);
+    
+    // 如果是要设置为紧急联系人，且已有两个紧急联系人
+    if (newIsDefault === '1' && emergencyCount >= 2) {
+      wx.showToast({
+        title: '最多只能设置两个紧急联系人',
+        icon: 'none'
+      });
+      return;
+    }
+    
+    // 获取token
+    const token = wx.getStorageSync('token');
+    if (!token) {
+      wx.showToast({
+        title: '登录状态已过期',
+        icon: 'none'
+      });
+      return;
+    }
+    
+    console.log('找到联系人:', contact);
+    
+    // 显示加载提示
+    wx.showLoading({
+      title: '更新中...',
+      mask: true
+    });
+    
+    // 构建请求数据
+    const requestData = {
+      contactsId: contactsId,
+      isDefault: newIsDefault,
+      name: contact.name,
+      phone: contact.phone,
+      remark: contact.remark || '',
+      userId: this.data.customerId
+    };
+    
+    console.log('切换紧急联系人请求数据:', requestData);
+    
+    // 调用后端API更新紧急联系人状态
+    wx.request({
+      url: app.globalData.baseUrl + '/contacts/update',
+      method: 'PUT',
+      header: {
+        'content-type': 'application/json',
+        'Authorization': 'Bearer ' + token // 携带token
+      },
+      data: requestData,
+      success: (res) => {
+        console.log('更新紧急联系人状态成功:', res.data);
+        
+        if (res.data && res.data.code === 200) {
+          wx.showToast({
+            title: newIsDefault === '1' ? '已设为紧急联系人' : '已取消紧急联系人',
+            icon: 'success'
+          });
+          
+          // 重新加载联系人列表
+          this.setData({
+            pageNum: 1,
+            contacts: [],
+            hasMore: true
+          });
+          this.loadContacts();
+        } else {
+          console.error('更新紧急联系人状态失败:', res.data.message);
+          wx.showToast({
+            title: res.data.message || '更新失败，请重试',
+            icon: 'none'
+          });
+        }
+      },
+      fail: (err) => {
+        console.error('请求更新紧急联系人API失败:', err);
+        wx.showToast({
+          title: '网络请求失败，请重试',
+          icon: 'none'
+        });
+      },
+      complete: () => {
+        wx.hideLoading();
       }
-      return contact;
     });
-    
-    this.setData({
-      contacts: updatedContacts
-    });
-    
-    wx.showToast({
-      title: newIsDefault === 1 ? '已设为紧急联系人' : '已取消紧急联系人',
-      icon: 'success'
-    });
-  },
-
   }
 });
