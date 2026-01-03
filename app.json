@@ -11,7 +11,15 @@
     "pages/main/old/medication/medication",
     "pages/main/old/weather/weather",
     "pages/main/old/personal/personal",
-    "pages/main/health/health"
+    "pages/main/health/health",
+    "pages/main/serviceman/order/order",
+    "pages/main/serviceman/personal/personal",
+    "pages/main/family/index/index",
+    "pages/main/family/contacts/contacts",
+    "pages/main/family/medication/medication",
+    "pages/main/family/help/help",
+    "pages/main/family/health/health",
+    "pages/main/family/bind-old-man/bind-old-man"
   ],
   "window": {
     "navigationBarTextStyle": "black",
@@ -43,10 +51,23 @@
       },
       {
         "pagePath": "pages/main/old/personal/personal",
-        "text": "个人中心"},
-        {
+        "text": "个人中心"
+      },
+      {
         "pagePath": "pages/main/health/health",
         "text": "健康管理"
+      },
+      {
+        "pagePath": "pages/main/serviceman/order/order",
+        "text": "订单管理"
+      },
+      {
+        "pagePath": "pages/main/serviceman/personal/personal",
+        "text": "个人中心"
+      },
+      {
+        "pagePath": "pages/main/family/index/index",
+        "text": "亲属首页"
       }
     ]
   },

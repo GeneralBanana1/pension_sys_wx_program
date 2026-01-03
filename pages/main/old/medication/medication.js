@@ -1,5 +1,5 @@
 // medication.js
-const app = getApp()
+var app = getApp()
 Page({
   data: {
     // 用药计划数据
@@ -19,10 +19,10 @@ Page({
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad(options) {
+  onLoad: function(options) {
     // 加载用药计划数据
-    const userInfo = app.globalData.userInfo || wx.getStorageSync('userInfo') || {};
-    const userId = userInfo.userId || userInfo.id || userInfo.customerId || 0;
+    var userInfo = app.globalData.userInfo || wx.getStorageSync('userInfo') || {};
+    var userId = userInfo.userId || userInfo.id || userInfo.customerId || 0;
     
     this.setData({
       userId: userId
@@ -34,22 +34,25 @@ Page({
   /**
    * 加载用药计划数据
    */
-  loadMedicationPlans() {
+  loadMedicationPlans: function() {
     if (this.data.loading || !this.data.hasMore) return;
     
-    const { pageNum, pageSize, userId } = this.data;
+    var pageNum = this.data.pageNum;
+    var pageSize = this.data.pageSize;
+    var userId = this.data.userId;
+    var that = this;
     
     this.setData({
       loading: true
     });
     
     // 构建查询参数
-    const queryParams = {
-      pageNum,
-      pageSize,
-      userId
+    var queryParams = {
+      pageNum: pageNum,
+      pageSize: pageSize,
+      userId: userId
     };
-    const token = wx.getStorageSync('token')
+    var token = wx.getStorageSync('token')
     
     // 调用后端API
     wx.request({
@@ -60,15 +63,23 @@ Page({
         'Authorization': 'Bearer ' + token // 携带token
       },
       data: queryParams,
-      success: (res) => {
+      success: function(res) {
         console.log('获取用药计划列表成功:', res.data);
         
         if (res.data && res.data.code === 200) {
-          const { rows, total } = res.data;
+          var rows = res.data.rows || [];
+          var total = res.data.total || 0;
           // 合并数据
-          this.setData({
-            medicationPlans: [...this.data.medicationPlans, ...rows],
-            total,
+          var updatedPlans = [];
+          for (var i = 0; i < that.data.medicationPlans.length; i++) {
+            updatedPlans.push(that.data.medicationPlans[i]);
+          }
+          for (var j = 0; j < rows.length; j++) {
+            updatedPlans.push(rows[j]);
+          }
+          that.setData({
+            medicationPlans: updatedPlans,
+            total: total,
             hasMore: rows.length === pageSize,
             pageNum: pageNum + 1
           });
@@ -80,15 +91,15 @@ Page({
           });
         }
       },
-      fail: (err) => {
+      fail: function(err) {
         console.error('请求用药计划API失败:', err);
         wx.showToast({
           title: '网络请求失败',
           icon: 'none'
         });
       },
-      complete: () => {
-        this.setData({
+      complete: function() {
+        that.setData({
           loading: false
         });
       }
@@ -98,7 +109,7 @@ Page({
   /**
    * 下拉刷新
    */
-  onPullDownRefresh() {
+  onPullDownRefresh: function() {
     this.setData({
       pageNum: 1,
       medicationPlans: [],
@@ -111,12 +122,12 @@ Page({
   /**
    * 上拉加载更多
    */
-  onReachBottom() {
+  onReachBottom: function() {
     this.loadMedicationPlans();
   },
 
   // 返回首页
-  navigateBack() {
+  navigateBack: function() {
     wx.navigateBack({
       delta: 1
     });

@@ -6,25 +6,24 @@ App({
     userInfo: null, // 用户信息
     baseUrl: 'http://localhost:8080', // API基础地址
     currentRole: '100', // 默认角色：老人100, 家属101, 护工102, 维修工103
+    currentOldMan: null, // 当前选择的老人
     roleTabs: {
       '100': [ // 老人
         { pagePath: 'pages/main/old/index/index', text: '首页', iconPath: '', selectedIconPath: '' },
         { pagePath: 'pages/main/old/personal/personal', text: '个人中心', iconPath: '', selectedIconPath: '' }
       ],
       '101': [ // 家属
-        { pagePath: 'pages/index/index', text: '首页', iconPath: '', selectedIconPath: '' },
-        { pagePath: 'pages/user/user', text: '老人管理', iconPath: '', selectedIconPath: '' },
-        { pagePath: 'pages/admin/admin', text: '服务记录', iconPath: '', selectedIconPath: '' },
-        { pagePath: 'pages/main/health/health', text: '健康管理', iconPath: '', selectedIconPath: '' }
+        { pagePath: 'pages/main/family/index/index', text: '首页', iconPath: '', selectedIconPath: '' },
+        { pagePath: 'pages/main/old/personal/personal', text: '个人中心', iconPath: '', selectedIconPath: '' }
       ],
       '102': [ // 护工
-        { pagePath: 'pages/index/index', text: '首页', iconPath: '', selectedIconPath: '' },
-        { pagePath: 'pages/user/user', text: '服务管理', iconPath: '', selectedIconPath: '' },
-        { pagePath: 'pages/admin/admin', text: '老人信息', iconPath: '', selectedIconPath: '' }
+        { pagePath: 'pages/main/serviceman/order/order', text: '服务订单', iconPath: '', selectedIconPath: '' },
+        { pagePath: 'pages/main/health/health', text: '健康管理', iconPath: '', selectedIconPath: '' },
+        { pagePath: 'pages/main/serviceman/personal/personal', text: '个人中心', iconPath: '', selectedIconPath: '' }
       ],
       '103': [ // 维修工
-        { pagePath: 'pages/index/index', text: '首页', iconPath: '', selectedIconPath: '' },
-        { pagePath: 'pages/user/user', text: '维修工单', iconPath: '', selectedIconPath: '' }
+        { pagePath: 'pages/main/serviceman/order/order', text: '维修订单', iconPath: '', selectedIconPath: '' },
+        { pagePath: 'pages/main/serviceman/personal/personal', text: '个人中心', iconPath: '', selectedIconPath: '' }
       ]
     }
   },

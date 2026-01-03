@@ -43,45 +43,50 @@ Page({
   },
 
   // 页面加载
-  onLoad() {
+  onLoad: function() {
     // 检查是否可以返回
-    const pages = getCurrentPages();
+    var pages = getCurrentPages();
     
     // 获取当前日期和时间
-    const now = new Date();
-    const year = now.getFullYear();
-    const month = String(now.getMonth() + 1).padStart(2, '0');
-    const day = String(now.getDate()).padStart(2, '0');
-    const hour = String(now.getHours()).padStart(2, '0');
-    const minute = String(now.getMinutes()).padStart(2, '0');
+    var now = new Date();
+    var year = now.getFullYear();
+    var month = now.getMonth() + 1;
+    month = month < 10 ? '0' + month : month;
+    var day = now.getDate();
+    day = day < 10 ? '0' + day : day;
+    var hour = now.getHours();
+    hour = hour < 10 ? '0' + hour : hour;
+    var minute = now.getMinutes();
+    minute = minute < 10 ? '0' + minute : minute;
     
     this.setData({
       canBack: pages.length > 1,
       // 时间选择器起始时间 - 小程序picker组件需要YYYY-MM-DD HH:mm格式
-      startTime: `${year}-${month}-${day} ${hour}:${minute}`,
+      startTime: year + '-' + month + '-' + day + ' ' + hour + ':' + minute,
       // 日期选择器起始时间 - 格式为YYYY-MM-DD
-      startDate: `${year}-${month}-${day}`
+      startDate: year + '-' + month + '-' + day
     });
     
     // 获取订单列表
     this.getOrderList();
   },
   
-  // 显示页面时刷新数据
-  onShow() {
+  // 页面显示时刷新数据
+  onShow: function() {
     this.getOrderList();
   },
 
   // 获取订单列表
-  getOrderList() {
+  getOrderList: function() {
     // 检查是否正在加载或没有更多数据
     if (this.data.loading || !this.data.hasMore) return;
     
     this.setData({ loading: true });
     
-    const app = getApp();
-    const token = app.globalData.token || wx.getStorageSync('token');
-    const userInfo = app.globalData.userInfo || wx.getStorageSync('userInfo');
+    var that = this;
+    var app = getApp();
+    var token = app.globalData.token || wx.getStorageSync('token');
+    var userInfo = app.globalData.userInfo || wx.getStorageSync('userInfo');
     
     // 先检查登录状态和用户信息是否存在
     if (!app.globalData.isLoggedIn || !userInfo) {
@@ -89,12 +94,13 @@ Page({
         title: '请先登录',
         icon: 'none'
       });
-      this.setData({ loading: false });
+      that.setData({ loading: false });
       return;
     }
     
-    const customerId = userInfo.customerId || userInfo.id || userInfo.userId;
-    const { pageNum, pageSize } = this.data;
+    var customerId = userInfo.customerId || userInfo.id || userInfo.userId;
+    var pageNum = this.data.pageNum;
+    var pageSize = this.data.pageSize;
     
     wx.request({
       url: app.globalData.baseUrl + '/user/order/list',
@@ -108,43 +114,54 @@ Page({
         pageSize: pageSize,
         customerId: customerId
       },
-      success: (res) => {
+      success: function(res) {
         if (res.data && res.data.code === 200) {
-          const newOrders = this.formatOrders(res.data.rows || []);
-          const allOrders = pageNum === 1 ? newOrders : [...this.data.orders, ...newOrders];
+          var newOrders = that.formatOrders(res.data.rows || []);
+          var allOrders = [];
+          if (pageNum === 1) {
+            allOrders = newOrders;
+          } else {
+            allOrders = [];
+            for (var i = 0; i < that.data.orders.length; i++) {
+              allOrders.push(that.data.orders[i]);
+            }
+            for (var j = 0; j < newOrders.length; j++) {
+              allOrders.push(newOrders[j]);
+            }
+          }
           
-          this.setData({
+          that.setData({
             orders: allOrders,
             hasMore: newOrders.length === pageSize, // 如果返回的数据长度小于pageSize，说明没有更多了
             pageNum: pageNum + 1 // 页码+1
           });
         } else {
           wx.showToast({
-            title: res.data?.msg || '加载失败',
+            title: res.data && res.data.msg ? res.data.msg : '加载失败',
             icon: 'none'
           });
         }
       },
-      fail: () => {
+      fail: function() {
         wx.showToast({
           title: '网络异常',
           icon: 'none'
         });
       },
-      complete: () => {
-        this.setData({ loading: false });
+      complete: function() {
+        that.setData({ loading: false });
       }
     });
   },
 
   // 下拉触底加载更多
-  onReachBottom() {
+  onReachBottom: function() {
     this.getOrderList();
   },
   
   // 格式化订单数据
-  formatOrders(orders) {
-    const statusMap = {
+  formatOrders: function(orders) {
+    var statusMap = {
       '0': '待接单',
       '1': '已派单', 
       '2': '执行中',
@@ -152,19 +169,21 @@ Page({
       '4': '已取消'
     };
     
-    const typeMap = {
+    var typeMap = {
       '0': '护工服务',
       '1': '维修服务'
     };
     
-    return orders.map(order => {
+    var formattedOrders = [];
+    for (var i = 0; i < orders.length; i++) {
+      var order = orders[i];
       // 兼容不同的字段名
-      const orderId = order.orderId || order.id || order.order_num;
-      const state = order.state || order.status || '0';
-      const type = order.type || '1';
+      var orderId = order.orderId || order.id || order.order_num;
+      var state = order.state || order.status || '0';
+      var type = order.type || '1';
       
-      let statusClass = 'status-pending';
-      const actions = [];
+      var statusClass = 'status-pending';
+      var actions = [];
       
       switch(state) {
         case '0': // 待接单
@@ -188,7 +207,7 @@ Page({
           break;
       }
       
-      return {
+      formattedOrders.push({
         orderId: orderId,
         orderNum: order.orderNum || order.order_id || orderId,
         serviceType: typeMap[type] || '维修服务',
@@ -206,38 +225,40 @@ Page({
         phoneNumber: order.phonenumber || order.phone || order.mobile || order.telephone || '',
         state: state,
         type: type
-      };
-    });
+      });
+    }
+    return formattedOrders;
   },
   
   // 格式化时间显示
-  formatTime(timeStr) {
+  formatTime: function(timeStr) {
     if (!timeStr) return '';
-    const time = new Date(timeStr);
-    const now = new Date();
-    const diff = now - time;
-    const dayDiff = Math.floor(diff / (1000 * 60 * 60 * 24));
+    var time = new Date(timeStr);
+    var now = new Date();
+    var diff = now - time;
+    var dayDiff = Math.floor(diff / (1000 * 60 * 60 * 24));
+    
+    var hours = time.getHours();
+    hours = hours < 10 ? '0' + hours : hours;
+    var minutes = time.getMinutes();
+    minutes = minutes < 10 ? '0' + minutes : minutes;
     
     if (dayDiff === 0) {
-      return '今天 ' + time.getHours().toString().padStart(2, '0') + ':' + 
-             time.getMinutes().toString().padStart(2, '0');
+      return '今天 ' + hours + ':' + minutes;
     } else if (dayDiff === 1) {
-      return '昨天 ' + time.getHours().toString().padStart(2, '0') + ':' + 
-             time.getMinutes().toString().padStart(2, '0');
+      return '昨天 ' + hours + ':' + minutes;
     } else {
-      return (time.getMonth() + 1) + '月' + time.getDate() + '日 ' + 
-             time.getHours().toString().padStart(2, '0') + ':' + 
-             time.getMinutes().toString().padStart(2, '0');
+      return (time.getMonth() + 1) + '月' + time.getDate() + '日 ' + hours + ':' + minutes;
     }
   },
 
   // 显示发单弹窗
-  showOrderModal() {
+  showOrderModal: function() {
     this.setData({ showModal: true });
   },
 
   // 关闭发单弹窗
-  closeOrderModal() {
+  closeOrderModal: function() {
     // 重置表单
     this.resetForm();
     this.setData({ 
@@ -247,17 +268,17 @@ Page({
   },
 
   // 显示服务类型选择器
-  showServiceTypePicker() {
+  showServiceTypePicker: function() {
     this.setData({ showServicePicker: true });
   },
   
   // 隐藏服务类型选择器
-  hideServiceTypePicker() {
+  hideServiceTypePicker: function() {
     this.setData({ showServicePicker: false });
   },
 
   // 服务类型选择变化
-  onServiceTypeChange(e) {
+  onServiceTypeChange: function(e) {
     this.setData({
       selectedServiceIndex: e.detail.value,
       showServicePicker: false
@@ -265,65 +286,59 @@ Page({
   },
 
   // 订单描述输入变化
-  onDescChange(e) {
+  onDescChange: function(e) {
     this.setData({
       orderDescription: e.detail.value
     });
   },
   
   // 备注输入变化
-  onRemarkChange(e) {
+  onRemarkChange: function(e) {
     this.setData({
       remark: e.detail.value
     });
   },
 
   // 显示时间选择器
-  showTimePicker() {
+  showTimePicker: function() {
     this.setData({
       showTimePicker: true
     });
   },
 
   // 隐藏时间选择器
-  hideTimePicker() {
+  hideTimePicker: function() {
     this.setData({
       showTimePicker: false
     });
   },
 
-  // 显示时间选择器
-  showTimePicker() {
-    this.setData({
-      showTimePicker: true
-    });
-  },
-  
-  // 隐藏时间选择器
-  hideTimePicker() {
-    this.setData({
-      showTimePicker: false
-    });
-  },
-  
   // 时间选择器变化事件
-  onPickerViewChange(e) {
-    const { value } = e.detail;
-    const { yearArray, monthArray, dayArray, hourArray, minuteArray } = this.data;
+  onPickerViewChange: function(e) {
+    var that = this;
+    var value = e.detail.value;
+    var yearArray = this.data.yearArray || [];
+    var monthArray = this.data.monthArray || [];
+    var dayArray = this.data.dayArray || [];
+    var hourArray = this.data.hourArray || [];
+    var minuteArray = this.data.minuteArray || [];
     
     // 获取当前选中的各值
-    const selectedYear = yearArray[value[0]];
-    const selectedMonth = monthArray[value[1]];
-    const selectedHour = hourArray[value[3]];
-    const selectedMinute = minuteArray[value[4]];
+    var selectedYear = yearArray[value[0]];
+    var selectedMonth = monthArray[value[1]];
+    var selectedHour = hourArray[value[3]];
+    var selectedMinute = minuteArray[value[4]];
     
     // 如果月份变化，需要重新计算天数
     if (selectedMonth !== this.data.currentMonth) {
-      const newDayArray = this.getDaysInMonth(selectedYear, selectedMonth);
+      var newDayArray = that.getDaysInMonth(selectedYear, selectedMonth);
       // 确保当前天数不超过新月份的天数，使用新数组的长度作为上限
-      const selectedDay = Math.min(dayArray[value[2]] || 1, newDayArray.length);
+      var selectedDay = dayArray[value[2]] || 1;
+      if (selectedDay > newDayArray.length) {
+        selectedDay = newDayArray.length;
+      }
       
-      this.setData({
+      that.setData({
         dayArray: newDayArray,
         currentYear: selectedYear,
         currentMonth: selectedMonth,
@@ -333,9 +348,9 @@ Page({
       });
     } else {
       // 月份不变，直接使用选中的天数
-      const selectedDay = dayArray[value[2]];
+      var selectedDay = dayArray[value[2]];
       
-      this.setData({
+      that.setData({
         currentYear: selectedYear,
         currentMonth: selectedMonth,
         currentDay: selectedDay,
@@ -346,14 +361,23 @@ Page({
   },
   
   // 编辑订单
-  editOrder(order) {
+  editOrder: function(order) {
     // 解析服务时间为日期和时间
-    let date = '';
-    let time = '';
+    var date = '';
+    var time = '';
     if (order.serviceTime) {
-      const timeParts = order.serviceTime.split(' ');
+      var timeParts = order.serviceTime.split(' ');
       date = timeParts[0];
       time = timeParts[1];
+    }
+    
+    var selectedIndex = 0;
+    var serviceTypes = this.data.serviceTypes;
+    for (var i = 0; i < serviceTypes.length; i++) {
+      if (serviceTypes[i] === order.serviceType) {
+        selectedIndex = i;
+        break;
+      }
     }
     
     // 填充表单数据
@@ -361,7 +385,7 @@ Page({
       showModal: true,
       isEditMode: true,
       editingOrderId: order.orderId,
-      selectedServiceIndex: this.data.serviceTypes.findIndex(type => type === order.serviceType),
+      selectedServiceIndex: selectedIndex,
       orderDescription: order.description,
       remark: order.remark,
       serviceTime: order.serviceTime,
@@ -371,7 +395,7 @@ Page({
   },
   
   // 重置表单
-  resetForm() {
+  resetForm: function() {
     this.setData({
       orderDescription: '',
       remark: '',
@@ -385,8 +409,8 @@ Page({
   },
 
   // 日期选择变化事件
-  bindDateChange(e) {
-    const { value } = e.detail;
+  bindDateChange: function(e) {
+    var value = e.detail.value;
     this.setData({
       date: value
     });
@@ -396,8 +420,8 @@ Page({
   },
   
   // 时间选择变化事件
-  bindTimeChange(e) {
-    const { value } = e.detail;
+  bindTimeChange: function(e) {
+    var value = e.detail.value;
     this.setData({
       time: value
     });
@@ -407,12 +431,13 @@ Page({
   },
   
   // 更新组合的服务时间
-  updateServiceTime() {
-    const { date, time } = this.data;
+  updateServiceTime: function() {
+    var date = this.data.date;
+    var time = this.data.time;
     
     if (date && time) {
       // 组合日期和时间，格式为YYYY-MM-DD HH:mm
-      const formattedTime = `${date} ${time}`;
+      var formattedTime = date + ' ' + time;
       this.setData({
         serviceTime: formattedTime
       });
@@ -425,8 +450,15 @@ Page({
   },
   
   // 提交订单（创建或更新）
-  submitOrder() {
-    const { orderDescription, serviceTypes, selectedServiceIndex, serviceTime, remark, isEditMode, editingOrderId } = this.data;
+  submitOrder: function() {
+    var that = this;
+    var orderDescription = this.data.orderDescription;
+    var serviceTypes = this.data.serviceTypes;
+    var selectedServiceIndex = this.data.selectedServiceIndex;
+    var serviceTime = this.data.serviceTime;
+    var remark = this.data.remark;
+    var isEditMode = this.data.isEditMode;
+    var editingOrderId = this.data.editingOrderId;
     
     if (!orderDescription.trim()) {
       wx.showToast({
@@ -447,15 +479,15 @@ Page({
     }
     
     // 验证时间格式并转换为Java后端可处理的格式
-    let formattedTime = serviceTime;
-    const timeRegex = /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}$/;
+    var formattedTime = serviceTime;
+    var timeRegex = /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}$/;
     
     if (timeRegex.test(serviceTime)) {
       // 输入格式为YYYY-MM-DD HH:mm，转换为带T的ISO格式（如：2026-01-02T14:30:00）
       formattedTime = serviceTime.replace(' ', 'T') + ':00';
     } else {
       // 尝试解析并格式化
-      const date = new Date(serviceTime);
+      var date = new Date(serviceTime);
       if (!isNaN(date.getTime())) {
         // 转换为ISO 8601格式（带T）
         formattedTime = date.toISOString().substring(0, 19);
@@ -469,9 +501,9 @@ Page({
       }
     }
     
-    const app = getApp();
-    const token = app.globalData.token || wx.getStorageSync('token');
-    const userInfo = app.globalData.userInfo || wx.getStorageSync('userInfo');
+    var app = getApp();
+    var token = app.globalData.token || wx.getStorageSync('token');
+    var userInfo = app.globalData.userInfo || wx.getStorageSync('userInfo');
     
     // 先检查登录状态和用户信息是否存在
     if (!app.globalData.isLoggedIn || !userInfo) {
@@ -482,14 +514,14 @@ Page({
       return;
     }
     
-    const customerId = userInfo.customerId || userInfo.id || userInfo.userId;
+    var customerId = userInfo.customerId || userInfo.id || userInfo.userId;
     
     // 服务类型直接使用索引作为类型值
     // 0=护工服务，1=维修服务
-    const orderType = selectedServiceIndex.toString();
+    var orderType = selectedServiceIndex.toString();
     
     // 构建请求参数
-    const requestData = {
+    var requestData = {
       customerId: customerId,
       details: orderDescription.trim(),
       remark: remark.trim(), // 备注信息
@@ -502,38 +534,41 @@ Page({
       requestData.orderId = editingOrderId;
     }
     
+    var toastTitle = isEditMode ? '更新中...' : '提交中...';
     wx.showLoading({
-      title: isEditMode ? '更新中...' : '提交中...',
+      title: toastTitle,
       mask: true
     });
     
     // 调用真实的API接口
+    var url = isEditMode ? app.globalData.baseUrl + '/user/order/update' : app.globalData.baseUrl + '/user/order/create';
+    var method = isEditMode ? 'PUT' : 'POST';
+    
     wx.request({
-      url: isEditMode 
-        ? app.globalData.baseUrl + '/user/order/update' 
-        : app.globalData.baseUrl + '/user/order/create',
-      method: isEditMode ? 'PUT' : 'POST',
+      url: url,
+      method: method,
       header: {
         'content-type': 'application/json',
         'Authorization': 'Bearer ' + token
       },
       data: requestData,
-      success: (res) => {
+      success: function(res) {
         console.log(isEditMode ? '更新订单响应：' : '提交订单响应：', res);
         
         if (res.data && res.data.code === 200) {
+          var successToastTitle = isEditMode ? '订单已更新' : '服务请求已提交';
             wx.showToast({
-              title: isEditMode ? '订单已更新' : '服务请求已提交',
+              title: successToastTitle,
               icon: 'success',
               duration: 2000
             });
             
             // 保存原订单ID
-            const { reinitiateOrderId } = this.data;
+            var reinitiateOrderId = that.data.reinitiateOrderId;
             
             // 重置表单
-            this.resetForm();
-            this.setData({
+            that.resetForm();
+            that.setData({
               showModal: false,
               reinitiateOrderId: null // 清空重新发起订单ID
             });
@@ -542,18 +577,18 @@ Page({
             if (reinitiateOrderId) {
               wx.showLoading({ title: '删除原订单中...' });
               
-              const app = getApp();
-              const token = app.globalData.token || wx.getStorageSync('token');
+              var app = getApp();
+              var token = app.globalData.token || wx.getStorageSync('token');
               
               // 调用删除原订单接口
               wx.request({
-                url: app.globalData.baseUrl + `/user/order/delete/${reinitiateOrderId}`,
+                url: app.globalData.baseUrl + '/user/order/delete/' + reinitiateOrderId,
                 method: 'PUT',
                 header: {
                   'content-type': 'application/json',
                   'Authorization': 'Bearer ' + token
                 },
-                success: (deleteRes) => {
+                success: function(deleteRes) {
                   wx.hideLoading();
                   
                   if (deleteRes.data && deleteRes.data.code === 200) {
@@ -563,66 +598,76 @@ Page({
                   }
                   
                   // 强制刷新订单列表：重置分页参数并重新调用查询接口
-                  this.setData({
+                  that.setData({
                     pageNum: 1, // 重置页码为1
                     hasMore: true // 重置为有更多数据
                   });
                   
                   // 刷新订单列表
-                  setTimeout(() => {
-                    this.getOrderList();
+                  setTimeout(function() {
+                    that.getOrderList();
                   }, 500);
                 },
-                fail: (err) => {
+                fail: function(err) {
                   wx.hideLoading();
-                  console.error('删除原订单失败：', err);
+                  console.error('原订单删除失败：', err);
                   
                   // 即使删除失败，也要刷新订单列表
-                  this.setData({
+                  that.setData({
                     pageNum: 1,
                     hasMore: true
                   });
                   
-                  setTimeout(() => {
-                    this.getOrderList();
+                  setTimeout(function() {
+                    that.getOrderList();
                   }, 500);
                 }
               });
             } else {
               // 不是重新发起订单，直接刷新订单列表
-              this.setData({
+              that.setData({
                 pageNum: 1,
                 hasMore: true
               });
               
-              setTimeout(() => {
-                this.getOrderList();
+              setTimeout(function() {
+                that.getOrderList();
               }, 1000);
             }
           } else {
+            var errorToastTitle = res.data.msg || (isEditMode ? '更新失败' : '提交失败');
             wx.showToast({
-              title: res.data.msg || (isEditMode ? '更新失败' : '提交失败'),
+              title: errorToastTitle,
               icon: 'none'
             });
           }
       },
-      fail: (err) => {
+      fail: function(err) {
         console.error(isEditMode ? '更新订单失败：' : '提交订单失败：', err);
         wx.showToast({
           title: '网络错误，请稍后重试',
           icon: 'none'
         });
       },
-      complete: () => {
+      complete: function() {
         wx.hideLoading();
       }
     });
   },
 
   // 处理订单操作
-  handleOrderAction(e) {
-    const { orderid, actiontype } = e.currentTarget.dataset;
-    const order = this.data.orders.find(item => item.orderId == orderid);
+  handleOrderAction: function(e) {
+    var orderid = e.currentTarget.dataset.orderid;
+    var actiontype = e.currentTarget.dataset.actiontype;
+    var orders = this.data.orders;
+    var order = null;
+    
+    for (var i = 0; i < orders.length; i++) {
+      if (orders[i].orderId == orderid) {
+        order = orders[i];
+        break;
+      }
+    }
     
     if (!order) {
       wx.showToast({
@@ -632,6 +677,7 @@ Page({
       return;
     }
     
+    var that = this;
     switch(actiontype) {
       case 'cancel':
         this.cancelOrder(order.orderId);
@@ -651,9 +697,18 @@ Page({
         break;
         
       case 'reinitiate':
+        var selectedIndex = 0;
+        var serviceTypes = this.data.serviceTypes;
+        for (var j = 0; j < serviceTypes.length; j++) {
+          if (serviceTypes[j] === order.serviceType) {
+            selectedIndex = j;
+            break;
+          }
+        }
+        
         this.setData({
           showModal: true,
-          selectedServiceIndex: this.data.serviceTypes.findIndex(type => type === order.serviceType),
+          selectedServiceIndex: selectedIndex,
           // 保存原订单ID
           reinitiateOrderId: order.orderId
         });
@@ -669,9 +724,9 @@ Page({
           content: '确定要删除这个订单吗？',
           confirmText: '删除',
           confirmColor: '#ff4d4f',
-          success: (res) => {
+          success: function(res) {
             if (res.confirm) {
-              this.deleteOrder(order.orderId);
+              that.deleteOrder(order.orderId);
             }
           }
         });
@@ -679,36 +734,37 @@ Page({
         
       case 'view':
         wx.navigateTo({
-          url: `/pages/orderDetail/orderDetail?orderId=${order.orderId}`
+          url: '/pages/orderDetail/orderDetail?orderId=' + order.orderId
         });
         break;
     }
   },
   
   // 取消订单
-  cancelOrder(orderId) {
+  cancelOrder: function(orderId) {
+    var that = this;
     wx.showModal({
       title: '确认取消',
       content: '确定要取消这个订单吗？',
       confirmText: '取消订单',
       confirmColor: '#ff4d4f',
-      success: (res) => {
+      success: function(res) {
         if (res.confirm) {
           wx.showLoading({ title: '处理中...' });
           
-          const app = getApp();
-          const token = app.globalData.token || wx.getStorageSync('token');
+          var app = getApp();
+          var token = app.globalData.token || wx.getStorageSync('token');
           
           // 调用真实的取消订单API接口
-    wx.request({
-      url: app.globalData.baseUrl + `/user/order/cancel/${orderId}`,
-      method: 'PUT',
-      header: {
-        'content-type': 'application/json',
-        'Authorization': 'Bearer ' + token
-      },
-      data: {},
-            success: (res) => {
+          wx.request({
+            url: app.globalData.baseUrl + '/user/order/cancel/' + orderId,
+            method: 'PUT',
+            header: {
+              'content-type': 'application/json',
+              'Authorization': 'Bearer ' + token
+            },
+            data: {},
+            success: function(res) {
               wx.hideLoading();
               
               if (res.data && res.data.code === 200) {
@@ -718,14 +774,14 @@ Page({
                 });
                 
                 // 强制刷新订单列表：重置分页参数并重新调用查询接口
-                this.setData({
+                that.setData({
                   pageNum: 1, // 重置页码为1
                   hasMore: true // 重置为有更多数据
                 });
                 
                 // 刷新订单列表
-                setTimeout(() => {
-                  this.getOrderList();
+                setTimeout(function() {
+                  that.getOrderList();
                 }, 1000);
               } else {
                 wx.showToast({
@@ -734,7 +790,7 @@ Page({
                 });
               }
             },
-            fail: (err) => {
+            fail: function(err) {
               console.error('取消订单失败：', err);
               wx.hideLoading();
               wx.showToast({
@@ -749,21 +805,22 @@ Page({
   },
   
   // 删除订单
-  deleteOrder(orderId) {
+  deleteOrder: function(orderId) {
+    var that = this;
     wx.showLoading({ title: '删除中...' });
     
-    const app = getApp();
-    const token = app.globalData.token || wx.getStorageSync('token');
+    var app = getApp();
+    var token = app.globalData.token || wx.getStorageSync('token');
     
     // 调用真实的删除订单API接口
     wx.request({
-      url: app.globalData.baseUrl + `/user/order/delete/${orderId}`,
+      url: app.globalData.baseUrl + '/user/order/delete/' + orderId,
       method: 'PUT',
       header: {
         'content-type': 'application/json',
         'Authorization': 'Bearer ' + token
       },
-      success: (res) => {
+      success: function(res) {
         wx.hideLoading();
         
         if (res.data && res.data.code === 200) {
@@ -773,14 +830,14 @@ Page({
           });
           
           // 强制刷新订单列表：重置分页参数并重新调用查询接口
-          this.setData({
+          that.setData({
             pageNum: 1, // 重置页码为1
             hasMore: true // 重置为有更多数据
           });
           
           // 刷新订单列表
-          setTimeout(() => {
-            this.getOrderList();
+          setTimeout(function() {
+            that.getOrderList();
           }, 1000);
         } else {
           wx.showToast({
@@ -789,7 +846,7 @@ Page({
           });
         }
       },
-      fail: (err) => {
+      fail: function(err) {
         console.error('删除订单失败：', err);
         wx.hideLoading();
         wx.showToast({
@@ -801,19 +858,19 @@ Page({
   },
   
   // 加载更多
-  loadMore() {
+  loadMore: function() {
     if (this.data.hasMore && !this.data.loading) {
       this.getOrderList();
     }
   },
   
   // 返回上一页
-  navigateBack() {
+  navigateBack: function() {
     wx.navigateBack();
   },
   
   // 分享功能
-  onShareAppMessage() {
+  onShareAppMessage: function() {
     return {
       title: '居家服务',
       path: '/pages/help/help'

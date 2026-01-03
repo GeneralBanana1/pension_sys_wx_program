@@ -1,0 +1,441 @@
+/* family/contacts.wxss - 亲属端联系人管理 */
+.container {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #f8fafc;
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+.page-title {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #333;
+  margin: 20rpx 0 20rpx 0;
+  text-align: center;
+}
+
+.add-contact-button-container {
+  width: 92%;
+  margin-bottom: 25rpx;
+  padding: 10rpx 0;
+}
+
+.add-contact-button {
+  width: 100%;
+  height: 90rpx;
+  background: linear-gradient(135deg, #07c160 0%, #00b489 100%);
+  color: white;
+  border: none;
+  border-radius: 20rpx;
+  font-size: 34rpx;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6rpx 20rpx rgba(7, 193, 96, 0.35);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.add-contact-button:active {
+  transform: translateY(2rpx);
+  box-shadow: 0 3rpx 10rpx rgba(7, 193, 96, 0.4);
+  background: linear-gradient(135deg, #06ad58 0%, #00a67c 100%);
+}
+
+.add-icon {
+  font-size: 44rpx;
+  margin-right: 12rpx;
+  font-weight: 300;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.2);
+  width: 50rpx;
+  height: 50rpx;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+.add-contact-button:active .add-icon {
+  transform: scale(1.1) rotate(90deg);
+}
+
+.add-contact-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.6s ease;
+}
+
+.add-contact-button:active::before {
+  left: 100%;
+}
+
+.content-area {
+  width: 92%;
+  max-width: 100%;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  padding-bottom: 120rpx;
+  padding-top: 0;
+  margin-top: 0;
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
+
+.no-contacts {
+  width: 100%;
+  height: 300rpx;
+  background-color: #fff;
+  border-radius: 20rpx;
+  box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.no-contacts-text {
+  font-size: 32rpx;
+  color: #999;
+  margin-bottom: 10rpx;
+}
+
+.no-contacts-hint {
+  font-size: 28rpx;
+  color: #ccc;
+}
+
+.contacts-list {
+  width: 100%;
+}
+
+.contact-item {
+  width: 100%;
+  background-color: #fff;
+  border-radius: 20rpx;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  padding: 30rpx;
+  margin-bottom: 25rpx;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+}
+
+/* 紧急联系人特殊样式 */
+.emergency-contact {
+  border: 3rpx solid #ff4757;
+  background-color: #fff8f8;
+  box-shadow: 0 4rpx 12rpx rgba(255, 71, 87, 0.15);
+}
+
+.emergency-contact .contact-header {
+  border-bottom: 1rpx solid rgba(255, 71, 87, 0.2);
+  padding-bottom: 15rpx;
+  margin-bottom: 15rpx;
+}
+
+/* 紧急联系人图标样式 */
+.emergency-icon {
+  font-size: 36rpx;
+  margin-left: 8rpx;
+  vertical-align: middle;
+  animation: pulse 2s infinite;
+}
+
+/* 紧急联系人动画效果 */
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* 紧急联系人电话高亮 */
+.emergency-contact .contact-phone {
+  color: #ff4757;
+  font-weight: bold;
+}
+
+/* 紧急联系人按钮样式调整 */
+.emergency-contact .emergency-btn {
+  background-color: #ff4757;
+  animation: glow 2s infinite;
+}
+
+@keyframes glow {
+  0% {
+    box-shadow: 0 2rpx 8rpx rgba(255, 71, 87, 0.3);
+  }
+  50% {
+    box-shadow: 0 4rpx 16rpx rgba(255, 71, 87, 0.5);
+  }
+  100% {
+    box-shadow: 0 2rpx 8rpx rgba(255, 71, 87, 0.3);
+  }
+}
+
+.contact-item:active {
+  transform: scale(0.99);
+  box-shadow: 0 1rpx 5rpx rgba(0, 0, 0, 0.15);
+}
+
+.contact-info {
+  width: 100%;
+  margin-bottom: 20rpx;
+}
+
+.contact-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8rpx;
+}
+
+.contact-name {
+  font-size: 60rpx;
+  color: #333;
+  font-weight: bold;
+  margin-right: 20rpx;
+  display: inline-block;
+}
+
+.contact-emergency {
+  font-size: 24rpx;
+  color: white;
+  background-color: #ff4757;
+  padding: 8rpx 16rpx;
+  border-radius: 16rpx;
+  font-weight: bold;
+  display: inline-block;
+}
+
+.contact-phone {
+  font-size: 45rpx;
+  color: #666;
+  margin-bottom: 5rpx;
+  display: block;
+}
+
+.contact-note {
+  font-size: 30rpx;
+  color: #999;
+  display: block;
+  margin-bottom: 10rpx;
+}
+
+.contact-actions {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 15rpx;
+  margin-top: 10rpx;
+  width: 100%;
+}
+
+.contact-btn {
+  padding: 10rpx 20rpx;
+  border-radius: 30rpx;
+  font-size: 26rpx;
+  font-weight: bold;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+  border: none;
+  outline: none;
+  min-width: 100rpx;
+  text-align: center;
+  flex: 1 1 auto;
+  flex-shrink: 1;
+  max-width: 160rpx;
+}
+
+.contact-btn:active {
+  transform: scale(0.95);
+  box-shadow: 0 1rpx 4rpx rgba(0, 0, 0, 0.15);
+}
+
+.edit-btn {
+  background-color: #999999;
+  color: white;
+}
+
+.delete-btn {
+  background-color: #FF3B30;
+  color: white;
+}
+
+.emergency-btn {
+  background-color: #007AFF;
+  color: white;
+}
+
+.radio-group {
+  display: flex;
+  flex-direction: row;
+  gap: 50rpx;
+  margin-top: 10rpx;
+  flex-wrap: nowrap;
+}
+
+.radio-item {
+  display: flex;
+  align-items: center;
+  font-size: 32rpx;
+  color: #333;
+}
+
+.radio-item radio {
+  margin-right: 15rpx;
+  transform: scale(1.2);
+}
+
+/* 弹窗样式 */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 998;
+}
+
+.modal-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  border-radius: 20rpx;
+  box-shadow: 0 10rpx 30rpx rgba(0, 0, 0, 0.3);
+  z-index: 999;
+  width: 80%;
+  max-width: 600rpx;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 30rpx;
+  border-bottom: 2rpx solid #eee;
+}
+
+.modal-title {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #333;
+}
+
+.modal-close {
+  font-size: 60rpx;
+  color: #999;
+  line-height: 40rpx;
+  cursor: pointer;
+}
+
+.modal-content {
+  padding: 30rpx;
+}
+
+.form-group {
+  margin-bottom: 30rpx;
+}
+
+.form-label {
+  display: block;
+  font-size: 32rpx;
+  color: #333;
+  margin-bottom: 15rpx;
+  font-weight: 500;
+}
+
+.form-input {
+  width: 100%;
+  height: 80rpx;
+  border: 2rpx solid #ddd;
+  border-radius: 10rpx;
+  padding: 0 20rpx;
+  font-size: 32rpx;
+  box-sizing: border-box;
+}
+
+.form-input:focus {
+  border-color: #07C160;
+  outline: none;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  padding: 20rpx 30rpx;
+  border-top: 2rpx solid #eee;
+}
+
+.modal-button {
+  margin-left: 20rpx;
+  padding: 20rpx 40rpx;
+  border: none;
+  border-radius: 10rpx;
+  font-size: 32rpx;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.modal-button:not(.cancel-btn) {
+  background-color: #07C160;
+  color: white;
+}
+
+.modal-button.cancel-btn {
+  background-color: #f5f5f5;
+  color: #666;
+}
+
+/* 加载更多样式 */
+.loading-more {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20rpx 0;
+  margin-top: 10rpx;
+}
+
+.loading-text {
+  font-size: 28rpx;
+  color: #999;
+}
+
+/* 没有更多数据样式 */
+.no-more {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20rpx 0;
+  margin-top: 10rpx;
+}
+
+.no-more-text {
+  font-size: 28rpx;
+  color: #999;
+}

@@ -177,12 +177,18 @@ Page({
           app.switchRole(role.toString());
           
           // 根据roleId选择跳转路径
-          let redirectUrl = '/pages/index/index'; // 默认首页
-          
-          if (role.toString() === '100') {
-            // 老人角色，跳转到老人首页
-            redirectUrl = '/pages/main/old/index/index';
-          }
+        let redirectUrl = '/pages/index/index'; // 默认首页
+        
+        if (role.toString() === '100') {
+          // 老人角色，跳转到老人首页
+          redirectUrl = '/pages/main/old/index/index';
+        } else if (role.toString() === '101') {
+          // 亲属角色，跳转到亲属首页
+          redirectUrl = '/pages/main/family/index/index';
+        } else if (role.toString() === '102' || role.toString() === '103') {
+          // 护工和维修工角色，跳转到服务订单页面
+          redirectUrl = '/pages/main/serviceman/order/order';
+        }
           
           wx.showToast({
             title: '登录成功',
@@ -217,8 +223,23 @@ Page({
         
         // 网络错误，根据role是否为空决定跳转逻辑
         if (role !== null && role !== undefined && role !== '') {
-          // roleId不为空，跳转到首页
+          // roleId不为空，跳转到对应角色的首页
           app.switchRole(role.toString());
+          
+          // 根据roleId选择跳转路径
+        let redirectUrl = '/pages/index/index'; // 默认首页
+        
+        if (role.toString() === '100') {
+          // 老人角色，跳转到老人首页
+          redirectUrl = '/pages/main/old/index/index';
+        } else if (role.toString() === '101') {
+          // 亲属角色，跳转到亲属首页
+          redirectUrl = '/pages/main/family/index/index';
+        } else if (role.toString() === '102' || role.toString() === '103') {
+          // 护工和维修工角色，跳转到服务订单页面
+          redirectUrl = '/pages/main/serviceman/order/order';
+        }
+          
           wx.showToast({
             title: '登录成功',
             icon: 'success',
@@ -226,7 +247,7 @@ Page({
             success: () => {
               setTimeout(() => {
                 wx.switchTab({
-                  url: '/pages/index/index'
+                  url: redirectUrl
                 });
               }, 1500);
             }

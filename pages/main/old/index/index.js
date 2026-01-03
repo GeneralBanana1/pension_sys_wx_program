@@ -1,5 +1,5 @@
 // index.js
-const app = getApp();
+var app = getApp();
 Page({
   data: {
     // 用户名
@@ -36,19 +36,18 @@ Page({
   },
 
   // 页面加载时初始化当前时间
-  onLoad() {
+  onLoad: function() {
     // 初始化用户名
-    const userInfo = wx.getStorageSync('userInfo') || {};
-    const userName = userInfo.userName || userInfo.name || '老人家';
+    var userInfo = wx.getStorageSync('userInfo') || {};
+    var userName = userInfo.userName || userInfo.name || '老人家';
     
     // 初始化当前日期
-    const now = new Date();
-    const currentDate = now.toLocaleDateString('zh-CN', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      weekday: 'long'
-    });
+    var now = new Date();
+    var year = now.getFullYear();
+    var month = now.getMonth() + 1;
+    var day = now.getDate();
+    var weekday = ['日', '一', '二', '三', '四', '五', '六'][now.getDay()];
+    var currentDate = year + '年' + month + '月' + day + '日 星期' + weekday;
     
     // 更新数据
     this.setData({
@@ -59,12 +58,13 @@ Page({
     // 更新当前时间
     this.updateCurrentTime();
     // 设置定时器，每秒更新时间
-    this.timeInterval = setInterval(() => {
-      this.updateCurrentTime();
+    var that = this;
+    this.timeInterval = setInterval(function() {
+      that.updateCurrentTime();
     }, 1000);
     
     // 首先从本地存储读取紧急联系人数据
-    const cachedContacts = wx.getStorageSync('emergencyContact') || [];
+    var cachedContacts = wx.getStorageSync('emergencyContact') || [];
     if (cachedContacts.length > 0) {
       this.setData({
         emergencyContact: cachedContacts
@@ -76,18 +76,22 @@ Page({
   },
 
   // 更新当前时间
-  updateCurrentTime() {
-    const now = new Date();
-    const hours = now.getHours().toString().padStart(2, '0');
-    const minutes = now.getMinutes().toString().padStart(2, '0');
-    const timeStr = `${hours}:${minutes}`;
+  updateCurrentTime: function() {
+    var now = new Date();
+    var hours = now.getHours();
+    var minutes = now.getMinutes();
+    // 补零函数
+    var padZero = function(num) {
+      return num < 10 ? '0' + num : num;
+    };
+    var timeStr = padZero(hours) + ':' + padZero(minutes);
     this.setData({
       currentTime: timeStr
     });
   },
 
   // 页面卸载时清除定时器
-  onUnload() {
+  onUnload: function() {
     if (this.timeInterval) {
       this.loadContacts();
       clearInterval(this.timeInterval);
@@ -95,12 +99,12 @@ Page({
   },
   
   // 页面显示时更新tabBar
-  onShow() {
+  onShow: function() {
     this.updateTabBar();
   },
   
   // 更新自定义tabBar
-  updateTabBar() {
+  updateTabBar: function() {
     if (typeof this.getTabBar === 'function' && this.getTabBar()) {
       this.getTabBar().setTabList();
       this.getTabBar().updateActiveIndex();
@@ -109,17 +113,18 @@ Page({
   /**
    * 加载联系人数据
    */
-  loadContacts() {
+  loadContacts: function() {
     // 从本地存储获取老人ID
-    const customerId = wx.getStorageSync('customerId') || '';
+    var customerId = wx.getStorageSync('customerId') || '';
     
-    const queryParams = {
+    var queryParams = {
       pageNum:"1",
       pageSize:"2",
       customerId:104,
       isDefault: "1"
     };
-    const token = wx.getStorageSync('token')
+    var token = wx.getStorageSync('token');
+    var that = this;
     // 调用后端API
     wx.request({
       url: app.globalData.baseUrl+'/contacts/list',
@@ -129,14 +134,14 @@ Page({
         'Authorization': 'Bearer ' + token // 携带token
       },
       data: queryParams,
-      success: (res) => {
+      success: function(res) {
         console.log('获取紧急联系人列表成功:', res.data);
         
         if (res.data && res.data.code === 200) {
-          const { rows, total } = res.data;
+          var rows = res.data.rows || [];
           // 更新紧急联系人数据
-          const updatedContacts = rows;
-          this.setData({
+          var updatedContacts = rows;
+          that.setData({
             emergencyContact: updatedContacts
           });
           
@@ -151,14 +156,14 @@ Page({
           });
         }
       },
-      fail: (err) => {
+      fail: function(err) {
         console.error('获取紧急联系人列表API失败:', err);
         
         // 检查本地是否有缓存的联系人数据
-        const cachedContacts = wx.getStorageSync('emergencyContact') || [];
+        var cachedContacts = wx.getStorageSync('emergencyContact') || [];
         if (cachedContacts.length > 0) {
           console.log('使用本地缓存的紧急联系人数据');
-          this.setData({
+          that.setData({
             emergencyContact: cachedContacts
           });
           wx.showToast({
@@ -172,8 +177,8 @@ Page({
           });
         }
       },
-      complete: () => {
-        this.setData({
+      complete: function() {
+        that.setData({
           loading: false
         });
       }
@@ -181,8 +186,8 @@ Page({
   },
 
   // 一键应急 - 紧急呼叫
-  makeEmergencyCall() {
-    const { emergencyContact } = this.data;
+  makeEmergencyCall: function() {
+    var emergencyContact = this.data.emergencyContact;
     
     // 检查紧急联系人数据是否存在
     if (!emergencyContact || emergencyContact.length === 0 || !emergencyContact[0] || !emergencyContact[0].phone) {
@@ -193,20 +198,21 @@ Page({
       return;
     }
     
+    var that = this;
     wx.showModal({
       title: '紧急呼叫',
-      content: `确定要拨打紧急联系人电话 ${emergencyContact[0].phone} 吗？`,
+      content: '确定要拨打紧急联系人电话 ' + emergencyContact[0].phone + ' 吗？',
       confirmText: '确定',
       cancelText: '取消',
-      success: (res) => {
+      success: function(res) {
         if (res.confirm) {
           // 使用wx.makePhoneCall拨打电话
           wx.makePhoneCall({
             phoneNumber: emergencyContact[0].phone,
-            success: () => {
+            success: function() {
               console.log('紧急呼叫成功');
             },
-            fail: (err) => {
+            fail: function(err) {
               console.error('紧急呼叫失败:', err);
               wx.showToast({
                 title: '呼叫失败，请重试',
@@ -220,12 +226,12 @@ Page({
   },
 
   // 长按事件 - 防误触
-  onLongPress() {
+  onLongPress: function() {
     console.log('长按事件触发');
   },
 
   // 一键求助
-  sendHelpRequest() {
+  sendHelpRequest: function() {
     wx.navigateTo({
       url: '/pages/main/old/help/help'
     });
@@ -234,21 +240,22 @@ Page({
 
 
   // 拨打联系人电话
-  callContact(e) {
-    const phoneNumber = e.currentTarget.dataset.phone;
+  callContact: function(e) {
+    var phoneNumber = e.currentTarget.dataset.phone;
+    var that = this;
     wx.showModal({
       title: '拨打电话',
-      content: `确定要拨打 ${phoneNumber} 吗？`,
+      content: '确定要拨打 ' + phoneNumber + ' 吗？',
       confirmText: '确定',
       cancelText: '取消',
-      success: (res) => {
+      success: function(res) {
         if (res.confirm) {
           wx.makePhoneCall({
             phoneNumber: phoneNumber,
-            success: () => {
+            success: function() {
               console.log('拨打电话成功');
             },
-            fail: (err) => {
+            fail: function(err) {
               console.error('拨打电话失败:', err);
               wx.showToast({
                 title: '呼叫失败，请重试',
@@ -262,28 +269,28 @@ Page({
   },
   
   // 显示联系人弹窗
-  showContactModal() {
+  showContactModal: function() {
     wx.navigateTo({
       url: '/pages/main/old/contacts/contacts'
     });
   },
   
   // 隐藏联系人弹窗
-  hideContactModal() {
+  hideContactModal: function() {
     this.setData({
       showContactModal: false
     });
   },
   
   // 显示新增联系人弹窗
-  showAddContactModal() {
+  showAddContactModal: function() {
     this.setData({
       showAddContactModal: true
     });
   },
   
   // 隐藏新增联系人弹窗
-  hideAddContactModal() {
+  hideAddContactModal: function() {
     this.setData({
       showAddContactModal: false,
       newContact: {
@@ -295,17 +302,18 @@ Page({
   },
   
   // 处理表单输入变化
-  handleInputChange(e) {
-    const { field } = e.currentTarget.dataset;
-    const { value } = e.detail;
-    this.setData({
-      [`newContact.${field}`]: value
-    });
+  handleInputChange: function(e) {
+    var field = e.currentTarget.dataset.field;
+    var value = e.detail.value;
+    var newData = {};
+    newData['newContact.' + field] = value;
+    this.setData(newData);
   },
   
   // 新增联系人
-  addContact() {
-    const { newContact, contacts } = this.data;
+  addContact: function() {
+    var newContact = this.data.newContact;
+    var contacts = this.data.contacts || [];
     
     // 表单验证
     if (!newContact.name) {
@@ -325,9 +333,15 @@ Page({
     }
     
     // 创建新联系人
-    const newId = Math.max(...contacts.map(contact => contact.id), 0) + 1;
-    const avatar = newContact.name.charAt(0);
-    const contactToAdd = {
+    var maxId = 0;
+    for (var i = 0; i < contacts.length; i++) {
+      if (contacts[i].id > maxId) {
+        maxId = contacts[i].id;
+      }
+    }
+    var newId = maxId + 1;
+    var avatar = newContact.name.charAt(0);
+    var contactToAdd = {
       id: newId,
       name: newContact.name,
       phone: newContact.phone,
@@ -336,7 +350,11 @@ Page({
     };
     
     // 添加到联系人列表
-    const updatedContacts = [...contacts, contactToAdd];
+    var updatedContacts = [];
+    for (var j = 0; j < contacts.length; j++) {
+      updatedContacts.push(contacts[j]);
+    }
+    updatedContacts.push(contactToAdd);
     this.setData({
       contacts: updatedContacts,
       showAddContactModal: false,
@@ -354,35 +372,35 @@ Page({
   },
 
   // 显示用药提醒弹窗
-  showMedicationReminder() {
+  showMedicationReminder: function() {
     wx.navigateTo({
       url: '/pages/main/old/medication/medication'
     });
   },
 
   // 隐藏用药提醒弹窗
-  hideMedicationModal() {
+  hideMedicationModal: function() {
     this.setData({
       showMedicationModal: false
     });
   },
 
   // 显示天气信息
-  showWeather() {
+  showWeather: function() {
     wx.navigateTo({
       url: '/pages/main/old/weather/weather'
     });
   },
   
   // 显示日历
-  showCalendar() {
+  showCalendar: function() {
     wx.navigateTo({
       url: '/pages/main/old/calendar/calendar'
     });
   },
   
   // 显示订单列表
-  showOrderList() {
+  showOrderList: function() {
     wx.navigateTo({
       url: '/pages/main/old/orders/orders'
     });
@@ -393,22 +411,22 @@ Page({
 
   
   // 获取天气数据
-  getWeatherData(latitude, longitude) {
-    const that = this;
+  getWeatherData: function(latitude, longitude) {
+    var that = this;
     // 使用腾讯天气API获取天气数据
-    const key = 'XIQBZ-FUHYZ-5E4XL-7USZE-SQIN2-ATB4Q';
+    var key = 'XIQBZ-FUHYZ-5E4XL-7USZE-SQIN2-ATB4Q';
     
     wx.request({
-      url: `https://apis.map.qq.com/ws/weather/v1/?location=${latitude},${longitude}&key=${key}`,
-      success(res) {
+      url: 'https://apis.map.qq.com/ws/weather/v1/?location=' + latitude + ',' + longitude + '&key=' + key,
+      success: function(res) {
         wx.hideLoading();
         if (res.data.status === 0) {
           // 根据实际返回的JSON结构解析天气数据
-          const realtime = res.data.result.realtime || [];
+          var realtime = res.data.result.realtime || [];
           if (realtime.length > 0) {
-            const realtimeData = realtime[0];
-            const infos = realtimeData.infos || {};
-            const weatherData = {
+            var realtimeData = realtime[0];
+            var infos = realtimeData.infos || {};
+            var weatherData = {
               temp: infos.temperature !== undefined ? infos.temperature : '--',
               text: infos.weather || '未知',
               windDir: infos.wind_direction || '--',
@@ -437,7 +455,7 @@ Page({
           });
         }
       },
-      fail(err) {
+      fail: function(err) {
         wx.hideLoading();
         console.error('请求天气API失败:', err);
         wx.showToast({
@@ -449,7 +467,7 @@ Page({
   },
   
   // 隐藏天气弹窗
-  hideWeatherModal() {
+  hideWeatherModal: function() {
     this.setData({
       showWeatherModal: false
     });
@@ -458,7 +476,7 @@ Page({
 
 
   // 导航到个人页面
-  navigateToPersonal() {
+  navigateToPersonal: function() {
     wx.navigateTo({
       url: '/pages/main/old/personal/personal'
     });

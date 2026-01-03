@@ -1,0 +1,33 @@
+<!-- family/index/index.wxml - 亲属端主页 -->
+<view class="family-home-container">
+  <!-- 老人选择区域 -->
+  <view class="old-man-card">
+    <view class="card-header">
+      <text class="card-title">当前老人</text>
+    </view>
+    <view class="card-content">
+      <picker bindchange="onOldManChange" value="{{selectedIndex}}" range="{{oldManList}}" range-key="name">
+        <view class="picker-box">
+          <text class="picker-value">{{selectedOldMan ? selectedOldMan.name : '请选择老人'}}</text>
+          <text class="picker-relation" wx:if="{{selectedOldMan}}">({{selectedOldMan.relationship}})</text>
+          <text class="picker-arrow">▼</text>
+        </view>
+      </picker>
+      <button class="bind-button" bindtap="openBindModal">+绑定老人</button>
+    </view>
+  </view>
+
+  <!-- 功能菜单区域 -->
+  <view class="menu-container">
+    <view class="menu-grid">
+      <view wx:for="{{menuList}}" wx:key="index" class="menu-item" bindtap="navigateToFunction" data-path="{{item.path}}">
+        <view class="item-icon">{{item.icon}}</view>
+        <view class="item-text">
+          <text class="item-title">{{item.title}}</text>
+          <text class="item-desc">{{item.desc}}</text>
+        </view>
+        <view class="item-arrow">></view>
+      </view>
+    </view>
+  </view>
+</view>

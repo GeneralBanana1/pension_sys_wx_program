@@ -3,8 +3,152 @@
   <!-- 页面标题 -->
   <view class="page-title">健康状况监测</view>
   
+  <!-- 老人选择区域 -->
+  <view class="old-man-selection">
+    <text class="selection-label">选择老人：</text>
+    <picker bindchange="onOldManChange" value="{{selectedOldManIndex}}" range="{{oldManList}}" range-key="name" style="width: 70%;">
+      <view class="picker-text">
+        {{oldManList.length > 0 ? oldManList[selectedOldManIndex].name : '暂无老人'}}
+      </view>
+    </picker>
+  </view>
+  
+  <!-- 健康状况卡片 -->
+  <view wx:if="{{currentHealthCondition}}" class="health-condition-card">
+    <view class="card-header">
+      <text class="card-title">当前健康状况</text>
+      <!-- 操作按钮 -->
+      <view class="card-actions">
+        <button wx:if="{{hasData}}" class="action-btn edit-btn" bindtap="editHealthData">编辑</button>
+        <button wx:else class="action-btn add-btn" bindtap="addHealthData">新增</button>
+      </view>
+    </view>
+    <view class="card-content">
+      <view class="condition-grid">
+        <view class="condition-item">
+          <text class="item-label">血压</text>
+          <text class="item-value">{{currentHealthCondition.bloodPressure}}</text>
+        </view>
+        <view class="condition-item">
+          <text class="item-label">心率</text>
+          <text class="item-value">{{currentHealthCondition.heartRate}} 次/分</text>
+        </view>
+        <view class="condition-item">
+          <text class="item-label">血氧</text>
+          <text class="item-value">{{currentHealthCondition.bloodOxygen}}</text>
+        </view>
+        <view class="condition-item">
+          <text class="item-label">体温</text>
+          <text class="item-value">{{currentHealthCondition.bodyTemperature}}℃</text>
+        </view>
+        <view class="condition-item">
+          <text class="item-label">空腹血糖</text>
+          <text class="item-value">{{currentHealthCondition.fastingBloodSugar}}mmol/L</text>
+        </view>
+        <view class="condition-item">
+          <text class="item-label">餐后2小时血糖</text>
+          <text class="item-value">{{currentHealthCondition.bloodSugar2hAfterMeal}}mmol/L</text>
+        </view>
+        <view class="condition-item">
+          <text class="item-label">活动等级</text>
+          <text class="item-value">{{currentHealthCondition.mobilityLevel}}</text>
+        </view>
+      </view>
+      <view class="remark-section">
+        <text class="remark-label">健康建议：</text>
+        <text class="remark-content">{{currentHealthCondition.remark}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 无数据时的新增按钮 -->
+  <view wx:if="{{!hasData && !loading}}" class="no-data-actions">
+    <button class="add-btn large" bindtap="addHealthData">+ 新增健康数据</button>
+  </view>
+  
+  <!-- 表单弹窗 -->
+  <view wx:if="{{showFormModal}}" class="modal-overlay" bindtap="closeFormModal"></view>
+  <view wx:if="{{showFormModal}}" class="form-modal">
+    <view class="modal-header">
+      <text class="modal-title">{{formMode === 'add' ? '新增健康数据' : '编辑健康数据'}}</text>
+      <text class="modal-close" bindtap="closeFormModal">×</text>
+    </view>
+    <view class="modal-content">
+      <scroll-view scroll-y="true" class="form-scroll">
+        <!-- 血氧 -->
+        <view class="form-item">
+          <text class="form-label">血氧</text>
+          <input class="form-input" placeholder="请输入血氧，如：98%" value="{{formData.bloodOxygen}}" bindinput="onFormInput" data-field="bloodOxygen" />
+        </view>
+        
+        <!-- 血压 -->
+        <view class="form-item">
+          <text class="form-label">血压</text>
+          <input class="form-input" placeholder="请输入血压，如：135/85" value="{{formData.bloodPressure}}" bindinput="onFormInput" data-field="bloodPressure" />
+        </view>
+        
+        <!-- 心率 -->
+        <view class="form-item">
+          <text class="form-label">心率</text>
+          <input class="form-input" placeholder="请输入心率，如：72" value="{{formData.heartRate}}" bindinput="onFormInput" data-field="heartRate" />
+        </view>
+        
+        <!-- 体温 -->
+        <view class="form-item">
+          <text class="form-label">体温</text>
+          <input class="form-input" placeholder="请输入体温，如：36.7" value="{{formData.bodyTemperature}}" bindinput="onFormInput" data-field="bodyTemperature" />
+        </view>
+        
+        <!-- 空腹血糖 -->
+        <view class="form-item">
+          <text class="form-label">空腹血糖</text>
+          <input class="form-input" placeholder="请输入空腹血糖，如：6.8" value="{{formData.fastingBloodSugar}}" bindinput="onFormInput" data-field="fastingBloodSugar" />
+        </view>
+        
+        <!-- 餐后2小时血糖 -->
+        <view class="form-item">
+          <text class="form-label">餐后2小时血糖</text>
+          <input class="form-input" placeholder="请输入餐后2小时血糖，如：8.5" value="{{formData.bloodSugar2hAfterMeal}}" bindinput="onFormInput" data-field="bloodSugar2hAfterMeal" />
+        </view>
+        
+        <!-- 活动等级 -->
+        <view class="form-item">
+          <text class="form-label">活动等级</text>
+          <input class="form-input" placeholder="请输入活动等级，如：3" value="{{formData.mobilityLevel}}" bindinput="onFormInput" data-field="mobilityLevel" />
+        </view>
+        
+        <!-- 健康建议 -->
+        <view class="form-item">
+          <text class="form-label">健康建议</text>
+          <textarea class="form-textarea" placeholder="请输入健康建议" value="{{formData.remark}}" bindinput="onFormInput" data-field="remark" />
+        </view>
+        
+        <!-- 创建时间 -->
+        <view class="form-item">
+          <text class="form-label">创建时间</text>
+          <input class="form-input" placeholder="请输入创建时间，如：2025-12-30 09:30:00" value="{{formData.create_time}}" bindinput="onFormInput" data-field="create_time" />
+        </view>
+      </scroll-view>
+    </view>
+    <view class="modal-footer">
+      <button class="modal-btn cancel" bindtap="closeFormModal">取消</button>
+      <button class="modal-btn confirm" bindtap="submitForm">{{formMode === 'add' ? '新增' : '保存'}}</button>
+    </view>
+  </view>
+  
+  <!-- 图表展开按钮 -->
+  <view wx:if="{{chartsCollapsed && hasData}}" class="charts-expand" bindtap="toggleChartsCollapse">
+    <text class="toggle-text">展开图表</text>
+    <text class="toggle-icon">↓</text>
+  </view>
+  
   <!-- 健康指标图表区域 -->
-  <view class="charts-container">
+  <view wx:if="{{!chartsCollapsed}}" class="charts-container">
+    <!-- 图表折叠/展开按钮 -->
+    <view class="charts-toggle" bindtap="toggleChartsCollapse">
+      <text class="toggle-text">收起图表</text>
+      <text class="toggle-icon">↑</text>
+    </view>
     
     <!-- 血压图表 -->
     <view class="chart-item">

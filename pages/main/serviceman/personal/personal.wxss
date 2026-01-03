@@ -1,0 +1,248 @@
+/* ===== 服务人员个人信息页面样式 ===== */
+page {
+  background: #f8fafc;
+  font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Helvetica Neue', Arial, sans-serif;
+  height: 100vh;
+  width: 100vw;
+}
+
+.profile-container {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: #f8fafc;
+  padding-bottom: 30rpx;
+  box-sizing: border-box;
+  overflow-y: auto;
+}
+
+/* ===== 用户身份卡片 ===== */
+.identity-card {
+  background: #07C160;
+  padding: 60rpx 40rpx 50rpx;
+  color: white;
+  display: flex;
+  align-items: center;
+  margin-bottom: 30rpx;
+  border-radius: 0 0 50rpx 50rpx;
+  box-shadow: 0 10rpx 40rpx rgba(7, 193, 96, 0.3);
+}
+
+.avatar-wrapper {
+  position: relative;
+  margin-right: 40rpx;
+}
+
+.avatar {
+  width: 160rpx;
+  height: 160rpx;
+  border-radius: 50%;
+  border: 6rpx solid rgba(255, 255, 255, 0.3);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  box-shadow: 0 10rpx 30rpx rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 60rpx;
+  font-weight: bold;
+}
+
+.identity-info {
+  flex: 1;
+}
+
+.user-name {
+  font-size: 56rpx;
+  font-weight: 700;
+  display: block;
+  margin-bottom: 15rpx;
+}
+
+.user-id {
+  font-size: 30rpx;
+  opacity: 0.9;
+  display: block;
+  margin-bottom: 25rpx;
+  font-weight: 500;
+}
+
+/* ===== 信息区块 ===== */
+.info-section {
+  background: white;
+  margin: 0 30rpx 30rpx;
+  border-radius: 25rpx;
+  padding: 35rpx;
+  box-shadow: 0 8rpx 25rpx rgba(0, 0, 0, 0.06);
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  font-size: 36rpx;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 30rpx;
+  padding-bottom: 20rpx;
+  border-bottom: 2rpx solid #f0f0f0;
+}
+
+.title-icon {
+  font-size: 40rpx;
+  margin-right: 15rpx;
+}
+
+/* ===== 基本信息列表 ===== */
+.info-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+}
+
+.info-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20rpx 0;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+
+.info-item:last-child {
+  border-bottom: none;
+}
+
+.info-label {
+  font-size: 32rpx;
+  color: #718096;
+  font-weight: 500;
+  width: 150rpx;
+}
+
+.info-value {
+  font-size: 32rpx;
+  color: #2d3748;
+  font-weight: 600;
+  line-height: 1.4;
+  flex: 1;
+  text-align: right;
+}
+
+/* ===== 加载状态 ===== */
+.loading-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(255, 255, 255, 0.7);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.loading-spinner {
+  width: 60rpx;
+  height: 60rpx;
+  border: 6rpx solid rgba(7, 193, 96, 0.2);
+  border-top-color: #07c160;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 20rpx;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.loading-text {
+  font-size: 28rpx;
+  color: #666;
+  font-weight: 500;
+}
+
+/* ===== 退出登录按钮 ===== */
+.logout-section {
+  margin: 30rpx;
+  padding-bottom: 40rpx;
+}
+
+.logout-button {
+  width: 100%;
+  height: 100rpx;
+  background-color: #ff4757;
+  color: white;
+  border: none;
+  border-radius: 50rpx;
+  font-size: 36rpx;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4rpx 15rpx rgba(255, 71, 87, 0.4);
+  transition: all 0.3s ease;
+}
+
+.logout-button:active {
+  transform: scale(0.98);
+  box-shadow: 0 2rpx 10rpx rgba(255, 71, 87, 0.3);
+}
+
+/* ===== 响应式调整 ===== */
+@media (max-width: 750rpx) {
+  .identity-card {
+    padding: 50rpx 30rpx 40rpx;
+  }
+  
+  .avatar {
+    width: 140rpx;
+    height: 140rpx;
+  }
+  
+  .user-name {
+    font-size: 52rpx;
+  }
+  
+  .info-section {
+    margin: 0 25rpx 25rpx;
+    padding: 30rpx;
+  }
+  
+  .section-title {
+    font-size: 34rpx;
+  }
+}
+
+/* 小屏幕特殊优化 */
+@media (max-height: 600px) {
+  .profile-container {
+    padding-bottom: 20rpx;
+  }
+  
+  .identity-card {
+    padding: 40rpx 25rpx 30rpx;
+  }
+  
+  .avatar {
+    width: 120rpx;
+    height: 120rpx;
+  }
+  
+  .user-name {
+    font-size: 48rpx;
+  }
+  
+  .info-section {
+    margin: 0 20rpx 20rpx;
+    padding: 25rpx;
+  }
+  
+  .logout-section {
+    margin: 20rpx;
+    padding-bottom: 30rpx;
+  }
+}

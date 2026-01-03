@@ -1,0 +1,62 @@
+<!-- 服务人员个人信息页面 -->
+<view class="profile-container">
+  <!-- 加载状态 -->
+  <view wx:if="{{loading}}" class="loading-container">
+    <view class="loading-spinner"></view>
+    <text class="loading-text">加载中...</text>
+  </view>
+  
+  <!-- 用户身份卡片 -->
+  <view class="identity-card">
+    <view class="avatar-wrapper">
+      <image 
+        src="{{userInfo.avatar || ''}}" 
+        class="avatar"
+        mode="aspectFill"
+      ></image>
+    </view>
+    <view class="identity-info">
+      <text class="user-name">{{userInfo.name}}</text>
+      <text class="user-id">ID: {{userInfo.id}}</text>
+    </view>
+  </view>
+
+  <!-- 基本信息 -->
+  <view class="info-section">
+    <view class="section-title">
+      <text class="title-icon">📋</text>
+      <text>基本信息</text>
+    </view>
+    <view class="info-list">
+      <view class="info-item">
+        <text class="info-label">姓名</text>
+        <text class="info-value">{{userInfo.name}}</text>
+      </view>
+      <view class="info-item">
+        <text class="info-label">用户ID</text>
+        <text class="info-value">{{userInfo.id}}</text>
+      </view>
+      <view class="info-item">
+        <text class="info-label">性别</text>
+        <text class="info-value">{{userInfo.sex}}</text>
+      </view>
+      <view class="info-item">
+        <text class="info-label">邮箱</text>
+        <text class="info-value">{{userInfo.email}}</text>
+      </view>
+      <view class="info-item">
+        <text class="info-label">联系电话</text>
+        <text class="info-value">{{userInfo.phone}}</text>
+      </view>
+      <view class="info-item">
+        <text class="info-label">备注</text>
+        <text class="info-value">{{userInfo.remark}}</text>
+      </view>
+    </view>
+  </view>
+  
+  <!-- 退出登录按钮 -->
+  <view class="logout-section">
+    <button class="logout-button" bindtap="logout">退出登录</button>
+  </view>
+</view>

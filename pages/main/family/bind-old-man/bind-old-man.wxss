@@ -1,0 +1,328 @@
+/* family/bind-old-man/bind-old-man.wxss - 亲属端绑定老人页面样式 */
+
+/* 全局样式重置 */
+page {
+  background-color: #f5f7fa;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+/* 主容器 */
+.bind-old-man-container {
+  padding: 20rpx;
+  box-sizing: border-box;
+  min-height: 100vh;
+  background-color: #f5f7fa;
+}
+
+/* 页面标题 */
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20rpx 0;
+  margin-bottom: 30rpx;
+  background-color: #ffffff;
+  border-radius: 16rpx;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.05);
+}
+
+.back-button {
+  font-size: 40rpx;
+  color: #333333;
+  width: 60rpx;
+  text-align: center;
+  line-height: 60rpx;
+}
+
+.page-title {
+  font-size: 36rpx;
+  font-weight: 600;
+  color: #333333;
+  flex: 1;
+  text-align: center;
+}
+
+.header-placeholder {
+  width: 60rpx;
+}
+
+/* 搜索区域 */
+.search-section {
+  background-color: #ffffff;
+  border-radius: 16rpx;
+  padding: 30rpx;
+  margin-bottom: 30rpx;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.05);
+}
+
+/* 表单区域 */
+.form-section {
+  background-color: #ffffff;
+  border-radius: 16rpx;
+  padding: 30rpx;
+  margin-bottom: 30rpx;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.05);
+}
+
+/* 区域标题 */
+.section-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #333333;
+  margin-bottom: 20rpx;
+  display: block;
+}
+
+/* 搜索框 */
+.search-box {
+  position: relative;
+  margin-bottom: 20rpx;
+}
+
+.search-input {
+  width: 100%;
+  height: 80rpx;
+  border: 2rpx solid #e8e8e8;
+  border-radius: 10rpx;
+  padding: 0 20rpx;
+  font-size: 30rpx;
+  color: #333333;
+  box-sizing: border-box;
+  transition: border-color 0.3s ease;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #07c160;
+}
+
+/* 搜索加载状态 */
+.search-loading {
+  position: absolute;
+  right: 20rpx;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 24rpx;
+  color: #999999;
+}
+
+/* 搜索结果列表 */
+.search-results {
+  background-color: #ffffff;
+  border: 2rpx solid #e8e8e8;
+  border-radius: 10rpx;
+  max-height: 300rpx;
+  overflow-y: auto;
+  margin-top: 10rpx;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.05);
+}
+
+.search-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20rpx;
+  border-bottom: 2rpx solid #f0f0f0;
+  transition: background-color 0.3s ease;
+}
+
+.search-item:last-child {
+  border-bottom: none;
+}
+
+.search-item:active {
+  background-color: #f8f8f8;
+}
+
+.search-item-id {
+  font-size: 28rpx;
+  color: #666666;
+  margin-right: 15rpx;
+}
+
+.search-item-name {
+  font-size: 30rpx;
+  color: #333333;
+  font-weight: 500;
+}
+
+/* 无搜索结果提示 */
+.no-results {
+  font-size: 28rpx;
+  color: #999999;
+  text-align: center;
+  padding: 30rpx 0;
+  background-color: #ffffff;
+  border: 2rpx solid #e8e8e8;
+  border-radius: 10rpx;
+  margin-top: 10rpx;
+}
+
+/* 已绑定老人区域 */
+.bound-section {
+  background-color: #ffffff;
+  border-radius: 16rpx;
+  padding: 30rpx;
+  margin-bottom: 30rpx;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.05);
+}
+
+/* 已绑定老人列表 */
+.bound-old-man-list {
+  margin-top: 10rpx;
+}
+
+/* 已绑定老人项 */
+.bound-old-man-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20rpx;
+  border-bottom: 2rpx solid #f0f0f0;
+  background-color: #fafafa;
+  border-radius: 8rpx;
+  margin-bottom: 10rpx;
+}
+
+.bound-old-man-item:last-child {
+  margin-bottom: 0;
+}
+
+/* 已绑定老人信息 */
+.bound-info {
+  display: flex;
+  align-items: center;
+}
+
+/* 已绑定老人姓名 */
+.bound-old-man-name {
+  font-size: 30rpx;
+  color: #333333;
+  font-weight: 600;
+  margin-right: 10rpx;
+}
+
+/* 已绑定老人关系 */
+.bound-old-man-relationship {
+  font-size: 26rpx;
+  color: #666666;
+}
+
+/* 解绑按钮样式 */
+.unbind-btn {
+  margin-left: 20rpx;
+}
+
+/* 加载中样式 */
+.loading-text {
+  font-size: 28rpx;
+  color: #999999;
+  text-align: center;
+  padding: 30rpx 0;
+  background-color: #fafafa;
+  border-radius: 8rpx;
+  margin-top: 10rpx;
+}
+
+/* 暂无绑定老人样式 */
+.no-bound-text {
+  font-size: 28rpx;
+  color: #999999;
+  text-align: center;
+  padding: 30rpx 0;
+  background-color: #fafafa;
+  border-radius: 8rpx;
+  margin-top: 10rpx;
+}
+
+/* 表单项 */
+.form-item {
+  margin-bottom: 30rpx;
+}
+
+.form-item:last-child {
+  margin-bottom: 0;
+}
+
+/* 表单标签 */
+.form-label {
+  display: block;
+  font-size: 30rpx;
+  font-weight: 500;
+  color: #333333;
+  margin-bottom: 15rpx;
+}
+
+/* 表单输入框 */
+.form-input {
+  width: 100%;
+  height: 80rpx;
+  border: 2rpx solid #e8e8e8;
+  border-radius: 10rpx;
+  padding: 0 20rpx;
+  font-size: 30rpx;
+  color: #333333;
+  box-sizing: border-box;
+  transition: border-color 0.3s ease;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: #07c160;
+}
+
+/* 表单展示值 */
+.form-value {
+  width: 100%;
+  height: 80rpx;
+  line-height: 80rpx;
+  border: 2rpx solid #e8e8e8;
+  border-radius: 10rpx;
+  padding: 0 20rpx;
+  font-size: 30rpx;
+  color: #333333;
+  box-sizing: border-box;
+  background-color: #f8f8f8;
+  font-weight: 500;
+}
+
+/* 提交按钮区域 */
+.submit-section {
+  padding: 0 20rpx 30rpx;
+}
+
+/* 提交按钮 */
+.submit-btn {
+  background-color: #07c160;
+  color: #ffffff;
+  border: none;
+  border-radius: 10rpx;
+  padding: 25rpx;
+  font-size: 32rpx;
+  font-weight: 600;
+  box-shadow: 0 4rpx 12rpx rgba(7, 193, 96, 0.3);
+  transition: all 0.3s ease;
+  width: 100%;
+}
+
+.submit-btn:active {
+  background-color: #06ad56;
+  transform: scale(0.98);
+  box-shadow: 0 2rpx 6rpx rgba(7, 193, 96, 0.3);
+}
+
+/* 响应式设计 */
+@media (max-width: 750rpx) {
+  .bind-old-man-container {
+    padding: 10rpx;
+  }
+  
+  .search-section,
+  .form-section {
+    padding: 20rpx;
+  }
+  
+  .page-header {
+    padding: 15rpx 0;
+  }
+}

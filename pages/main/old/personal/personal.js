@@ -1,5 +1,5 @@
 // pages/main/old/personal/personal.js
-const app = getApp()
+var app = getApp()
 Page({
   data: {
     // 用户信息
@@ -19,11 +19,11 @@ Page({
     loading: false
   },
 
-  onLoad() {
+  onLoad: function() {
     this.loadUserData();
   },
 
-  onShow() {
+  onShow: function() {
     // 每次显示时刷新数据
     this.loadUserData();
     // 更新底部导航栏高亮状态
@@ -31,12 +31,12 @@ Page({
   },
   
   // 更新底部导航栏高亮状态
-  updateTabBarActive() {
+  updateTabBarActive: function() {
     // 获取当前页面路径
-    const pages = getCurrentPages();
+    var pages = getCurrentPages();
     if (pages.length > 0) {
-      const currentPage = pages[pages.length - 1];
-      const currentPath = currentPage.route;
+      var currentPage = pages[pages.length - 1];
+      var currentPath = currentPage.route;
       // 触发自定义tabBar的更新
       if (typeof this.getTabBar === 'function' && this.getTabBar()) {
         this.getTabBar().updateActiveIndex();
@@ -45,7 +45,7 @@ Page({
   },
 
   // 加载用户数据
-  loadUserData() {
+  loadUserData: function() {
     this.setData({
       loading: true
     });

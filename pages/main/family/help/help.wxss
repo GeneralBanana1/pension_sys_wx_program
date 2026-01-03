@@ -1,0 +1,625 @@
+/* 基础样式 */
+page {
+  background-color: #f5f5f5;
+  font-size: 32rpx;
+  line-height: 1.5;
+  color: #333;
+  font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
+}
+
+/* 容器 */
+.container {
+  padding-bottom: 100rpx;
+}
+
+/* 页面头部 */
+.page-header {
+  background-color: #007AFF;
+  padding: 60rpx 40rpx 40rpx;
+  position: relative;
+}
+
+.page-title {
+  font-size: 48rpx;
+  font-weight: bold;
+  color: #FFFFFF;
+  text-align: center;
+  display: block;
+  line-height: 1.2;
+}
+
+.back-btn {
+  position: absolute;
+  left: 40rpx;
+  top: 60rpx;
+  background-color: rgba(255, 255, 255, 0.2);
+  padding: 10rpx 30rpx;
+  border-radius: 50rpx;
+}
+
+.back-text {
+  color: #FFFFFF;
+  font-size: 32rpx;
+}
+
+/* 主功能区 */
+.main-area {
+  background-color: #FFFFFF;
+  padding: 40rpx;
+  border-radius: 0 0 30rpx 30rpx;
+  box-shadow: 0 4rpx 12rpx rgba(0, 122, 255, 0.1);
+}
+
+.quick-order-btn {
+  background-color: #07C160;
+  border-radius: 25rpx;
+  padding: 40rpx 0;
+  text-align: center;
+  margin-bottom: 40rpx;
+}
+
+.btn-text-large {
+  color: #FFFFFF;
+  font-size: 40rpx;
+  font-weight: bold;
+}
+
+/* 统计信息 */
+.stats-box {
+  background-color: #F8F9FA;
+  border-radius: 20rpx;
+  padding: 30rpx;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.stat-item {
+  flex: 1;
+  text-align: center;
+}
+
+.stat-number {
+  font-size: 56rpx;
+  font-weight: bold;
+  color: #007AFF;
+  display: block;
+  margin-bottom: 10rpx;
+}
+
+.stat-label {
+  font-size: 28rpx;
+  color: #666666;
+  display: block;
+}
+
+.stat-divider {
+  width: 2rpx;
+  height: 60rpx;
+  background-color: #E0E0E0;
+}
+
+/* 订单区域 */
+.order-section {
+  padding: 40rpx;
+}
+
+.section-header {
+  margin-bottom: 30rpx;
+}
+
+.section-title {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #333333;
+}
+
+/* 空状态 */
+.empty-box {
+  text-align: center;
+  padding: 80rpx 0;
+}
+
+.empty-image {
+  width: 200rpx;
+  height: 200rpx;
+  margin-bottom: 30rpx;
+}
+
+.empty-title {
+  font-size: 36rpx;
+  color: #999999;
+  display: block;
+  margin-bottom: 20rpx;
+}
+
+.empty-tip {
+  font-size: 28rpx;
+  color: #CCCCCC;
+  display: block;
+}
+
+/* 订单滚动区域 */
+.order-scroll {
+  height: 80%;
+}
+
+.order-card {
+  background-color: #FFFFFF;
+  border-radius: 20rpx;
+  padding: 30rpx;
+  margin-bottom: 30rpx;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.05);
+}
+
+/* 卡片头部 */
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 25rpx;
+  padding-bottom: 20rpx;
+  border-bottom: 1rpx solid #F0F0F0;
+}
+
+.header-left {
+  flex: 1;
+}
+
+.order-type {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #333333;
+  display: block;
+  margin-bottom: 15rpx;
+}
+
+.status-badge {
+  padding: 8rpx 20rpx;
+  border-radius: 20rpx;
+  font-size: 24rpx;
+  font-weight: bold;
+  display: inline-block;
+}
+
+.status-0 {
+  background-color: #FFF3E0;
+  color: #FF9500;
+}
+
+.status-1 {
+  background-color: #E3F2FD;
+  color: #007AFF;
+}
+
+.status-2 {
+  background-color: #E8F5E9;
+  color: #34C759;
+}
+
+.status-3 {
+  background-color: #F5F5F5;
+  color: #999999;
+}
+
+.order-time {
+  font-size: 28rpx;
+  color: #999999;
+}
+
+/* 卡片内容 */
+.card-content {
+  margin-bottom: 25rpx;
+}
+
+.content-label {
+  font-size: 28rpx;
+  color: #666666;
+  display: block;
+  margin-bottom: 10rpx;
+  font-weight: bold;
+}
+
+.content-text {
+  font-size: 32rpx;
+  color: #333333;
+  line-height: 1.6;
+  display: block;
+  margin-bottom: 20rpx;
+}
+
+.order-info {
+  margin-bottom: 10rpx;
+}
+
+.info-label {
+  font-size: 28rpx;
+  color: #999999;
+}
+
+.info-value {
+  font-size: 28rpx;
+  color: #666666;
+}
+
+/* 操作按钮 */
+.card-actions {
+  display: flex;
+  gap: 20rpx;
+}
+
+.action-btn {
+  flex: 1;
+  height: 80rpx;
+  line-height: 80rpx;
+  border-radius: 15rpx;
+  font-size: 32rpx;
+  font-weight: bold;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+}
+
+.action-btn::after {
+  border: none;
+}
+
+/* 操作按钮样式优先级提升 */
+.card-actions .action-btn {
+  border: none;
+  outline: none;
+}
+
+/* 联系师傅按钮 - 蓝色 */
+.card-actions .btn-primary {
+  background-color: #007AFF !important;
+  color: #FFFFFF !important;
+}
+
+/* 删除订单按钮 - 红色 */
+.card-actions .btn-delete {
+  background-color: #FF3B30 !important;
+  color: #FFFFFF !important;
+}
+
+/* 取消订单按钮 - 橙色 */
+.card-actions .btn-cancel {
+  background-color: #FF9500 !important;
+  color: #FFFFFF !important;
+}
+
+/* 重新发起按钮 - 蓝色 */
+.card-actions .btn-reinitiate {
+  background-color: #007AFF !important;
+  color: #FFFFFF !important;
+}
+
+/* 联系师傅按钮 - 绿色 */
+.card-actions .btn-contact {
+  background-color: #07C160 !important;
+  color: #FFFFFF !important;
+}
+
+/* 编辑订单按钮 - 灰色 */
+.card-actions .btn-edit {
+  background-color: #999999 !important;
+  color: #FFFFFF !important;
+}
+
+/* 弹窗样式 */
+/* 弹窗容器 */
+.modal-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 遮罩层 */
+.modal-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+/* 弹窗主体 */
+.order-modal {
+  position: relative;
+  width: 90%;
+  max-width: 600rpx;
+  max-height: 90vh;
+  background-color: #ffffff;
+  border-radius: 20rpx;
+  box-shadow: 0 8rpx 32rpx rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  /* 调整弹窗位置，使用flex布局居中显示 */
+  margin: 100rpx auto 0;
+}
+
+/* 弹窗内容区域 */
+.modal-content {
+  /* 使用flex布局自动计算高度，确保footer始终可见 */
+  flex: 1;
+  overflow-y: auto;
+  padding: 30rpx;
+}
+
+/* 弹窗底部 */
+.modal-footer {
+  display: flex;
+  border-top: 1rpx solid #f0f0f0;
+  /* 固定高度，确保footer始终显示 */
+  height: 90rpx;
+  background-color: #ffffff;
+  border-radius: 0 0 20rpx 20rpx;
+}
+
+/* 弹窗头部 */
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 30rpx 30rpx 20rpx;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+
+.modal-title {
+  width: 800rpx;
+  font-size: 34rpx;
+  font-weight: 700;
+  color: #333333;
+}
+
+/* 关闭按钮 */
+.close-btn {
+  width: 60rpx;
+  height: 60rpx;
+  background: none;
+  border: none;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  margin: 0;
+}
+
+.close-btn:active {
+  background-color: #f0f0f0;
+}
+
+.close-icon {
+  font-size: 40rpx;
+  color: #999999;
+  line-height: 1;
+}
+
+/* 弹窗内容 */
+.modal-content {
+  padding: 30rpx;
+}
+
+/* 表单组 */
+.form-group {
+  margin-bottom: 20rpx;
+}
+
+/* 表单标签 */
+.form-label {
+  display: block;
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #333333;
+  margin-bottom: 15rpx;
+}
+
+/* 选择器容器 */
+.picker-wrapper {
+  background-color: #f8f9fa;
+  border: 1rpx solid #e0e0e0;
+  border-radius: 15rpx;
+  overflow: hidden;
+}
+
+/* 表单选择器 */
+.form-picker {
+  width: 100%;
+  padding: 25rpx 30rpx;
+  box-sizing: border-box;
+}
+
+/* 选择器内容 */
+.picker-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* 选择器文本 */
+.picker-text {
+  font-size: 32rpx;
+  color: #333333;
+}
+
+/* 选择器占位符 */
+.picker-placeholder {
+  font-size: 32rpx;
+  color: #999999;
+}
+
+/* 选择器箭头 */
+.picker-arrow {
+  font-size: 24rpx;
+  color: #999999;
+  font-weight: 700;
+}
+
+/* 表单文本域 */
+.form-textarea {
+  height: 0rpx;
+  width: 100%;
+  background-color: #f8f9fa;
+  border: 1rpx solid #e0e0e0;
+  border-radius: 15rpx;
+  padding: 25rpx 30rpx;
+  font-size: 30rpx;
+  color: #333333;
+  line-height: 1.6;
+  box-sizing: border-box;
+  resize: none;
+}
+
+.form-textarea:focus {
+  outline: none;
+  border-color: #07c160;
+  background-color: #ffffff;
+}
+
+/* 字符计数 */
+.char-count {
+  text-align: right;
+  margin-top: 10rpx;
+}
+
+/* 计数文本 */
+.count-text {
+  font-size: 24rpx;
+  color: #999999;
+}
+
+/* 表单提示 */
+.form-hint {
+  font-size: 24rpx;
+  color: #666666;
+  margin-top: 10rpx;
+  display: block;
+}
+
+/* 自定义section样式 */
+.custom-section {
+  margin-bottom: 30rpx;
+}
+
+/* section标题 */
+.section__title {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #333333;
+  margin-bottom: 15rpx;
+  display: block;
+}
+
+/* 自定义picker样式 */
+.custom-picker {
+  width: 100%;
+}
+
+.custom-picker .picker-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f8f9fa;
+  border: 1rpx solid #e0e0e0;
+  border-radius: 15rpx;
+  padding: 25rpx 30rpx;
+  box-sizing: border-box;
+}
+
+.custom-picker .picker-text {
+  font-size: 32rpx;
+  color: #333333;
+}
+
+.custom-picker .picker-arrow {
+  font-size: 24rpx;
+  color: #999999;
+  font-weight: 700;
+}
+
+/* 弹窗底部 */
+.modal-footer {
+  display: flex;
+  border-top: 1rpx solid #f0f0f0;
+}
+
+/* 按钮基础样式 */
+.btn {
+  flex: 1;
+  height: 90rpx;
+  line-height: 90rpx;
+  border: none;
+  border-radius: 0;
+  font-size: 32rpx;
+  font-weight: 600;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.btn::after {
+  border: none;
+}
+
+/* 取消按钮 */
+.btn-cancel {
+  background-color: #f8f9fa;
+  color: #666666;
+  border-right: 1rpx solid #f0f0f0;
+}
+
+.btn-cancel:active {
+  background-color: #e8e8e8;
+}
+
+/* 主要按钮 */
+.btn-primary {
+  background-color: #07c160;
+  color: #ffffff;
+}
+
+.btn-primary:active {
+  background-color: #06ad56;
+  opacity: 0.9;
+}
+
+/* 适配大字体模式 */
+@media (prefers-font-size: large) {
+  page {
+    font-size: 36rpx;
+  }
+  
+  .btn-text-large {
+    font-size: 44rpx;
+  }
+  
+  .order-type {
+    font-size: 40rpx;
+  }
+  
+  .content-text {
+    font-size: 36rpx;
+  }
+  
+  .action-btn {
+    height: 90rpx;
+    line-height: 90rpx;
+    font-size: 36rpx;
+  }
+}
+
+/* 安全区域适配 */
+.safe-area-bottom {
+  padding-bottom: constant(safe-area-inset-bottom);
+  padding-bottom: env(safe-area-inset-bottom);
+}

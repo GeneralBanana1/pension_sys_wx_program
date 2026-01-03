@@ -24,7 +24,7 @@ Page({
     });
     
     // 获取userId
-    const userId = app.globalData.userInfo?.userId || 0;
+    const userId = app.globalData.userInfo && app.globalData.userInfo.userId || 0;
     
     // 调用设置角色接口
     wx.request({
@@ -48,10 +48,23 @@ Page({
             icon: 'success',
             duration: 1500,
             success: () => {
-              // 跳转到首页
+              // 跳转到对应角色的首页
+              let redirectUrl = '/pages/index/index'; // 默认首页
+              
+              if (role === '100') {
+                // 老人角色，跳转到老人首页
+                redirectUrl = '/pages/main/old/index/index';
+              } else if (role === '101') {
+                // 亲属角色，跳转到亲属首页
+                redirectUrl = '/pages/main/family/index/index';
+              } else if (role === '102' || role === '103') {
+                // 护工和维修工角色，跳转到服务订单页面
+                redirectUrl = '/pages/main/serviceman/order/order';
+              }
+              
               setTimeout(() => {
                 wx.switchTab({
-                  url: '/pages/index/index'
+                  url: redirectUrl
                 });
               }, 1500);
             }

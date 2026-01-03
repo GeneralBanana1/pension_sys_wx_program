@@ -1,0 +1,73 @@
+<!-- family/bind-old-man/bind-old-man.wxml - 亲属端绑定老人页面 -->
+<view class="bind-old-man-container">
+  <!-- 页面标题 -->
+  <view class="page-header">
+    <text class="back-button" bindtap="goBack">←</text>
+    <text class="page-title">绑定老人</text>
+    <view class="header-placeholder"></view>
+  </view>
+  
+  <!-- 已绑定老人列表 -->
+  <view class="bound-section">
+    <view class="section-title">已绑定老人</view>
+    <view wx:if="{{boundLoading}}" class="loading-text">加载中...</view>
+    <view wx:elif="{{boundOldManList.length > 0}}" class="bound-old-man-list">
+      <view wx:for="{{boundOldManList}}" wx:key="oldId" class="bound-old-man-item">
+        <view class="bound-info">
+          <text class="bound-old-man-name">{{item.nickName}}</text>
+          <text class="bound-old-man-relationship">({{item.relationship}})</text>
+        </view>
+        <button class="unbind-btn" bindtap="unbindOldMan" data-oldid="{{item.oldId}}" type="warn" size="mini">解绑</button>
+      </view>
+    </view>
+    <view wx:else class="no-bound-text">暂无绑定的老人</view>
+  </view>
+  
+  <!-- 搜索老人区域 -->
+  <view class="search-section">
+    <view class="section-title">搜索新老人</view>
+    
+    <!-- 姓名搜索框 -->
+    <view class="search-box">
+      <input class="search-input" placeholder="请输入老人姓名搜索" bindinput="onSearchInput" data-field="nickName" value="{{searchParams.nickName}}" />
+    </view>
+    
+    <!-- 电话号码搜索框 -->
+    <view class="search-box">
+      <input class="search-input" placeholder="请输入电话号码搜索" bindinput="onSearchInput" data-field="phonenumber" value="{{searchParams.phonenumber}}" />
+      <view wx:if="{{searchLoading}}" class="search-loading">
+        <text>搜索中...</text>
+      </view>
+    </view>
+    
+    <!-- 搜索结果列表 -->
+    <view wx:if="{{showSearchResults && searchResults.length > 0}}" class="search-results">
+      <view wx:for="{{searchResults}}" wx:key="index" class="search-item" bindtap="selectSearchResult" data-index="{{index}}">
+        <text class="search-item-id">ID: {{item.userId}}</text>
+        <text class="search-item-name">{{item.nickName}}</text>
+      </view>
+    </view>
+    <text wx:if="{{showSearchResults && searchResults.length === 0}}" class="no-results">未找到匹配的老人</text>
+  </view>
+  
+  <!-- 绑定表单区域 -->
+  <view class="form-section">
+    <view class="section-title">绑定信息</view>
+    
+    <!-- 老人姓名，只展示，不使用输入框 -->
+    <view wx:if="{{bindForm.oldManName}}" class="form-item">
+      <text class="form-label">老人姓名</text>
+      <view class="form-value">{{bindForm.oldManName}}</view>
+    </view>
+    
+    <view class="form-item">
+      <text class="form-label">与老人关系</text>
+      <input class="form-input" placeholder="请输入与老人的关系" bindinput="onFormInput" data-field="relationship" value="{{bindForm.relationship}}" />
+    </view>
+  </view>
+  
+  <!-- 提交按钮 -->
+  <view class="submit-section">
+    <button class="submit-btn" bindtap="submitBindForm">绑定老人</button>
+  </view>
+</view>

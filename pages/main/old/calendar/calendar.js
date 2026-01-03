@@ -12,9 +12,9 @@ Page({
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad(options) {
+  onLoad: function(options) {
     // 初始化当前日期
-    const now = new Date();
+    var now = new Date();
     this.setData({
       currentYear: now.getFullYear(),
       currentMonth: now.getMonth() + 1
@@ -25,18 +25,20 @@ Page({
   /**
    * 更新日历标题
    */
-  updateCalendarTitle() {
-    const { currentYear, currentMonth } = this.data;
+  updateCalendarTitle: function() {
+    var currentYear = this.data.currentYear;
+    var currentMonth = this.data.currentMonth;
     this.setData({
-      calendarTitle: `${currentYear}年${currentMonth}月`
+      calendarTitle: currentYear + '年' + currentMonth + '月'
     });
   },
 
   /**
    * 上月切换
    */
-  prevMonth() {
-    let { currentYear, currentMonth } = this.data;
+  prevMonth: function() {
+    var currentYear = this.data.currentYear;
+    var currentMonth = this.data.currentMonth;
     if (currentMonth === 1) {
       currentMonth = 12;
       currentYear--;
@@ -44,8 +46,8 @@ Page({
       currentMonth--;
     }
     this.setData({
-      currentYear,
-      currentMonth
+      currentYear: currentYear,
+      currentMonth: currentMonth
     });
     this.updateCalendarTitle();
   },
@@ -53,8 +55,9 @@ Page({
   /**
    * 下月切换
    */
-  nextMonth() {
-    let { currentYear, currentMonth } = this.data;
+  nextMonth: function() {
+    var currentYear = this.data.currentYear;
+    var currentMonth = this.data.currentMonth;
     if (currentMonth === 12) {
       currentMonth = 1;
       currentYear++;
@@ -62,8 +65,8 @@ Page({
       currentMonth++;
     }
     this.setData({
-      currentYear,
-      currentMonth
+      currentYear: currentYear,
+      currentMonth: currentMonth
     });
     this.updateCalendarTitle();
   },

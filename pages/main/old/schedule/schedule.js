@@ -28,27 +28,30 @@ Page({
     ]
   },
 
-  onLoad() {
+  onLoad: function() {
     // 获取当前日期
     this.updateCurrentDate();
   },
 
   // 更新当前日期
-  updateCurrentDate() {
-    const now = new Date();
-    const year = now.getFullYear();
-    const month = (now.getMonth() + 1).toString().padStart(2, '0');
-    const day = now.getDate().toString().padStart(2, '0');
-    const weekday = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'][now.getDay()];
+  updateCurrentDate: function() {
+    var now = new Date();
+    var year = now.getFullYear();
+    var month = now.getMonth() + 1;
+    month = month < 10 ? '0' + month : month;
+    var day = now.getDate();
+    day = day < 10 ? '0' + day : day;
+    var weekdays = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
+    var weekday = weekdays[now.getDay()];
     
-    const dateStr = `${year}年${month}月${day}日 ${weekday}`;
+    var dateStr = year + '年' + month + '月' + day + '日 ' + weekday;
     this.setData({
       currentDate: dateStr
     });
   },
 
   // 返回首页
-  navigateBack() {
+  navigateBack: function() {
     wx.navigateBack({
       delta: 1
     });

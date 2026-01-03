@@ -23,27 +23,27 @@ Page({
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad(options) {
+  onLoad: function(options) {
     this.getUserLocation();
   },
 
   /**
    * 获取用户位置
    */
-  getUserLocation() {
-    const that = this;
+  getUserLocation: function() {
+    var that = this;
     wx.getLocation({
       type: 'gcj02',
-      success(res) {
-        const latitude = res.latitude;
-        const longitude = res.longitude;
+      success: function(res) {
+        var latitude = res.latitude;
+        var longitude = res.longitude;
         that.setData({
-          location: { latitude, longitude }
+          location: { latitude: latitude, longitude: longitude }
         });
         // 获取到位置后调用天气API
         that.getWeatherData(latitude, longitude);
       },
-      fail(err) {
+      fail: function(err) {
         console.error('获取位置失败:', err);
         wx.showToast({
           title: '无法获取位置',

@@ -1,0 +1,505 @@
+/* 页面容器 */
+.container {
+  width: 100%;
+  min-height: 100vh;
+  background-color: #f5f5f5;
+  padding: 20rpx;
+  box-sizing: border-box;
+}
+
+/* 页面标题 */
+.page-title {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #333333;
+  margin-bottom: 30rpx;
+  text-align: center;
+}
+
+/* 老人选择区域 */
+.old-man-selection {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+  background-color: #ffffff;
+  padding: 20rpx;
+  border-radius: 12rpx;
+  margin-bottom: 30rpx;
+  box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.05);
+}
+
+.selection-label {
+  font-size: 28rpx;
+  color: #666666;
+  font-weight: 500;
+}
+
+.picker-text {
+  font-size: 28rpx;
+  color: #333333;
+  padding: 10rpx 20rpx;
+  background-color: #f5f5f5;
+  border-radius: 8rpx;
+  min-width: 200rpx;
+  text-align: center;
+  border: 1rpx solid #e0e0e0;
+}
+
+/* 健康状况卡片 */
+.health-condition-card {
+  width: 100%;
+  background-color: #ffffff;
+  border-radius: 12rpx;
+  margin-bottom: 30rpx;
+  box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+}
+
+.card-header {
+  background-color: #1AAD19;
+  padding: 20rpx;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.card-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #ffffff;
+}
+
+.card-content {
+  padding: 20rpx;
+}
+
+.condition-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20rpx;
+  margin-bottom: 20rpx;
+}
+
+.condition-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20rpx;
+  background-color: #f8f8f8;
+  border-radius: 8rpx;
+}
+
+.condition-item .item-label {
+  font-size: 24rpx;
+  color: #666666;
+  margin-bottom: 10rpx;
+}
+
+.condition-item .item-value {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333333;
+}
+
+/* 健康建议 */
+.remark-section {
+  margin-top: 20rpx;
+  padding: 20rpx;
+  background-color: #FFF8E6;
+  border-radius: 8rpx;
+  border-left: 4rpx solid #FFC107;
+}
+
+.remark-label {
+  font-size: 26rpx;
+  font-weight: bold;
+  color: #FF9800;
+  margin-bottom: 10rpx;
+  display: block;
+}
+
+.remark-content {
+  font-size: 24rpx;
+  color: #666666;
+  line-height: 36rpx;
+}
+
+/* 卡片操作按钮 */
+.card-actions {
+  display: flex;
+  gap: 10rpx;
+}
+
+.action-btn {
+  padding: 8rpx 20rpx;
+  border-radius: 20rpx;
+  font-size: 24rpx;
+  font-weight: bold;
+  border: none;
+  min-width: 80rpx;
+}
+
+.add-btn {
+  background-color: #1AAD19;
+  color: #ffffff;
+}
+
+.edit-btn {
+  background-color: #1989fa;
+  color: #ffffff;
+}
+
+.action-btn:active {
+  opacity: 0.8;
+}
+
+/* 无数据时的操作按钮 */
+.no-data-actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 40rpx 0;
+}
+
+.add-btn.large {
+  padding: 20rpx 40rpx;
+  border-radius: 30rpx;
+  font-size: 28rpx;
+  font-weight: bold;
+  background-color: #1AAD19;
+  color: #ffffff;
+  border: none;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.1);
+}
+
+.add-btn.large:active {
+  opacity: 0.8;
+  transform: scale(0.98);
+}
+
+/* 图表折叠/展开按钮 */
+.charts-toggle,
+.charts-expand {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10rpx;
+  background-color: #f5f5f5;
+  padding: 15rpx;
+  border-radius: 8rpx;
+  margin-bottom: 20rpx;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.charts-toggle:active,
+.charts-expand:active {
+  background-color: #e0e0e0;
+}
+
+.toggle-text {
+  font-size: 28rpx;
+  color: #666666;
+  font-weight: 500;
+}
+
+.toggle-icon {
+  font-size: 24rpx;
+  color: #666666;
+  font-weight: bold;
+}
+
+/* 表单弹窗样式 */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 10000;
+  display: block;
+}
+
+.form-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+  max-width: 600rpx;
+  max-height: 80vh;
+  background-color: #ffffff;
+  border-radius: 20rpx;
+  z-index: 10001;
+  box-shadow: 0 20rpx 60rpx rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  opacity: 1;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 30rpx;
+  border-bottom: 2rpx solid #f0f0f0;
+}
+
+.modal-title {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #333333;
+}
+
+.modal-close {
+  font-size: 48rpx;
+  color: #999999;
+  line-height: 1;
+  padding: 10rpx;
+  cursor: pointer;
+}
+
+.modal-content {
+  flex: 1;
+  padding: 0;
+  overflow: hidden;
+}
+
+.form-scroll {
+  height: 500rpx;
+  padding: 30rpx;
+}
+
+.form-item {
+  margin-bottom: 30rpx;
+}
+
+.form-label {
+  display: block;
+  font-size: 28rpx;
+  font-weight: 500;
+  color: #333333;
+  margin-bottom: 10rpx;
+}
+
+.form-input {
+  width: 100%;
+  padding: 20rpx;
+  border: 2rpx solid #e0e0e0;
+  border-radius: 10rpx;
+  font-size: 28rpx;
+  box-sizing: border-box;
+  height: 80rpx;
+  line-height: 80rpx; /* 文字垂直居中，与高度一致 */
+  /* 移除flex布局，使用传统方式确保placeholder完整显示 */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.form-textarea {
+  width: 100%;
+  padding: 20rpx;
+  border: 2rpx solid #e0e0e0;
+  border-radius: 10rpx;
+  font-size: 28rpx;
+  min-height: 150rpx;
+  box-sizing: border-box;
+  resize: vertical;
+}
+
+.form-input:focus,
+.form-textarea:focus {
+  outline: none;
+  border-color: #1AAD19;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 20rpx;
+  padding: 20rpx 30rpx 30rpx;
+  border-top: 2rpx solid #f0f0f0;
+}
+
+.modal-btn {
+  padding: 20rpx 40rpx;
+  border-radius: 10rpx;
+  font-size: 28rpx;
+  font-weight: 500;
+  border: none;
+}
+
+.modal-btn.cancel {
+  background-color: #f5f5f5;
+  color: #666666;
+}
+
+.modal-btn.confirm {
+  background-color: #1AAD19;
+  color: #ffffff;
+}
+
+.modal-btn:active {
+  opacity: 0.8;
+  transform: scale(0.98);
+}
+
+/* 图表容器 */
+.charts-container {
+  display: flex;
+  flex-direction: column;
+  gap: 30rpx;
+}
+
+/* 单个图表项 */
+.chart-item {
+  background-color: #ffffff;
+  border-radius: 12rpx;
+  padding: 20rpx;
+  box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.05);
+}
+
+/* 图表标题 */
+.chart-title {
+  font-size: 28rpx;
+  font-weight: bold;
+  color: #666666;
+  margin-bottom: 15rpx;
+  text-align: center;
+}
+
+/* 图表画布 */
+.chart-canvas {
+  width: 320px;
+  height: 200px;
+  margin: 0 auto;
+}
+
+/* 加载状态 */
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 400rpx;
+}
+
+.loading-text {
+  font-size: 28rpx;
+  color: #999999;
+}
+
+/* 无数据状态 */
+.no-data-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 400rpx;
+}
+
+.no-data-text {
+  font-size: 28rpx;
+  color: #999999;
+}
+
+/* 健康数据容器 */
+.health-data-container {
+  margin-top: 30rpx;
+}
+
+/* 章节标题 */
+.section-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333333;
+  margin-bottom: 20rpx;
+  padding-left: 10rpx;
+  border-left: 4rpx solid #1AAD19;
+}
+
+/* 健康卡片 */
+.health-card {
+  background-color: #ffffff;
+  border-radius: 12rpx;
+  padding: 20rpx;
+  margin-bottom: 20rpx;
+  box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.05);
+}
+
+/* 健康卡片头部 */
+.health-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20rpx;
+  padding-bottom: 10rpx;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+
+.record-date {
+  font-size: 28rpx;
+  font-weight: bold;
+  color: #333333;
+}
+
+.mobility-level {
+  font-size: 24rpx;
+  color: #666666;
+  background-color: #f5f5f5;
+  padding: 5rpx 10rpx;
+  border-radius: 10rpx;
+}
+
+/* 健康项目列表 */
+.health-items {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20rpx;
+}
+
+/* 单个健康项目 */
+.health-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.item-label {
+  font-size: 24rpx;
+  color: #666666;
+  margin-bottom: 5rpx;
+}
+
+.item-value {
+  font-size: 28rpx;
+  font-weight: bold;
+  color: #333333;
+}
+
+/* 备注文本 */
+.remark-text {
+  font-size: 24rpx;
+  font-weight: normal;
+  color: #FF6600;
+  grid-column: 1 / -1;
+  margin-top: 10rpx;
+}
+
+/* 响应式布局 */
+@media (min-width: 768px) {
+  .charts-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30rpx;
+  }
+  
+  .chart-canvas {
+    width: 100%;
+    max-width: 320px;
+  }
+  
+  .health-items {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}

@@ -8,6 +8,28 @@ Page({
     loading: true, // 加载状态
     hasData: false, // 是否有数据
     healthData: [], // 原始健康数据
+    currentHealthCondition: null, // 当前健康状况卡片数据
+    // 老人列表数据
+    oldManList: [], // 老人列表
+    selectedOldManIndex: 0, // 当前选中的老人索引
+    selectedOldManId: '', // 当前选中的老人ID
+    // 图表折叠状态
+    chartsCollapsed: false, // 图表是否折叠
+    // 表单弹窗相关
+    showFormModal: false, // 表单弹窗是否显示
+    formMode: 'add', // 表单模式：add(新增) 或 edit(编辑)
+    formData: {
+      bloodOxygen: '',
+      bloodPressure: '',
+      bloodSugar2hAfterMeal: '',
+      bodyTemperature: '',
+      create_time: '',
+      fastingBloodSugar: '',
+      heartRate: '',
+      mobilityLevel: '',
+      remark: '',
+      userId: 0
+    },
     // 各指标图表数据
     bloodPressureData: {
       labels: [],
@@ -40,7 +62,9 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad(options) {
-    this.loadHealthData();
+    console.log('页面加载，初始showFormModal:', this.data.showFormModal);
+    // 先加载老人列表，再加载健康数据
+    this.loadOldManList();
   },
 
   /**
@@ -52,6 +76,21 @@ Page({
   },
 
   /**
+   * 生命周期函数--监听页面显示
+   */
+  onShow() {
+    console.log('页面显示，showFormModal状态:', this.data.showFormModal);
+    // 确保弹窗状态正确
+    this.setData({
+      showFormModal: this.data.showFormModal
+    });
+    // 更新导航栏高亮状态
+    if (typeof this.getTabBar === 'function' && this.getTabBar()) {
+      this.getTabBar().updateActiveIndex();
+    }
+  },
+
+  /**
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh() {
@@ -59,37 +98,289 @@ Page({
   },
 
   /**
+   * 老人选择变化处理
+   */
+  onOldManChange(e) {
+    const index = e.detail.value;
+    const oldManList = this.data.oldManList;
+    
+    this.setData({
+      selectedOldManIndex: index,
+      selectedOldManId: oldManList[index].id
+    });
+    
+    // 加载选中老人的健康数据
+    this.loadHealthData();
+  },
+
+  /**
+   * 切换图表折叠状态
+   */
+  toggleChartsCollapse() {
+    this.setData({
+      chartsCollapsed: !this.data.chartsCollapsed
+    });
+  },
+
+  /**
+   * 打开新增表单弹窗
+   */
+  addHealthData() {
+    console.log('addHealthData called, current showFormModal:', this.data.showFormModal);
+    // 设置表单模式为新增，表单为空
+    this.setData({
+      formMode: 'add',
+      formData: {
+        bloodOxygen: '',
+        bloodPressure: '',
+        bloodSugar2hAfterMeal: '',
+        bodyTemperature: '',
+        create_time: new Date().toISOString().slice(0, 19).replace('T', ' '),
+        fastingBloodSugar: '',
+        heartRate: '',
+        mobilityLevel: '',
+        remark: '',
+        userId: this.data.selectedOldManId
+      },
+      showFormModal: true
+    }, () => {
+      console.log('showFormModal after setData:', this.data.showFormModal);
+    });
+  },
+
+  /**
+   * 打开编辑表单弹窗
+   */
+  editHealthData() {
+    console.log('editHealthData called, current showFormModal:', this.data.showFormModal);
+    if (!this.data.currentHealthCondition) {
+      wx.showToast({
+        title: '无健康数据可编辑',
+        icon: 'none'
+      });
+      return;
+    }
+    
+    // 设置表单模式为编辑，填充当前数据
+    const currentData = this.data.currentHealthCondition;
+    this.setData({
+      formMode: 'edit',
+      formData: {
+        bloodOxygen: currentData.bloodOxygen || '',
+        bloodPressure: currentData.bloodPressure || '',
+        bloodSugar2hAfterMeal: currentData.bloodSugar2hAfterMeal || '',
+        bodyTemperature: currentData.bodyTemperature || '',
+        create_time: currentData.create_time || new Date().toISOString().slice(0, 19).replace('T', ' '),
+        fastingBloodSugar: currentData.fastingBloodSugar || '',
+        heartRate: currentData.heartRate || '',
+        mobilityLevel: currentData.mobilityLevel || '',
+        remark: currentData.remark || '',
+        userId: this.data.selectedOldManId
+      },
+      showFormModal: true
+    }, () => {
+      console.log('showFormModal after setData:', this.data.showFormModal);
+    });
+  },
+
+  /**
+   * 关闭表单弹窗
+   */
+  closeFormModal() {
+    this.setData({
+      showFormModal: false
+    });
+  },
+
+  /**
+   * 表单输入变化处理
+   */
+  onFormInput(e) {
+    const { field } = e.currentTarget.dataset;
+    const { value } = e.detail;
+    
+    this.setData({
+      [`formData.${field}`]: value
+    });
+  },
+
+  /**
+   * 提交表单
+   */
+  submitForm() {
+    const { formMode, formData } = this.data;
+    const token = app.globalData.token || wx.getStorageSync('token');
+    
+    // 表单验证
+    if (!formData.bloodOxygen || !formData.bloodPressure || !formData.bloodSugar2hAfterMeal ||
+        !formData.bodyTemperature || !formData.fastingBloodSugar || !formData.heartRate ||
+        !formData.mobilityLevel) {
+      wx.showToast({
+        title: '请填写所有必填字段',
+        icon: 'none'
+      });
+      return;
+    }
+    
+    // 设置请求配置
+    const requestConfig = {
+      header: {
+        'content-type': 'application/json',
+        'Authorization': 'Bearer ' + token
+      },
+      success: (res) => {
+        console.log(`${formMode === 'add' ? '新增' : '编辑'}健康数据成功:`, res.data);
+        if (res.statusCode === 200 && res.data.code === 200) {
+          wx.showToast({
+            title: `${formMode === 'add' ? '新增' : '编辑'}成功`,
+            icon: 'success'
+          });
+          // 关闭弹窗
+          this.closeFormModal();
+          // 重新加载健康数据
+          this.loadHealthData();
+        } else {
+          wx.showToast({
+            title: res.data.msg || `${formMode === 'add' ? '新增' : '编辑'}失败`,
+            icon: 'none'
+          });
+        }
+      },
+      fail: (err) => {
+        console.error(`${formMode === 'add' ? '新增' : '编辑'}健康数据失败:`, err);
+        wx.showToast({
+          title: '网络错误',
+          icon: 'none'
+        });
+      }
+    };
+    
+    // 根据表单模式调用不同的API
+    if (formMode === 'add') {
+      // 新增数据
+      wx.request({
+        ...requestConfig,
+        url: app.globalData.baseUrl + '/healthCondition/add',
+        method: 'POST',
+        data: formData
+      });
+    } else {
+      // 编辑数据
+      wx.request({
+        ...requestConfig,
+        url: app.globalData.baseUrl + '/healthCondition/update',
+        method: 'PUT',
+        data: formData
+      });
+    }
+  },
+
+  /**
+   * 加载老人列表
+   */
+  loadOldManList() {
+    this.setData({ loading: true });
+    const token = app.globalData.token || wx.getStorageSync('token');
+    
+    wx.request({
+      url: app.globalData.baseUrl + '/service/order/user/list',
+      method: 'GET',
+      header: {
+        'content-type': 'application/json',
+        'Authorization': 'Bearer ' + token
+      },
+      success: (res) => {
+        console.log('加载老人列表成功:', res.data);
+        console.log('老人列表API返回的rows字段:', res.data.rows);
+        if (res.statusCode === 200 && res.data.code === 200) {
+          const oldManList = res.data.rows.map(item => ({
+            id: item.customerId,
+            name: item.customer
+          }));
+          
+          console.log('转换后的老人列表:', oldManList);
+          
+          this.setData({
+            oldManList: oldManList
+          });
+          
+          // 如果有老人，默认选择第一个
+          if (oldManList.length > 0) {
+            console.log('选择第一个老人:', oldManList[0]);
+            this.setData({
+              selectedOldManId: oldManList[0].id,
+              selectedOldManIndex: 0
+            });
+            // 加载第一个老人的健康数据
+            this.loadHealthData();
+          } else {
+            console.log('没有老人数据');
+            this.setData({ loading: false });
+          }
+        }
+      },
+      fail: (err) => {
+        console.error('加载老人列表失败:', err);
+        this.setData({ loading: false });
+      }
+    });
+  },
+
+  /**
    * 加载健康数据
    */
   loadHealthData() {
-    this.setData({ loading: true });
-    // 获取用户ID
-    const userId = app.globalData.userInfo?.id;
-    const token=app.globalData.token || wx.getStorageSync('token');
+    if (!this.data.selectedOldManId) {
+      this.setData({ loading: false });
+      return;
+    }
     
-    console.log('Token:', token);
-    console.log('Base URL:', app.globalData.baseUrl);
-    console.log('Full API URL:', app.globalData.baseUrl+'/healthCondition/select');
+    console.log('loadHealthData开始，当前showFormModal:', this.data.showFormModal);
     
-    // 模拟后端API请求
+    // 重置健康状况数据，避免显示旧数据
+    this.setData({
+      loading: true,
+      currentHealthCondition: null,
+      hasData: false
+      // 移除showFormModal设置，避免意外重置
+    });
+    
+    const token = app.globalData.token || wx.getStorageSync('token');
+    const userId = this.data.selectedOldManId;
+    
+    console.log('加载健康数据，老人ID:', userId);
+    
     wx.request({
-      url: app.globalData.baseUrl+'/healthCondition/select', // 实际后端API地址
+      url: app.globalData.baseUrl + '/healthCondition/selectFromRedis', // 更新为Redis查询API地址
       method: 'GET',
       data: {
-        customerId: 113
+        customerId: userId // 使用老人ID作为参数
       }, 
       header: {
         'content-type': 'application/json',
         'Authorization': 'Bearer ' + token
       },
       success: (res) => {
-        console.log('API Response:', res);
-        console.log('Status Code:', res.statusCode);
-        console.log('Response Data:', res.data);
-        if (res.statusCode === 200) {
-          this.processHealthData(res.data.data);
+        console.log('健康数据API Response:', res);
+        console.log('完整的API返回数据:', res.data);
+        if (res.statusCode === 200 && res.data.code === 200) {
+          // 直接使用API返回的对象，不包装成数组
+          const healthCondition = res.data.data;
+          console.log('准备设置的健康状况卡片数据:', healthCondition);
+          
+          this.setData({
+            currentHealthCondition: healthCondition,
+            hasData: true
+          }, () => {
+            console.log('currentHealthCondition已设置:', this.data.currentHealthCondition);
+            console.log('hasData已设置:', this.data.hasData);
+          });
+          
+          // 直接处理单个对象，不包装成数组
+          this.processHealthData([healthCondition]);
         } else {
           console.error('加载健康数据失败:', res.data.message || '未知错误');
+          this.setData({ hasData: false });
         }
       },
       fail: (err) => {
@@ -97,6 +388,7 @@ Page({
         this.loadMockData(); // 加载模拟数据
       },
       complete: () => {
+        console.log('loadHealthData完成，当前showFormModal:', this.data.showFormModal);
         this.setData({ loading: false });
         wx.stopPullDownRefresh();
       }
@@ -138,6 +430,12 @@ Page({
       });
     }
     
+    // 设置当前健康状况卡片数据
+    this.setData({
+      currentHealthCondition: mockData[0] || null,
+      hasData: true
+    });
+    
     this.processHealthData(mockData);
   },
 
@@ -145,40 +443,53 @@ Page({
    * 处理健康数据
    */
   processHealthData(data) {
-    if (!data || data.length === 0) {
+    // 确保数据是数组
+    let healthData = Array.isArray(data) ? data : [];
+    
+    if (healthData.length === 0) {
       this.setData({ hasData: false });
       return;
     }
     
-    // 按照日期排序数据
-    data.sort((a, b) => {
-      // 解析日期字符串为Date对象
-      // 确保日期格式为 "year:month:day"
-      const aParts = a.create_time.split(':');
-      const bParts = b.create_time.split(':');
-      
-      // 分别获取年、月、日
-      const aYear = parseInt(aParts[0]);
-      const aMonth = parseInt(aParts[1]);
-      const aDay = parseInt(aParts[2]);
-      
-      const bYear = parseInt(bParts[0]);
-      const bMonth = parseInt(bParts[1]);
-      const bDay = parseInt(bParts[2]);
-      
-      // 先按年份比较
-      if (aYear !== bYear) {
-        return aYear - bYear;
-      }
-      
-      // 年份相同，按月份比较
-      if (aMonth !== bMonth) {
-        return aMonth - bMonth;
-      }
-      
-      // 月份相同，按日期比较
-      return aDay - bDay;
-    });
+    // 如果create_time为null，跳过排序
+    if (healthData[0].create_time) {
+      // 按照日期排序数据
+      healthData.sort((a, b) => {
+        // 解析日期字符串为Date对象
+        // 确保日期格式为 "year:month:day"
+        const aParts = a.create_time.split(':');
+        const bParts = b.create_time.split(':');
+        
+        // 分别获取年、月、日
+        const aYear = parseInt(aParts[0]);
+        const aMonth = parseInt(aParts[1]);
+        const aDay = parseInt(aParts[2]);
+        
+        const bYear = parseInt(bParts[0]);
+        const bMonth = parseInt(bParts[1]);
+        const bDay = parseInt(bParts[2]);
+        
+        // 先按年份比较
+        if (aYear !== bYear) {
+          return aYear - bYear;
+        }
+        
+        // 年份相同，按月份比较
+        if (aMonth !== bMonth) {
+          return aMonth - bMonth;
+        }
+        
+        // 月份相同，按日期比较
+        return aDay - bDay;
+      });
+    }
+    
+    // 确保currentHealthCondition是最新的健康数据
+    if (healthData.length > 0) {
+      this.setData({
+        currentHealthCondition: healthData[0]
+      });
+    }
     
     // 初始化各指标数据结构
     const bloodPressureData = { labels: [], systolic: [], diastolic: [] };
@@ -189,7 +500,7 @@ Page({
     const bloodSugar2hAfterMealData = { labels: [], values: [] };
     
     // 处理每条数据
-    data.forEach(item => {
+    healthData.forEach(item => {
       // 格式化日期（将 "2026:1:1" 格式转换为标准日期格式）
       const dateParts = item.create_time.split(':');
       const date = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
@@ -231,13 +542,15 @@ Page({
     // 更新数据
     this.setData({
       hasData: true,
-      healthData: data,
+      healthData: healthData,
       bloodPressureData,
       heartRateData,
       bloodOxygenData,
       bodyTemperatureData,
       fastingBloodSugarData,
       bloodSugar2hAfterMealData
+    }, () => {
+      console.log('processHealthData后currentHealthCondition值:', this.data.currentHealthCondition);
     });
     
     // 重新绘制图表
