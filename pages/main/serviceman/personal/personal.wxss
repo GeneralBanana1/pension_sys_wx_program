@@ -1,4 +1,4 @@
-/* ===== 服务人员个人信息页面样式 ===== */
+/* ===== 个人信息页面样式 ===== */
 page {
   background: #f8fafc;
   font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Helvetica Neue', Arial, sans-serif;
@@ -39,7 +39,7 @@ page {
   height: 160rpx;
   border-radius: 50%;
   border: 6rpx solid rgba(255, 255, 255, 0.3);
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: #07C160;
   box-shadow: 0 10rpx 30rpx rgba(0, 0, 0, 0.2);
   display: flex;
   align-items: center;
@@ -47,6 +47,17 @@ page {
   color: white;
   font-size: 60rpx;
   font-weight: bold;
+}
+
+.avatar-status {
+  position: absolute;
+  bottom: 10rpx;
+  right: 10rpx;
+  width: 24rpx;
+  height: 24rpx;
+  background: #2ecc71;
+  border: 3rpx solid white;
+  border-radius: 50%;
 }
 
 .identity-info {
@@ -66,6 +77,29 @@ page {
   display: block;
   margin-bottom: 25rpx;
   font-weight: 500;
+}
+
+.user-tags {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0;
+  margin: 0;
+}
+
+.tag {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 10rpx 20rpx;
+  border-radius: 25rpx;
+  font-size: 26rpx;
+  font-weight: 500;
+  margin-right: 15rpx;
+  margin-bottom: 15rpx;
+  box-sizing: border-box;
+}
+
+.tag.care-level {
+  background: rgba(255, 193, 7, 0.3);
+  color: #ffd700;
 }
 
 /* ===== 信息区块 ===== */
@@ -100,6 +134,13 @@ page {
   gap: 20rpx;
 }
 
+/* ===== 基本信息网格 ===== */
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 30rpx;
+}
+
 .info-item {
   display: flex;
   justify-content: space-between;
@@ -126,6 +167,113 @@ page {
   line-height: 1.4;
   flex: 1;
   text-align: right;
+}
+
+/* ===== 地址卡片 ===== */
+.address-card {
+  background: linear-gradient(135deg, #f8f9ff 0%, #eef2ff 100%);
+  border-radius: 20rpx;
+  padding: 35rpx;
+  border-left: 8rpx solid #07C160;
+}
+
+.address-content {
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+}
+
+.address-text {
+  font-size: 32rpx;
+  color: #2d3748;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.address-status {
+  font-size: 28rpx;
+  color: #07C160;
+  background: rgba(102, 126, 234, 0.1);
+  padding: 10rpx 25rpx;
+  border-radius: 20rpx;
+  align-self: flex-start;
+  font-weight: 500;
+}
+
+/* ===== 健康信息网格 ===== */
+.health-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 25rpx;
+  text-align: center;
+}
+
+.health-item {
+  background: linear-gradient(135deg, #f8f9ff 0%, #eef2ff 100%);
+  border-radius: 20rpx;
+  padding: 35rpx 20rpx;
+  transition: all 0.3s ease;
+}
+
+.health-item:active {
+  transform: translateY(-5rpx);
+  background: linear-gradient(135deg, #eef2ff 0%, #e0e7ff 100%);
+}
+
+.health-value {
+  font-size: 48rpx;
+  font-weight: 700;
+  color: #07C160;
+  margin-bottom: 10rpx;
+  display: block;
+}
+
+.health-label {
+  font-size: 28rpx;
+  color: #718096;
+  font-weight: 500;
+}
+
+/* ===== 紧急联系人卡片 ===== */
+.contact-card {
+  background: linear-gradient(135deg, #fff8f8 0%, #ffeaea 100%);
+  border-radius: 20rpx;
+  padding: 35rpx;
+  border-left: 8rpx solid #ff6b6b;
+}
+
+.contact-info {
+  display: flex;
+  flex-direction: column;
+  gap: 15rpx;
+}
+
+.contact-name {
+  font-size: 40rpx;
+  font-weight: 700;
+  color: #2d3748;
+}
+
+.contact-details {
+  display: flex;
+  flex-direction: column;
+  gap: 12rpx;
+}
+
+.contact-relation {
+  font-size: 28rpx;
+  color: #666;
+  background: rgba(255, 107, 107, 0.1);
+  padding: 8rpx 20rpx;
+  border-radius: 15rpx;
+  align-self: flex-start;
+  font-weight: 500;
+}
+
+.contact-phone {
+  font-size: 32rpx;
+  color: #333;
+  font-weight: 600;
 }
 
 /* ===== 加载状态 ===== */
@@ -165,7 +313,75 @@ page {
   font-weight: 500;
 }
 
-/* ===== 退出登录按钮 ===== */
+/* ===== 响应式调整 ===== */
+@media (max-width: 750rpx) {
+  .identity-card {
+    padding: 50rpx 30rpx 40rpx;
+  }
+  
+  .avatar {
+    width: 140rpx;
+    height: 140rpx;
+  }
+  
+  .user-name {
+    font-size: 52rpx;
+  }
+  
+  .info-section {
+    margin: 0 25rpx 25rpx;
+    padding: 30rpx;
+  }
+  
+  .section-title {
+    font-size: 34rpx;
+  }
+}
+
+/* 紧急联系人列表 */
+.emergency-contacts-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+}
+
+.emergency-contact-item {
+  background-color: #fff8f8;
+  border-left: 8rpx solid #ff4757;
+  border-radius: 15rpx;
+  padding: 25rpx;
+  box-shadow: 0 2rpx 8rpx rgba(255, 71, 87, 0.1);
+}
+
+.contact-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20rpx;
+}
+
+.contact-name {
+  font-size: 34rpx;
+  font-weight: bold;
+  color: #333;
+}
+
+.contact-type {
+  font-size: 24rpx;
+  color: white;
+  background-color: #ff4757;
+  padding: 6rpx 16rpx;
+  border-radius: 12rpx;
+  font-weight: bold;
+}
+
+.contact-details {
+  display: flex;
+  flex-direction: column;
+  gap: 15rpx;
+}
+
+/* 退出登录按钮 */
 .logout-section {
   margin: 30rpx;
   padding-bottom: 40rpx;
@@ -190,31 +406,6 @@ page {
 .logout-button:active {
   transform: scale(0.98);
   box-shadow: 0 2rpx 10rpx rgba(255, 71, 87, 0.3);
-}
-
-/* ===== 响应式调整 ===== */
-@media (max-width: 750rpx) {
-  .identity-card {
-    padding: 50rpx 30rpx 40rpx;
-  }
-  
-  .avatar {
-    width: 140rpx;
-    height: 140rpx;
-  }
-  
-  .user-name {
-    font-size: 52rpx;
-  }
-  
-  .info-section {
-    margin: 0 25rpx 25rpx;
-    padding: 30rpx;
-  }
-  
-  .section-title {
-    font-size: 34rpx;
-  }
 }
 
 /* 小屏幕特殊优化 */
@@ -245,4 +436,213 @@ page {
     margin: 20rpx;
     padding-bottom: 30rpx;
   }
+}
+
+/* 编辑按钮容器 */
+.edit-btn-container {
+  display: flex;
+  justify-content: center;
+  margin: -25rpx auto 30rpx;
+  width: fit-content;
+}
+
+/* 编辑按钮样式 */
+.edit-btn {
+  background: #07C160;
+  color: white;
+  border: none;
+  border-radius: 30rpx;
+  padding: 20rpx 50rpx;
+  font-size: 28rpx;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  box-shadow: 0 4rpx 15rpx rgba(7, 193, 96, 0.4);
+  min-width: 160rpx;
+  width: auto;
+}
+
+.edit-btn:active {
+  background: #5a6fd8;
+  transform: scale(0.98);
+  box-shadow: 0 2rpx 8rpx rgba(102, 126, 234, 0.4);
+}
+
+/* 模态框样式 */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.modal-content {
+  background: white;
+  width: 92%;
+  max-width: 550rpx;
+  border-radius: 20rpx;
+  box-shadow: 0 15rpx 45rpx rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+  box-sizing: border-box;
+  position: relative;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 25rpx 30rpx;
+  border-bottom: 1rpx solid #f0f0f0;
+  background: #fafafa;
+}
+
+.modal-title {
+  font-size: 34rpx;
+  font-weight: 700;
+  color: #333;
+}
+
+.modal-close {
+  background: none;
+  border: none;
+  font-size: 50rpx;
+  color: #999;
+  padding: 0;
+  margin: 0;
+  line-height: 1;
+  width: 50rpx;
+  height: 50rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+}
+
+.modal-close:active {
+  background: #f0f0f0;
+  color: #666;
+}
+
+.modal-body {
+  padding: 30rpx 30rpx 40rpx;
+  box-sizing: border-box;
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+/* 表单样式 */
+.form-item {
+  margin-bottom: 30rpx;
+}
+
+.form-label {
+  display: block;
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 12rpx;
+}
+
+.form-input {
+  width: 100%;
+  height: 75rpx;
+  border: 2rpx solid #e0e0e0;
+  border-radius: 12rpx;
+  padding: 0 20rpx;
+  font-size: 28rpx;
+  color: #333;
+  box-sizing: border-box;
+  transition: all 0.3s ease;
+}
+
+.form-input:focus {
+  border-color: #07C160;
+  box-shadow: 0 0 0 4rpx rgba(102, 126, 234, 0.1);
+}
+
+.form-textarea {
+  width: 100%;
+  min-height: 110rpx;
+  border: 2rpx solid #e0e0e0;
+  border-radius: 12rpx;
+  padding: 18rpx 20rpx;
+  font-size: 28rpx;
+  color: #333;
+  box-sizing: border-box;
+  resize: vertical;
+  transition: all 0.3s ease;
+}
+
+.form-textarea:focus {
+  border-color: #07C160;
+  box-shadow: 0 0 0 4rpx rgba(102, 126, 234, 0.1);
+}
+
+/* 性别选择样式 */
+.gender-select {
+  display: flex;
+  gap: 200rpx;
+  padding: 10rpx 0;
+  align-items: center;
+}
+
+.radio-item {
+  margin-top: 20rpx;
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+  font-size: 30rpx;
+  color: #333;
+}
+
+.radio-item radio {
+  transform: scale(1);
+  margin-right: 0;
+}
+
+/* 表单操作按钮 */
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 20rpx;
+  margin-top: 40rpx;
+  padding-top: 25rpx;
+  border-top: 1rpx solid #f0f0f0;
+}
+
+.cancel-btn, .submit-btn {
+  padding: 20rpx 40rpx;
+  font-size: 28rpx;
+  font-weight: 600;
+  border-radius: 12rpx;
+  transition: all 0.3s ease;
+  min-width: 120rpx;
+}
+
+.cancel-btn {
+  background: #f5f5f5;
+  color: #666;
+  border: 2rpx solid #e0e0e0;
+}
+
+.cancel-btn:active {
+  background: #e0e0e0;
+}
+
+.submit-btn {
+  background: #07C160;
+  color: white;
+  border: none;
+}
+
+.submit-btn:active {
+  background: #5a6fd8;
+  transform: scale(0.98);
+  box-shadow: 0 2rpx 8rpx rgba(102, 126, 234, 0.4);
 }

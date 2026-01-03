@@ -13,6 +13,14 @@
     </picker>
   </view>
   
+  <!-- 用药管理入口 -->
+  <view class="medication-entry" wx:if="{{oldManList.length > 0}}">
+    <button class="medication-btn" bindtap="goToMedicationManagement">
+      <text class="btn-icon">💊</text>
+      <text>进入用药管理</text>
+    </button>
+  </view>
+  
   <!-- 健康状况卡片 -->
   <view wx:if="{{currentHealthCondition}}" class="health-condition-card">
     <view class="card-header">

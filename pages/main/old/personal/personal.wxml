@@ -20,6 +20,11 @@
       <text class="user-id">ID: {{userInfo.id}}</text>
     </view>
   </view>
+  
+  <!-- 编辑按钮 -->
+  <view class="edit-btn-container">
+    <button class="edit-btn" bindtap="showEditModal">编辑信息</button>
+  </view>
 
   <!-- 基本信息 -->
   <view class="info-section">
@@ -85,5 +90,81 @@
   <!-- 退出登录按钮 -->
   <view class="logout-section">
     <button class="logout-button" bindtap="logout">退出登录</button>
+  </view>
+  
+  <!-- 编辑信息模态框 -->
+  <view wx:if="{{showEditModal}}" class="modal-overlay" bindtap="hideEditModal">
+    <view class="modal-content" catchtap="noop">
+      <view class="modal-header">
+        <text class="modal-title" style="width: 500rpx;">编辑个人信息</text>
+        <button class="modal-close" bindtap="hideEditModal">×</button>
+      </view>
+      <view class="modal-body">
+        <form bindsubmit="submitEditForm">
+          <!-- 姓名 -->
+          <view class="form-item">
+            <text class="form-label">姓名</text>
+            <input 
+              name="nickName" 
+              class="form-input" 
+              placeholder="请输入姓名"
+              value="{{editForm.nickName}}"
+            />
+          </view>
+          <!-- 邮箱 -->
+          <view class="form-item">
+            <text class="form-label">邮箱</text>
+            <input 
+              name="email" 
+              class="form-input" 
+              placeholder="请输入邮箱"
+              value="{{editForm.email}}"
+            />
+          </view>
+          <!-- 手机号 -->
+          <view class="form-item">
+            <text class="form-label">手机号</text>
+            <input 
+              name="phonenumber" 
+              class="form-input" 
+              placeholder="请输入手机号"
+              value="{{editForm.phonenumber}}"
+            />
+          </view>
+          <!-- 性别 -->
+          <view class="form-item">
+            <text class="form-label">性别</text>
+            <view class="gender-select">
+              <radio-group name="sex">
+                <label class="radio-item">
+                  <radio value="1" checked="{{editForm.sex === '1'}}" />
+                  <text>男</text>
+                </label>
+                <label class="radio-item">
+                  <radio value="0" checked="{{editForm.sex === '0'}}" />
+                  <text>女</text>
+                </label>
+              </radio-group>
+            </view>
+          </view>
+          <!-- 备注 -->
+          <view class="form-item">
+            <text class="form-label">备注</text>
+            <textarea 
+              name="remark" 
+              class="form-textarea" 
+              placeholder="请输入备注"
+              value="{{editForm.remark}}"
+              auto-height
+            ></textarea>
+          </view>
+          <!-- 提交按钮 -->
+          <view class="form-actions">
+            <button class="cancel-btn" form-type="reset" bindtap="hideEditModal">取消</button>
+            <button class="submit-btn" form-type="submit" type="primary">保存修改</button>
+          </view>
+        </form>
+      </view>
+    </view>
   </view>
 </view>

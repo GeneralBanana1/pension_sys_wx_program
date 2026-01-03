@@ -16,7 +16,17 @@ Page({
     // 紧急联系人列表，最多显示两个
     emergencyContacts: [],
     
-    loading: false
+    loading: false,
+    
+    // 编辑信息相关
+    showEditModal: false,
+    editForm: {
+      nickName: '',
+      email: '',
+      phonenumber: '',
+      sex: '',
+      remark: ''
+    }
   },
 
   onLoad: function() {
@@ -50,37 +60,69 @@ Page({
       loading: true
     });
     
-    try {
-      // 直接从全局变量获取用户信息，登录时已经查询过
-      const userInfo = app.globalData.userInfo || wx.getStorageSync('userInfo') || {};
-      console.log('从全局变量获取用户信息:', userInfo);
-      
-      if (userInfo) {
-        this.setDisplayData(userInfo);
-        // 缓存用户信息
-        wx.setStorageSync('userProfileData', userInfo);
-        // 获取紧急联系人信息
-        this.getEmergencyContacts(userInfo);
-      } else {
-        console.error('用户信息不存在');
+    // 从服务器重新获取用户信息
+    const token = wx.getStorageSync('token');
+    
+    wx.request({
+      url: app.globalData.baseUrl + '/user/info/getUserInfo',
+      method: 'GET',
+      header: {
+        'Authorization': 'Bearer ' + token
+      },
+      success: (res) => {
+        console.log('从服务器获取用户信息:', res.data);
+        
+        if (res.data && res.data.code === 200) {
+          const userInfo = res.data.data || {};
+          // 更新全局用户信息
+          app.globalData.userInfo = userInfo;
+          wx.setStorageSync('userInfo', userInfo);
+          // 缓存用户信息
+          wx.setStorageSync('userProfileData', userInfo);
+          // 设置显示数据
+          this.setDisplayData(userInfo);
+          // 获取紧急联系人信息
+          this.getEmergencyContacts(userInfo);
+        } else {
+          console.error('获取用户信息失败:', res.data.message);
+          wx.showToast({
+            title: '获取用户信息失败',
+            icon: 'none'
+          });
+          this.setData({
+            loading: false
+          });
+        }
+      },
+      fail: (err) => {
+        console.error('请求获取用户信息API失败:', err);
         wx.showToast({
-          title: '用户信息不存在',
+          title: '网络请求失败',
           icon: 'none'
         });
+        // 失败时尝试从本地获取
+        try {
+          const userInfo = app.globalData.userInfo || wx.getStorageSync('userInfo') || {};
+          if (userInfo) {
+            this.setDisplayData(userInfo);
+            // 缓存用户信息
+            wx.setStorageSync('userProfileData', userInfo);
+            // 获取紧急联系人信息
+            this.getEmergencyContacts(userInfo);
+          }
+        } catch (error) {
+          console.error('处理本地用户信息失败:', error);
+          this.setData({
+            loading: false
+          });
+        }
+      },
+      complete: () => {
         this.setData({
           loading: false
         });
       }
-    } catch (error) {
-      console.error('处理用户信息失败:', error);
-      wx.showToast({
-        title: '处理用户信息失败',
-        icon: 'none'
-      });
-      this.setData({
-        loading: false
-      });
-    }
+    });
   },
   
   // 获取紧急联系人信息
@@ -196,5 +238,131 @@ Page({
         icon: 'success'
       });
     }, 1000);
+  },
+  
+  // 显示编辑模态框
+  showEditModal() {
+    // 将当前用户信息填充到编辑表单
+    const userInfo = this.data.userInfo;
+    this.setData({
+      editForm: {
+        nickName: userInfo.name || '',
+        email: userInfo.email || '',
+        phonenumber: userInfo.phone || '',
+        sex: userInfo.sex === '男' ? '1' : userInfo.sex === '女' ? '0' : '',
+        remark: userInfo.remark || ''
+      },
+      showEditModal: true
+    });
+  },
+  
+  // 隐藏编辑模态框
+  hideEditModal() {
+    this.setData({
+      showEditModal: false
+    });
+  },
+  
+  // 提交编辑表单
+  submitEditForm(e) {
+    const formData = e.detail.value;
+    console.log('提交的表单数据:', formData);
+    
+    // 基本验证
+    if (!formData.nickName.trim()) {
+      wx.showToast({
+        title: '请输入姓名',
+        icon: 'none'
+      });
+      return;
+    }
+    
+    // 准备API请求数据
+    const userInfo = this.data.userInfo;
+    const userId = userInfo.id || userInfo.userId || '';
+    
+    if (!userId) {
+      wx.showToast({
+        title: '用户ID不存在',
+        icon: 'none'
+      });
+      return;
+    }
+    
+    const requestData = {
+      userId: parseInt(userId),
+      nickName: formData.nickName.trim(),
+      avatar: userInfo.avatar || '',
+      phonenumber: formData.phonenumber.trim(),
+      email: formData.email.trim(),
+      sex: formData.sex || '1', // 默认男性
+      remark: formData.remark.trim()
+    };
+    
+    console.log('准备发送的API数据:', requestData);
+    
+    // 调用API更新用户信息
+    this.updateUserInfo(requestData);
+  },
+  
+  // 更新用户信息API调用
+  updateUserInfo(data) {
+    const token = wx.getStorageSync('token');
+    
+    wx.showLoading({
+      title: '保存中...',
+      mask: true
+    });
+    
+    wx.request({
+      url: app.globalData.baseUrl + '/user/info/update',
+      method: 'PUT',
+      header: {
+        'content-type': 'application/json',
+        'Authorization': 'Bearer ' + token
+      },
+      data: data,
+      success: (res) => {
+        console.log('更新用户信息成功:', res.data);
+        
+        if (res.data && res.data.code === 200) {
+          // 更新成功，隐藏模态框，重新加载数据
+          this.hideEditModal();
+          this.loadUserData();
+          
+          wx.showToast({
+            title: '信息更新成功',
+            icon: 'success',
+            duration: 1500
+          });
+          
+          // 更新全局用户信息
+          const updatedUserInfo = { ...app.globalData.userInfo, ...data };
+          app.globalData.userInfo = updatedUserInfo;
+          wx.setStorageSync('userInfo', updatedUserInfo);
+        } else {
+          console.error('更新用户信息失败:', res.data.message);
+          wx.showToast({
+            title: res.data.message || '更新失败',
+            icon: 'none'
+          });
+        }
+      },
+      fail: (err) => {
+        console.error('请求更新用户信息API失败:', err);
+        wx.showToast({
+          title: '网络请求失败',
+          icon: 'none'
+        });
+      },
+      complete: () => {
+        wx.hideLoading();
+      }
+    });
+  },
+  
+  // 空函数，用于阻止事件冒泡
+  noop() {
+    // 不执行任何操作
   }
 });

@@ -58,10 +58,24 @@ Page({
    */
   onLoad: function(options) {
     // 加载用药计划数据
-    var selectedOldMan = app.globalData.currentOldMan;
-    if (selectedOldMan && selectedOldMan.id) {
+    let userId = 0;
+    
+    // 优先从URL参数获取老人ID（从健康页面跳转时使用）
+    if (options && options.oldId) {
+      userId = parseInt(options.oldId);
+      console.log('从URL参数获取老人ID:', userId);
+    } else {
+      // 从全局变量获取（正常进入时使用）
+      var selectedOldMan = app.globalData.currentOldMan;
+      if (selectedOldMan && selectedOldMan.id) {
+        userId = selectedOldMan.id;
+        console.log('从全局变量获取老人ID:', userId);
+      }
+    }
+    
+    if (userId) {
       this.setData({
-        userId: selectedOldMan.id
+        userId: userId
       });
       this.loadMedicationPlans();
     } else {

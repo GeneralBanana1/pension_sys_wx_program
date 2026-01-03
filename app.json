@@ -11,7 +11,7 @@
     "pages/main/old/medication/medication",
     "pages/main/old/weather/weather",
     "pages/main/old/personal/personal",
-    "pages/main/health/health",
+    "pages/main/serviceman/health/health",
     "pages/main/serviceman/order/order",
     "pages/main/serviceman/personal/personal",
     "pages/main/family/index/index",
@@ -54,7 +54,7 @@
         "text": "个人中心"
       },
       {
-        "pagePath": "pages/main/health/health",
+        "pagePath": "pages/main/serviceman/health/health",
         "text": "健康管理"
       },
       {

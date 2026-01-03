@@ -18,7 +18,7 @@ App({
       ],
       '102': [ // 护工
         { pagePath: 'pages/main/serviceman/order/order', text: '服务订单', iconPath: '', selectedIconPath: '' },
-        { pagePath: 'pages/main/health/health', text: '健康管理', iconPath: '', selectedIconPath: '' },
+        { pagePath: 'pages/main/serviceman/health/health', text: '健康管理', iconPath: '', selectedIconPath: '' },
         { pagePath: 'pages/main/serviceman/personal/personal', text: '个人中心', iconPath: '', selectedIconPath: '' }
       ],
       '103': [ // 维修工

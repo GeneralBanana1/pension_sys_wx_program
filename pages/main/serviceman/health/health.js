@@ -112,6 +112,28 @@ Page({
     // 加载选中老人的健康数据
     this.loadHealthData();
   },
+  
+  /**
+   * 跳转到用药管理页面
+   */
+  goToMedicationManagement() {
+    const selectedOldManId = this.data.selectedOldManId;
+    
+    if (!selectedOldManId) {
+      wx.showToast({
+        title: '请先选择老人',
+        icon: 'none'
+      });
+      return;
+    }
+    
+    console.log('跳转到用药管理页面，老人ID:', selectedOldManId);
+    
+    // 跳转到家属端用药管理页面，传入老人ID参数
+    wx.navigateTo({
+      url: `/pages/main/family/medication/medication?oldId=${selectedOldManId}`
+    });
+  },
 
   /**
    * 切换图表折叠状态
